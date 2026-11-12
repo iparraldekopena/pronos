@@ -277,3 +277,23 @@ function render() {
     document.getElementById('adm-sec').classList.add('hidden');
     document.getElementById('mem-sec').classList.remove('hidden');
     document.getElementById('m-name').textContent = data.members.find(x => x.code === user).name;
+        const ep = m.preds ? m.preds[user] : null;
+    document.getElementById('in-h').value = ep ? ep.h : ""; document.getElementById('in-a').value = ep ? ep.a : "";
+  }
+  document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
+  document.getElementById('col-p').textContent = `Prono n°${13 + idx}`;
+  const sorted = [...data.members].sort((a, b) => b.points - a.points);
+  let rk = 1;
+  document.getElementById('lb').innerHTML = sorted.map((x, i) => {
+    if (i > 0 && x.points < sorted[i - 1].points) rk = i + 1;
+    const p = m.preds ? m.preds[x.code] : null;
+    const pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
+    return `<tr class="${x.isChamp ? 'champ' : ''}"><td><strong>${rk}</strong></td><td>${x.name}${x.isChamp ? '<span class="badge-champ">Tenant 2026</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pts</strong></td></tr>`;
+  }).join("");
+  document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : ${p.p1}<br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
+}
+sync();
+setInterval(() => { if (user) sync(true); }, 20000);
+</script>
+</body>
+</html>
