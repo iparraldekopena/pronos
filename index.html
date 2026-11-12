@@ -1,300 +1,139 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pronostics 2026/27 - Iparraldeko Peña</title>
-    <style>
-        :root {
-            --rouge: #D91E18;
-            --rouge-vif: #EE2523;
-            --noir: #111111;
-            --gris-fond: #F2F2F2;
-            --blanc: #FFFFFF;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--gris-fond);
-            color: var(--noir);
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: var(--noir);
-            border-bottom: 5px solid var(--rouge);
-            padding: 15px 10px;
-            text-align: center;
-        }
-        .banner-wrapper {
-            max-width: 680px;
-            margin: 0 auto;
-            background-color: var(--blanc);
-            border: 3px solid var(--rouge);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-        .banner-img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .sub-header-bar {
-            background-color: var(--rouge);
-            color: var(--blanc);
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: bold;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .flag-icon {
-            height: 22px;
-            width: auto;
-            border: 1px solid var(--blanc);
-            border-radius: 2px;
-        }
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            max-width: 680px;
-            margin: 15px auto 0;
-            padding: 0 15px;
-        }
-        .nav-btn {
-            flex: 1;
-            background-color: var(--blanc);
-            color: var(--noir);
-            border: 2px solid var(--noir);
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-        }
-        .nav-btn.active {
-            background-color: var(--noir);
-            color: var(--blanc);
-            border-color: var(--rouge);
-        }
-        .container {
-            max-width: 680px;
-            margin: 15px auto 40px;
-            padding: 0 15px;
-        }
-        .card {
-            background: var(--blanc);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-top: 5px solid var(--rouge);
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-        h2 {
-            margin-top: 0;
-            font-size: 1.2rem;
-            color: var(--noir);
-            border-bottom: 2px solid var(--noir);
-            padding-bottom: 8px;
-            text-transform: uppercase;
-        }
-        input[type="text"], input[type="number"], input[type="datetime-local"], select {
-            width: 100%;
-            padding: 10px;
-            margin: 6px 0 14px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 0.95rem;
-        }
-        input:focus, select:focus {
-            border-color: var(--rouge);
-            outline: none;
-        }
-        button.action-btn {
-            background-color: var(--rouge);
-            color: var(--blanc);
-            border: 2px solid var(--noir);
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-            transition: background 0.2s;
-        }
-        button.action-btn:hover {
-            background-color: var(--noir);
-            color: var(--blanc);
-        }
-        .match-header {
-            background: var(--noir);
-            color: var(--blanc);
-            padding: 12px 15px;
-            border-radius: 6px;
-            border-left: 6px solid var(--rouge);
-            margin-bottom: 15px;
-        }
-        .match-meta {
-            font-size: 0.85rem;
-            color: #dddddd;
-            margin-top: 5px;
-        }
-        .score-inputs {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .team-box {
-            text-align: center;
-            flex: 1;
-        }
-        .team-box input {
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: bold;
-            width: 75px;
-            margin: 8px auto 0;
-            border: 2px solid var(--noir);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.92rem;
-        }
-        th, td {
-            padding: 10px 8px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        th {
-            background-color: var(--noir);
-            color: var(--blanc);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-        }
-        tr.reigning-champ {
-            background-color: #FDECEA;
-            border-left: 5px solid var(--rouge);
-            border-right: 5px solid var(--noir);
-            font-weight: bold;
-        }
-        tr.reigning-champ td {
-            color: var(--noir);
-        }
-        .champ-badge {
-            display: inline-block;
-            background-color: var(--noir);
-            color: var(--blanc);
-            border: 1px solid var(--rouge);
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 6px;
-            vertical-align: middle;
-            text-transform: uppercase;
-        }
-        .hidden { display: none; }
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.78rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .badge-open { background: var(--blanc); color: var(--rouge); border: 1px solid var(--rouge); }
-        .badge-live { background: var(--rouge); color: var(--blanc); }
-        .badge-done { background: #444444; color: var(--blanc); }
-        .rules {
-            font-size: 0.82rem;
-            background: #f8f8f8;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--noir);
-        }
-        .palmares-card {
-            border: 1px solid var(--noir);
-            border-left: 6px solid var(--rouge);
-            border-radius: 6px;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            background: var(--blanc);
-        }
-        .palmares-year {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--rouge);
-            margin-bottom: 6px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 4px;
-        }
-        .podium-line {
-            margin: 4px 0;
-            font-size: 0.92rem;
-            color: var(--noir);
-        }
-        .sync-status {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #555;
-            margin-bottom: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pronostics 2026/27 - Iparraldeko Peña</title>
+<style>
+:root { --rouge: #D91E18; --noir: #111111; --gris: #F2F2F2; --blanc: #FFFFFF; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--gris); color: var(--noir); margin: 0; }
+header { background: var(--noir); border-bottom: 5px solid var(--rouge); padding: 15px 10px; text-align: center; }
+.banner { max-width: 680px; margin: 0 auto; background: var(--blanc); border: 3px solid var(--rouge); border-radius: 8px; overflow: hidden; }
+.banner img { width: 100%; display: block; }
+.sub-bar { background: var(--rouge); color: var(--blanc); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+.nav { display: flex; gap: 10px; max-width: 680px; margin: 15px auto 0; padding: 0 15px; }
+.nav button { flex: 1; background: var(--blanc); color: var(--noir); border: 2px solid var(--noir); padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem; }
+.nav button.active { background: var(--noir); color: var(--blanc); border-color: var(--rouge); }
+.container { max-width: 680px; margin: 15px auto 40px; padding: 0 15px; }
+.card { background: var(--blanc); border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd; border-top: 5px solid var(--rouge); }
+h2 { margin-top: 0; font-size: 1.15rem; border-bottom: 2px solid var(--noir); padding-bottom: 8px; text-transform: uppercase; }
+input, select { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
+.btn { background: var(--rouge); color: var(--blanc); border: 2px solid var(--noir); padding: 12px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
+.btn:hover { background: var(--noir); }
+.match-box { background: var(--noir); color: var(--blanc); padding: 12px 15px; border-radius: 6px; border-left: 6px solid var(--rouge); margin-bottom: 15px; }
+.scores { display: flex; align-items: center; gap: 10px; margin: 15px 0; text-align: center; }
+.scores div { flex: 1; font-weight: bold; }
+.scores input { text-align: center; font-size: 1.5rem; font-weight: bold; width: 75px; margin: 8px auto 0; border: 2px solid var(--noir); }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.92rem; }
+th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+th { background: var(--noir); color: var(--blanc); text-transform: uppercase; font-size: 0.85rem; }
+tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-right: 5px solid var(--noir); font-weight: bold; }
+.badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+.hidden { display: none; }
+.palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+</style>
 </head>
 <body>
-
 <header>
-    <div class="banner-wrapper">
-        <img src="logo-pena.jpg" alt="Bannière Iparraldeko Peña" class="banner-img" onerror="this.style.display='none'; document.getElementById('fallback-header').style.display='block';">
-        
-        <div id="fallback-header" style="display:none; padding: 15px; background: #fff;">
-            <h1 style="margin:0; color:#D91E18; font-size:1.6rem; text-transform:uppercase;">IPARRALDEKO PEÑA</h1>
-            <div style="font-weight:bold; color:#111; font-size:0.9rem;">ATHLETIC CLUB BILBAO</div>
-        </div>
-
-        <div class="sub-header-bar">
-            <svg class="flag-icon" viewBox="0 0 50 28" xmlns="http://w3.org">
-                <rect width="50" height="28" fill="#D52B1E"/>
-                <path d="M0,0 L50,28 M50,0 L0,28" stroke="#009B48" stroke-width="4.5"/>
-                <path d="M25,0 V28 M0,14 H50" stroke="#FFFFFF" stroke-width="4.5"/>
-            </svg>
-
-            <span>Concours de Pronostics • 2026/27</span>
-
-            <svg class="flag-icon" viewBox="0 0 40 44" xmlns="http://w3.org" style="border:none; height:26px;">
-                <path d="M3,3 H37 V22 C37,33 20,41 20,41 C20,41 3,33 3,22 Z" fill="#FFFFFF" stroke="#111111" stroke-width="2.5"/>
-                <path d="M6,18 H34 V22 C34,30 20,37 20,37 C20,37 6,30 6,22 Z" fill="#D91E18"/>
-                <rect x="11" y="18" width="4" height="15" fill="#FFFFFF"/>
-                <rect x="18" y="18" width="4" height="18" fill="#FFFFFF"/>
-                <rect x="25" y="18" width="4" height="15" fill="#FFFFFF"/>
-            </svg>
-        </div>
-    </div>
+  <div class="banner">
+    <img src="logo-pena.jpg" alt="Iparraldeko Peña">
+    <div class="sub-bar"><span>Euskal Herria</span><span>Concours de Pronostics • 2026/27</span><span>Athletic Club</span></div>
+  </div>
 </header>
-
-<div id="nav-bar" class="nav-tabs hidden">
-    <button id="tab-pronos" class="nav-btn active" onclick="switchTab('pronos')">⚽ Pronostics & Classement</button>
-    <button id="tab-palmares" class="nav-btn" onclick="switchTab('palmares')">🏆 Palmarès (2017-2026)</button>
+<div id="nav" class="nav hidden">
+  <button id="t-pronos" class="active" onclick="tab('pronos')">⚽ Pronostics & Classement</button>
+  <button id="t-palm" onclick="tab('palm')">🏆 Palmarès (2017-2026)</button>
 </div>
-
 <div class="container">
-    <div id="sync-indicator" class="sync-status">Connexion à la base de données de la Peña...</div>
-
-    <!-- ÉCRAN DE CONNEXION -->
-    <div id="login-section" class="card">
-        <h2>Connexion Membre</h2>
-        <p>Entrez votre code d'accès personnel :</p>
+  <div id="sync" style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:10px;">Connexion à la base de données...</div>
+  <div id="login-sec" class="card">
+    <h2>Connexion Membre</h2>
+    <p>Entrez votre code d'accès personnel :</p>
+    <input type="text" id="code-in" placeholder="Ex: LOREA-01 ou ADMIN-PENA" style="text-transform:uppercase;">
+    <button class="btn" onclick="login()">Accéder au concours</button>
+    <p id="err" style="color:#D91E18; font-weight:bold; margin-top:10px;"></p>
+  </div>
+  <div id="v-pronos" class="hidden">
+    <div id="mem-sec" class="card hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h2 style="border:none; margin:0;">Aupa <span id="m-name" style="color:var(--rouge);"></span> !</h2>
+        <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px; cursor:pointer;">Quitter</button>
+      </div>
+      <div style="font-size:0.82rem; background:#f8f8f8; padding:10px; border-radius:6px; margin-bottom:15px; border-left:4px solid var(--noir);">
+        <strong>Barème :</strong> Score exact : <strong>6 pts</strong> | Bon 1, N ou 2 : <strong>3 pts</strong> | Rien de bon : <strong>1 pt</strong> | Oubli : <strong>0 pt</strong>
+      </div>
+      <select id="m-sel" onchange="selMatch(this.value)"></select>
+      <div class="match-box">
+        <div style="display:flex; justify-content:space-between;"><strong id="p-title"></strong><span id="p-stat" style="font-size:0.8rem; background:var(--rouge); padding:2px 6px; border-radius:4px;"></span></div>
+        <div id="p-meta" style="font-size:0.85rem; color:#ddd; margin-top:4px;"></div>
+      </div>
+      <div class="scores">
+        <div><div id="t-home"></div><input type="number" id="in-h" min="0" max="20"></div>
+        <div style="flex:0; font-size:1.5rem;">-</div>
+        <div><div id="t-away"></div><input type="number" id="in-a" min="0" max="20"></div>
+      </div>
+      <button id="save-btn" class="btn" onclick="savePred()">Valider mon pronostic</button>
+      <p id="fb-msg" style="color:var(--rouge); font-weight:bold; text-align:center;"></p>
+    </div>
+    <div id="adm-sec" class="card hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="border:none; margin:0;">Administration Peña</h2>
+        <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px;">Quitter</button>
+      </div>
+      <h3>1. Insérer un match (Liga, Coupe...)</h3>
+      <input type="text" id="n-comp" placeholder="Compétition & Stade (ex: Coupe d'Espagne • San Mamés)">
+      <input type="text" id="n-home" placeholder="Équipe Domicile">
+      <input type="text" id="n-away" placeholder="Équipe Extérieur">
+      <input type="datetime-local" id="n-kick">
+      <button class="btn" onclick="addMatch()">+ Ajouter ce match</button>
+      <h3 style="margin-top:20px;">2. Entrer le score final</h3>
+      <select id="a-sel" onchange="selMatch(this.value)"></select>
+      <div class="scores">
+        <div><div id="al-h"></div><input type="number" id="fh" min="0"></div>
+        <div style="flex:0;">-</div>
+        <div><div id="al-a"></div><input type="number" id="fa" min="0"></div>
+      </div>
+      <button class="btn" onclick="calcPts()">Valider le score et attribuer les points</button>
+      <h3 style="margin-top:20px;">3. Joueurs en attente</h3>
+      <div id="a-track" style="font-size:0.9rem; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
+      <h3 style="margin-top:20px;">4. Codes des 27 membres</h3>
+      <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
+    </div>
+    <div class="card">
+      <h2>Classement Général & Pronostics</h2>
+      <p id="vis-msg" style="font-size:0.85rem;"></p>
+      <table><thead><tr><th>Pos</th><th>Membre</th><th id="col-p">Prono</th><th>Total</th></tr></thead><tbody id="lb"></tbody></table>
+    </div>
+  </div>
+  <div id="v-palm" class="card hidden">
+    <h2>Palmarès • Iparraldeko Peña</h2>
+    <div id="palm-list"></div>
+  </div>
+</div>
+<script>
+const DB = "https://firebasedatabase.app";
+const MEMBERS = [
+  { code: "LOREA-01", name: "LABORDE LOREA", points: 35, isChamp: false },
+  { code: "ANDONI-02", name: "URREIZTIETA ANDONI", points: 34, isChamp: false },
+  { code: "JULEN-03", name: "LABORDE JULEN", points: 28, isChamp: true },
+  { code: "XABIER-04", name: "PARRILLA ETCHART XABIER", points: 27, isChamp: false },
+  { code: "JONATHAN-05", name: "CORDEIRO JONATHAN", points: 26, isChamp: false },
+  { code: "JEANLOUIS-06", name: "PONTACQ JEAN-LOUIS", points: 25, isChamp: false },
+  { code: "XINA-07", name: "DULONG XINA", points: 24, isChamp: false },
+  { code: "ALAIN-08", name: "LABORDE ALAIN", points: 22, isChamp: false },
+  { code: "LANDER-09", name: "MENDIOLA LANDER", points: 22, isChamp: false },
+  { code: "PIERRE-10", name: "CURUTCHARRY PIERRE", points: 21, isChamp: false },
+  { code: "YANNICK-11", name: "QUEYROU YANNICK", points: 21, isChamp: false },
+  { code: "GORKA-12", name: "SANCHEZ GORKA", points: 20, isChamp: false },
+  { code: "JORGE-13", name: "ARIAS RUIZ JORGE", points: 19, isChamp: false },
+  { code: "CHRISTOPHE-14", name: "MARITORENA CHRISTOPHE", points: 18, isChamp: false },
+  { code: "INAKI-15", name: "MENDIOLA IÑAKI", points: 18, isChamp: false },
+  { code: "PIERRICK-16", name: "ROCHE PIERRICK", points: 18, isChamp: false },
+  { code: "FREDERIC-17", name: "CROUZAT FRÉDÉRIC", points: 18, isChamp: false },
+  { code: "JEANYVES-18", name: "CAZAURAN JEAN-YVES", points: 15, isChamp: false },
+  { code: "LUKEN-19", name: "CROUZAT LUKEN", points: 14, isChamp: false },
+  { code: "OLIVIER-20", name: "GOBBI OLIVIER", points: 12, isChamp: false },
+  { code: "PIERRE-21", name: "GOYENEIX PIERRE", points: 11, isChamp: false },
+  { code: "ADRIAN-22", name: "FERNANDEZ ADRIAN", points: 8, isChamp: false },
+  { code: "ANGE-23", name: "ESCALANTE ANGE", points: 3, isChamp: false },
+  { code: "INKO-24", name: "CROUZAT INKO", points: 2, isChamp: false },
