@@ -137,3 +137,143 @@ const MEMBERS = [
   { code: "ADRIAN-22", name: "FERNANDEZ ADRIAN", points: 8, isChamp: false },
   { code: "ANGE-23", name: "ESCALANTE ANGE", points: 3, isChamp: false },
   { code: "INKO-24", name: "CROUZAT INKO", points: 2, isChamp: false },
+  { code: "BERTRAND-25", name: "DIAZ-DEBAT BERTRAND", points: 1, isChamp: false },
+  { code: "XABIER-26", name: "BARRUTIA XABIER", points: 0, isChamp: false },
+  { code: "PIERRE-27", name: "LEGRAS PIERRE", points: 0, isChamp: false }
+];
+const PALM = [
+  { y: "2026", p1: "Julen LABORDE", p2: "Pierre CURUTCHARRY", p3: "Luken CROUZAT" },
+  { y: "2025", p1: "Vivian MORA", p2: "Richard GASTON et Iñaki MENDIOLA", p3: "Lorea LABORDE" },
+  { y: "2024", p1: "Adrian FERNANDEZ", p2: "Sébastien LAMBERT", p3: "Lucas FERNANDEZ et Iban LARROCHE" },
+  { y: "2023", p1: "Jonathan CORDEIRO", p2: "Alain LABORDE", p3: "Miguel ROMERO" },
+  { y: "2022", p1: "Lorea LABORDE", p2: "Julen LABORDE", p3: "Aritz CAZENAVE" },
+  { y: "2021", p1: "Oihan CAZENAVE", p2: "Sébastien LAMBERT et Pierre LEGRAS", p3: "Jonathan CORDEIRO, Olivier GOBBI et Lorea LABORDE" },
+  { y: "2020", p1: "Pierrick ROCHE", p2: "Théa LEGRAS et Andoni URREIZTIETA", p3: "Gorka BRINGAS" },
+  { y: "2019", p1: "Lorea LABORDE", p2: "Thierry GRENIER", p3: "Pierre LEGRAS et Pierrick ROCHE" },
+  { y: "2018", p1: "Marc BELINGOU", p2: "Vivian MORA", p3: "Aritz CAZENAVE" },
+  { y: "2017", p1: "Franck CELLAN et Vivian MORA", p2: "Sébastien LARROCHE", p3: "Patxi BELLY" }
+];
+const MATCHES = [
+  { id: "m13", comp: "La Liga • San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", kickoff: "2026-11-20T21:00", finished: false, fh: null, fa: null, preds: {} },
+  { id: "m14", comp: "La Liga • La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", kickoff: "2026-11-28T16:15", finished: false, fh: null, fa: null, preds: {} }
+];
+let data = { members: MEMBERS, matches: MATCHES };
+let user = localStorage.getItem('penaUser') || null;
+let selId = "m13";
+
+async function sync(silent) {
+  try {
+    const r = await fetch(DB);
+    const d = await r.json();
+    if (d && d.members && d.matches) {
+      d.matches.forEach(m => { if (!m.preds) m.preds = {}; });
+      data = d;
+    } else { await push(); }
+    document.getElementById('sync').textContent = "🟢 Synchronisé en direct avec la Peña";
+    if (!silent) render();
+  } catch (e) { document.getElementById('sync').textContent = "🟢 Prêt (Mode local)"; }
+}
+async function push() {
+  document.getElementById('sync').textContent = "⏳ Sauvegarde...";
+  try {
+    await fetch(DB, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    document.getElementById('sync').textContent = "🟢 Synchronisé en direct avec la Peña";
+  } catch (e) { document.getElementById('sync').textContent = "🔴 Erreur réseau"; }
+  render();
+}
+function tab(t) {
+  document.getElementById('v-pronos').classList.toggle('hidden', t !== 'pronos');
+  document.getElementById('v-palm').classList.toggle('hidden', t === 'pronos');
+  document.getElementById('t-pronos').classList.toggle('active', t === 'pronos');
+  document.getElementById('t-palm').classList.toggle('active', t !== 'pronos');
+}
+function login() {
+  const c = document.getElementById('code-in').value.trim().toUpperCase();
+  if (c === "ADMIN-PENA") { user = "ADMIN"; localStorage.setItem('penaUser', user); render(); return; }
+  const m = data.members.find(x => x.code === c);
+  if (m) { user = m.code; localStorage.setItem('penaUser', user); render(); }
+  else document.getElementById('err').textContent = "Code invalide. Vérifiez auprès de la Peña.";
+}
+function logout() { user = null; localStorage.removeItem('penaUser'); render(); }
+function selMatch(id) { selId = id; render(); }
+function started(m) { return new Date() >= new Date(m.kickoff) || m.finished; }
+function fmtDate(s) {
+  const d = new Date(s);
+  return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+}
+async function savePred() {
+  await sync(true);
+  const m = data.matches.find(x => x.id === selId);
+  if (!m || started(m)) return alert("Pronostics fermés.");
+  const h = document.getElementById('in-h').value, a = document.getElementById('in-a').value;
+  if (h === "" || a === "") return alert("Saisissez les deux scores.");
+  if (!m.preds) m.preds = {};
+  m.preds[user] = { h: parseInt(h), a: parseInt(a) };
+  await push();
+  document.getElementById('fb-msg').textContent = "✔ Pronostic enregistré : " + h + " - " + a;
+}
+async function addMatch() {
+  await sync(true);
+  const comp = document.getElementById('n-comp').value.trim() || "Coupe d'Espagne";
+  const home = document.getElementById('n-home').value.trim().toUpperCase();
+  const away = document.getElementById('n-away').value.trim().toUpperCase();
+  const kickoff = document.getElementById('n-kick').value;
+  if (!home || !away || !kickoff) return alert("Remplissez tous les champs.");
+  const nm = { id: "m" + Date.now(), comp, home, away, kickoff, finished: false, fh: null, fa: null, preds: {} };
+  data.matches.push(nm);
+  data.matches.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+  selId = nm.id;
+  await push();
+  alert("Match ajouté !");
+}
+async function calcPts() {
+  await sync(true);
+  const m = data.matches.find(x => x.id === selId);
+  if (!m || m.finished) return;
+  const fh = parseInt(document.getElementById('fh').value), fa = parseInt(document.getElementById('fa').value);
+  if (isNaN(fh) || isNaN(fa)) return alert("Score invalide.");
+  if (!confirm(`Valider ${m.home} ${fh} - ${fa} ${m.away} ?`)) return;
+  const res = fh > fa ? "1" : (fh < fa ? "2" : "N");
+  data.members.forEach(mem => {
+    const p = m.preds ? m.preds[mem.code] : null;
+    if (!p) mem.points += 0;
+    else if (p.h === fh && p.a === fa) mem.points += 6;
+    else if ((p.h > p.a ? "1" : (p.h < p.a ? "2" : "N")) === res) mem.points += 3;
+    else mem.points += 1;
+  });
+  m.finished = true; m.fh = fh; m.fa = fa;
+  await push();
+  alert("Points attribués !");
+}
+function render() {
+  document.getElementById('login-sec').classList.toggle('hidden', !!user);
+  document.getElementById('nav').classList.toggle('hidden', !user);
+  document.getElementById('v-pronos').classList.toggle('hidden', !user);
+  if (!user) return;
+  data.matches.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+  const ms = document.getElementById('m-sel'), as = document.getElementById('a-sel');
+  ms.innerHTML = ""; as.innerHTML = "";
+  data.matches.forEach((m, i) => {
+    const lbl = `Pronostic n° ${13 + i} : ${m.home} - ${m.away} ${m.finished ? '('+m.fh+'-'+m.fa+')' : ''}`;
+    ms.add(new Option(lbl, m.id)); as.add(new Option(lbl, m.id));
+  });
+  ms.value = selId; as.value = selId;
+  const idx = data.matches.findIndex(x => x.id === selId);
+  const m = data.matches[idx];
+  const st = started(m);
+  document.getElementById('p-title').textContent = `Pronostic n° ${13 + idx} : ${m.home} - ${m.away}`;
+  document.getElementById('p-meta').textContent = `${fmtDate(m.kickoff)} • ${m.comp}`;
+  document.getElementById('p-stat').textContent = m.finished ? `Terminé (${m.fh}-${m.fa})` : (st ? "En cours" : "Ouvert");
+  document.getElementById('t-home').textContent = m.home; document.getElementById('t-away').textContent = m.away;
+  document.getElementById('save-btn').disabled = st;
+  if (user === "ADMIN") {
+    document.getElementById('mem-sec').classList.add('hidden');
+    document.getElementById('adm-sec').classList.remove('hidden');
+    document.getElementById('al-h').textContent = m.home; document.getElementById('al-a').textContent = m.away;
+    const miss = data.members.filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
+    document.getElementById('a-track').innerHTML = miss.length ? `<strong>En attente (${miss.length}) :</strong> ${miss.join(", ")}` : "<strong>Tout le monde a joué !</strong>";
+    document.getElementById('a-codes').innerHTML = data.members.map(x => `<div><strong>${x.name}</strong> : ${x.code}</div>`).join("");
+  } else {
+    document.getElementById('adm-sec').classList.add('hidden');
+    document.getElementById('mem-sec').classList.remove('hidden');
+    document.getElementById('m-name').textContent = data.members.find(x => x.code === user).name;
