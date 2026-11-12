@@ -295,7 +295,7 @@ function render() {
   document.getElementById('col-p').textContent = `Prono n°${13 + idx}`;
     const sorted = [...data.members].sort((a, b) => b.points - a.points);
   let rk = 1;
-  return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${x.isChamp ? '<span class="badge-champ">Tenant 2026</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pts</strong></td></tr>`;
+  return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pts</strong></td></tr>`;
   document.getElementById('lb').innerHTML = sorted.map((x, i) => {
     let showRank = true;
     if (i > 0) {
