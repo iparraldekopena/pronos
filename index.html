@@ -121,7 +121,9 @@ tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-righ
   </div>
 </div>
 <script>
-const DB = "https://firebasedatabase.app";
+// URL corrigée pointant vers ton projet Firebase Realtime Database
+const DB = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+
 const MEMBERS = [
   { code: "LOREA-01", name: "LABORDE Lorea", points: 35, isChamp: false },
   { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 34, isChamp: false },
@@ -287,8 +289,13 @@ function render() {
     document.getElementById('a-codes').innerHTML = data.members.map(x => `<div><strong>${x.name}</strong> : ${x.code}</div>`).join("");
   } else {
     document.getElementById('adm-sec').classList.add('hidden');
-        document.getElementById('mem-sec').classList.remove('hidden');
-    document.getElementById('m-name').textContent = data.members.find(x => x.code === user).name;
+    document.getElementById('mem-sec').classList.remove('hidden');
+    
+    // Récupération du prénom uniquement (le dernier mot du nom complet, ex: "Jorge" pour "ARIAS RUIZ Jorge")
+    const fullName = data.members.find(x => x.code === user).name;
+    const firstName = fullName.split(' ').pop();
+    document.getElementById('m-name').textContent = firstName;
+
     const ep = m.preds ? m.preds[user] : null;
     document.getElementById('in-h').value = ep ? ep.h : ""; document.getElementById('in-a').value = ep ? ep.a : "";
   }
