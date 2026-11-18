@@ -31,6 +31,7 @@ tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-righ
 .badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
 .hidden { display: none; }
 .palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+.participation-box { background: #f8f8f8; border-left: 4px solid var(--rouge); padding: 8px 12px; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -110,7 +111,8 @@ tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-righ
     </div>
     <div class="card">
       <h2>Classement Général & Pronostics</h2>
-      <p id="last-update" style="font-size:0.85rem; color:var(--rouge); font-weight:bold; margin-top:-6px; margin-bottom:10px;"></p>
+      <div id="participation-display" class="participation-box"></div>
+      <p id="last-update" style="font-size:0.85rem; color:var(--rouge); font-weight:bold; margin-top:-2px; margin-bottom:10px;"></p>
       <p id="vis-msg" style="font-size:0.85rem;"></p>
       <table><thead><tr><th>Pos</th><th>Membre</th><th id="col-p">Prono</th><th>Total</th></tr></thead><tbody id="lb"></tbody></table>
     </div>
@@ -149,10 +151,4 @@ const MEMBERS = [
   { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false, cups: 0 },
   { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false, cups: 0 },
   { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false, cups: 0 },
-  { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false, cups: 0 },
-  { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false, cups: 0 }
-];
-const PALM = [
-  { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
-  { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
-  { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3:
+  { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp
