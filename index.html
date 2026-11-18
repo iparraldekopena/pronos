@@ -121,47 +121,46 @@ tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-righ
   </div>
 </div>
 <script>
-// URL corrigée pointant vers ton projet Firebase Realtime Database
 const DB = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
 
 const MEMBERS = [
-  { code: "LOREA-01", name: "LABORDE Lorea", points: 35, isChamp: false },
-  { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 34, isChamp: false },
-  { code: "JULEN-03", name: "LABORDE Julen", points: 28, isChamp: true },
-  { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 27, isChamp: false },
-  { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 26, isChamp: false },
-  { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 25, isChamp: false },
-  { code: "XINA-07", name: "DULONG Xina", points: 24, isChamp: false },
-  { code: "ALAIN-08", name: "LABORDE Alain", points: 22, isChamp: false },
-  { code: "LANDER-09", name: "MENDIOLA Lander", points: 22, isChamp: false },
-  { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 21, isChamp: false },
-  { code: "YANNICK-11", name: "QUEYROU Yannick", points: 21, isChamp: false },
-  { code: "GORKA-12", name: "SANCHEZ Gorka", points: 20, isChamp: false },
-  { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 19, isChamp: false },
-  { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 18, isChamp: false },
-  { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 18, isChamp: false },
-  { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 18, isChamp: false },
-  { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 18, isChamp: false },
-  { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 15, isChamp: false },
-  { code: "LUKEN-19", name: "CROUZAT Luken", points: 14, isChamp: false },
-  { code: "OLIVIER-20", name: "GOBBI Olivier", points: 12, isChamp: false },
-  { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 11, isChamp: false },
-  { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false },
-  { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false },
-  { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false },
-  { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false },
-  { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
-  { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false }
+  { code: "LOREA-01", name: "LABORDE Lorea", points: 35, isChamp: false, cups: 2 },
+  { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 34, isChamp: false, cups: 0 },
+  { code: "JULEN-03", name: "LABORDE Julen", points: 28, isChamp: true, cups: 1 },
+  { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 27, isChamp: false, cups: 0 },
+  { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 26, isChamp: false, cups: 1 },
+  { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 25, isChamp: false, cups: 0 },
+  { code: "XINA-07", name: "DULONG Xina", points: 24, isChamp: false, cups: 0 },
+  { code: "ALAIN-08", name: "LABORDE Alain", points: 22, isChamp: false, cups: 0 },
+  { code: "LANDER-09", name: "MENDIOLA Lander", points: 22, isChamp: false, cups: 0 },
+  { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 21, isChamp: false, cups: 0 },
+  { code: "YANNICK-11", name: "QUEYROU Yannick", points: 21, isChamp: false, cups: 0 },
+  { code: "GORKA-12", name: "SANCHEZ Gorka", points: 20, isChamp: false, cups: 0 },
+  { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 19, isChamp: false, cups: 0 },
+  { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 18, isChamp: false, cups: 0 },
+  { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 18, isChamp: false, cups: 0 },
+  { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 18, isChamp: false, cups: 1 },
+  { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 18, isChamp: false, cups: 0 },
+  { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 15, isChamp: false, cups: 0 },
+  { code: "LUKEN-19", name: "CROUZAT Luken", points: 14, isChamp: false, cups: 0 },
+  { code: "OLIVIER-20", name: "GOBBI Olivier", points: 12, isChamp: false, cups: 0 },
+  { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 11, isChamp: false, cups: 0 },
+  { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false, cups: 1 },
+  { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false, cups: 0 },
+  { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false, cups: 0 },
+  { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false, cups: 0 },
+  { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false, cups: 0 },
+  { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false, cups: 0 }
 ];
 const PALM = [
   { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
   { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
   { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
   { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
-  { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
+  { y: "2021/22", p1: "LABORDE LOREA 🏆", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
   { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
   { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
-  { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
+  { y: "2018/19", p1: "LABORDE LOREA 🏆", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
   { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
   { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
 ];
@@ -179,6 +178,14 @@ async function sync(silent) {
     const d = await r.json();
     if (d && d.members && d.matches) {
       d.matches.forEach(m => { if (!m.preds) m.preds = {}; });
+      // S'assure que le nombre de coupes est toujours à jour même avec les données Firebase
+      d.members.forEach(m => {
+        const localMem = MEMBERS.find(lm => lm.code === m.code);
+        if (localMem) {
+          m.cups = localMem.cups;
+          m.isChamp = localMem.isChamp;
+        }
+      });
       data = d;
     } else { await push(); }
     document.getElementById('sync').textContent = "🟢 Synchronisé en direct avec la Peña";
@@ -291,7 +298,6 @@ function render() {
     document.getElementById('adm-sec').classList.add('hidden');
     document.getElementById('mem-sec').classList.remove('hidden');
     
-    // Récupération du prénom uniquement (le dernier mot du nom complet, ex: "Jorge" pour "ARIAS RUIZ Jorge")
     const fullName = data.members.find(x => x.code === user).name;
     const firstName = fullName.split(' ').pop();
     document.getElementById('m-name').textContent = firstName;
@@ -315,7 +321,13 @@ function render() {
     const p = m.preds ? m.preds[x.code] : null;
     const pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
     const rankDisplay = showRank ? `<strong>${rk}</strong>` : "";
-    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pts</strong></td></tr>`;
+    
+    let cupsDisplay = "";
+    if (x.cups && x.cups > 0) {
+      cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
+    }
+
+    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pts</strong></td></tr>`;
   }).join("");
   document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
 }
