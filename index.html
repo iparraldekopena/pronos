@@ -326,7 +326,10 @@ function render() {
       cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
     }
 
-    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pt</strong></td></tr>`;
+    // Gestion du singulier (pt) pour 0 et 1, et du pluriel (pts) pour le reste
+    const pointsLabel = (x.points <= 1) ? "pt" : "pts";
+
+    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
   }).join("");
   document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
 }
