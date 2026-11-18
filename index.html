@@ -178,7 +178,6 @@ async function sync(silent) {
     const d = await r.json();
     if (d && d.members && d.matches) {
       d.matches.forEach(m => { if (!m.preds) m.preds = {}; });
-      // S'assure que le nombre de coupes est toujours à jour même avec les données Firebase
       d.members.forEach(m => {
         const localMem = MEMBERS.find(lm => lm.code === m.code);
         if (localMem) {
@@ -327,7 +326,7 @@ function render() {
       cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
     }
 
-    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pts</strong></td></tr>`;
+    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} pt</strong></td></tr>`;
   }).join("");
   document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
 }
