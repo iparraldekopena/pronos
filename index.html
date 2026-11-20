@@ -27,8 +27,8 @@ input, select { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px soli
 table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.92rem; }
 th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
 th { background: var(--noir); color: var(--blanc); text-transform: uppercase; font-size: 0.85rem; }
-tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-right: 5px solid var(--noir); font-weight: bold; }
-tr.me-row { background: #E8F8EE; border-left: 5px solid #16A34A; border-right: 5px solid var(--noir); font-weight: bold; }
+tr.champ { background-color: #FDECEA; border-left: 5px solid var(--rouge); border-right: 5px solid var(--noir); font-weight: bold; }
+tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-right: 5px solid var(--noir); font-weight: bold; }
 .badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
 .badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold; }
 .hidden { display: none; }
@@ -418,9 +418,10 @@ function render() {
 
     const isMe = user === x.code;
     const rowClass = isMe ? 'me-row' : (x.isChamp ? 'champ' : '');
+    const rowStyle = isMe ? ' style="background-color: #DCFCE7;"' : (x.isChamp ? ' style="background-color: #FDECEA;"' : '');
     const pointsLabel = (x.points <= 1) ? "pt" : "pts";
 
-    return `<tr class="${rowClass}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
+    return `<tr class="${rowClass}"${rowStyle}><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
   }).join("");
   document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
 }
