@@ -53,9 +53,6 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
 .palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
 .participation-box { background: #f8f8f8; border-left: 4px solid var(--rouge); padding: 8px 12px; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
 .member-summary { background: #f4f4f4; border-left: 4px solid #16A34A; padding: 10px 12px; font-size: 0.88rem; margin-bottom: 14px; border-radius: 4px; }
-.stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-.stat-pill { background: #f8f8f8; border: 1px solid #e5e5e5; border-top: 3px solid var(--noir); border-radius: 6px; padding: 8px; text-align: center; font-size: 0.8rem; }
-.stat-pill strong { display: block; font-size: 1rem; color: var(--rouge); margin-top: 2px; }
 .urgent-box { background: #fff3cd; border-left: 4px solid #d97706; color: #7c2d12; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
 .pts-gain { font-size: 0.78rem; color: #444; margin-left: 4px; font-weight: normal; }
 .arrow-up { color: #16a34a; font-weight: bold; margin-left: 4px; font-size: 0.85rem; }
@@ -161,7 +158,6 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
     </div>
     <div class="card">
       <h2>Classement Général & Pronostics</h2>
-      <div id="stats-strip" class="stats-strip"></div>
       <div id="participation-display" class="participation-box"></div>
       <p id="last-update" style="font-size:0.85rem; color:var(--rouge); font-weight:bold; margin-top:-2px; margin-bottom:10px;"></p>
       <p id="vis-msg" style="font-size:0.85rem;"></p>
@@ -592,17 +588,9 @@ function render() {
   const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
   document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
 
-  const topPts = rankedRows.length > 0 ? rankedRows[0].member.points : 0;
-  const topUnit = topPts <= 1 ? "pt" : "pts";
   const totalMembers = data.members.length;
   const playedCount = m.preds ? Object.keys(m.preds).length : 0;
   const participationRate = totalMembers > 0 ? Math.round((playedCount / totalMembers) * 100) : 0;
-
-  document.getElementById('stats-strip').innerHTML = `
-    <div class="stat-pill">Leader actuel<strong>${topPts} ${topUnit}</strong></div>
-    <div class="stat-pill">Matchs joués<strong>${finishedMatches.length}</strong></div>
-    <div class="stat-pill">Joués (J${13 + idx})<strong>${playedCount}/${totalMembers}</strong></div>
-  `;
 
   document.getElementById('participation-display').textContent = `Taux de Participation pour la journée ${13 + idx} : ${participationRate}% (${playedCount}/${totalMembers} participants)`;
 
