@@ -268,10 +268,10 @@
       <div class="top-actions">
         <span id="sync" class="sync-pill">Prêt</span>
         <div id="nav" class="nav hidden">
-          <button id="t-pronos" class="active" onclick="tab('pronos')">Pronos & Classement</button>
-          <button id="t-fun" onclick="tab('fun')">Fun & Blog</button>
-          <button id="t-palm" onclick="tab('palm')">Palmarès</button>
-          <button onclick="logout()">Déconnexion</button>
+          <button id="t-pronos" class="active" type="button" onclick="tab('pronos')">Pronos & Classement</button>
+          <button id="t-fun" type="button" onclick="tab('fun')">Fun & Blog</button>
+          <button id="t-palm" type="button" onclick="tab('palm')">Palmarès</button>
+          <button type="button" onclick="logout()">Déconnexion</button>
         </div>
       </div>
     </header>
@@ -410,4 +410,731 @@
           <h2 style="margin:0;">Palmarès de la Peña</h2>
           <span class="muted">Saisons 2016/17 à 2025/26</span>
         </div>
-        <div id
+        <div id="palm-list" class="palmares-grid"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    window.login = function () {
+      var inp = document.getElementById("code-in");
+      var errEl = document.getElementById("err");
+      var raw = inp && inp.value ? inp.value.replace(/^\s+|\s+$/g, "").toUpperCase() : "";
+      if (!raw) {
+        if (errEl) errEl.textContent = "Merci d'entrer un code.";
+        return;
+      }
+      if (raw === "ADMIN-PENA") {
+        window.state.user = { code: "ADMIN-PENA", name: "Administrateur", isAdmin: true };
+        if (errEl) errEl.textContent = "";
+        window.afterLogin();
+        return;
+      }
+      var found = null;
+      for (var i = 0; i < window.state.members.length; i++) {
+        if (window.state.members[i].code.toUpperCase() === raw) {
+          found = window.state.members[i];
+          break;
+        }
+      }
+      if (!found) {
+        if (errEl) errEl.textContent = "Code inconnu (" + raw + ").";
+        return;
+      }
+      window.state.user = {
+        code: found.code,
+        name: found.name,
+        points: found.points,
+        isChamp: found.isChamp,
+        cups: found.cups,
+        isAdmin: false
+      };
+      if (errEl) errEl.textContent = "";
+      window.afterLogin();
+    };
+
+    window.logout = function () {
+      window.state.user = null;
+      var ids = ["nav", "v-pronos", "v-fun", "v-palm", "mem-sec", "adm-sec"];
+      for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el) el.classList.add("hidden");
+      }
+      var loginSec = document.getElementById("login-sec");
+      if (loginSec) loginSec.classList.remove("hidden");
+      var inp = document.getElementById("code-in");
+      if (inp) inp.value = "";
+    };
+
+    window.tab = function (name) {
+      if (!window.state.user) return;
+      var tabs = ["pronos", "fun", "palm"];
+      for (var i = 0; i < tabs.length; i++) {
+        var t = tabs[i];
+        var v = document.getElementById("v-" + t);
+        var b = document.getElementById("t-" + t);
+        if (v) {
+          if (t === name) v.classList.remove("hidden");
+          else v.classList.add("hidden");
+        }
+        if (b) {
+          if (t === name) b.classList.add("active");
+          else b.classList.remove("active");
+        }
+      }
+      if (name === "fun") window.renderFunAndBlog();
+      if (name === "palm") window.renderPalmares();
+    };
+
+    var DB = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+    var MEMBERS = [
+      { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false, cups: 2 },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false, cups: 0 },
+      { code: "JULEN-03", name: "LABORDE Julen", points: 29, isChamp: true, cups: 1 },
+      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 28, isChamp: false, cups: 0 },
+      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 27, isChamp: false, cups: 1 },
+      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 26, isChamp: false, cups: 0 },
+      { code: "XINA-07", name: "DULONG Xina", points: 25, isChamp: false, cups: 0 },
+      { code: "ALAIN-08", name: "LABORDE Alain", points: 23, isChamp: false, cups: 0 },
+      { code: "LANDER-09", name: "MENDIOLA Lander", points: 23, isChamp: false, cups: 0 },
+      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 22, isChamp: false, cups: 0 },
+      { code: "YANNICK-11", name: "QUEYROU Yannick", points: 22, isChamp: false, cups: 0 },
+      { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false, cups: 0 },
+      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false, cups: 0 },
+      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 20, isChamp: false, cups: 0 },
+      { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 20, isChamp: false, cups: 0 },
+      { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false, cups: 1 },
+      { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 19, isChamp: false, cups: 0 },
+      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false, cups: 0 },
+      { code: "LUKEN-19", name: "CROUZAT Luken", points: 15, isChamp: false, cups: 0 },
+      { code: "OLIVIER-20", name: "GOBBI Olivier", points: 14, isChamp: false, cups: 0 },
+      { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 12, isChamp: false, cups: 0 },
+      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false, cups: 1 },
+      { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false, cups: 0 },
+      { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false, cups: 0 },
+      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false, cups: 0 },
+      { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false, cups: 0 },
+      { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false, cups: 0 }
+    ];
+    var PALM = [
+      { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
+      { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
+      { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
+      { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
+      { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
+      { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
+      { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
+      { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
+      { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
+      { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
+    ];
+    var HISTORIQUE_MATCHS = [
+      {
+        id: "m01", pronoNum: 1, comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC", kickoff: "2026-08-15T19:00",
+        finished: true, ptsApplied: true, fh: 1, fa: 3,
+        preds: {
+          "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
+          "PIERRE-10": { h: 0, a: 1 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 2, a: 0 },
+          "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+          "LOREA-01": { h: 2, a: 1 }, "CHRISTOPHE-14": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+          "XABIER-04": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 3, a: 1 }, "GORKA-12": { h: 2, a: 0 },
+          "ANDONI-02": { h: 2, a: 1 }
+        }
+      },
+      {
+        id: "m02", pronoNum: 2, comp: "Journée 2 • Extérieur (E)", home: "BARCELONA", away: "ATHLETIC CLUB", kickoff: "2026-08-22T21:00",
+        finished: true, ptsApplied: true, fh: 2, fa: 0,
+        preds: {
+          "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
+          "PIERRE-10": { h: 3, a: 0 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 3, a: 1 },
+          "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 5, a: 0 }, "JULEN-03": { h: 3, a: 1 },
+          "LOREA-01": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 3 }, "LANDER-09": { h: 3, a: 0 },
+          "XABIER-04": { h: 3, a: 1 }, "JEANLOUIS-06": { h: 4, a: 2 }, "GORKA-12": { h: 2, a: 1 },
+          "ANDONI-02": { h: 2, a: 1 }
+        }
+      },
+      {
+        id: "m03", pronoNum: 3, comp: "Journée 3 • Extérieur (E)", home: "CELTA VIGO", away: "ATHLETIC CLUB", kickoff: "2026-08-29T18:30",
+        finished: true, ptsApplied: true, fh: 0, fa: 2,
+        preds: {
+          "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 3, a: 1 }, "JONATHAN-05": { h: 1, a: 1 },
+          "PIERRE-10": { h: 1, a: 1 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 1, a: 0 },
+          "OLIVIER-20": { h: 1, a: 1 }, "ALAIN-08": { h: 3, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+          "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+          "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 1, a: 1 }, "GORKA-12": { h: 0, a: 1 },
+          "ANDONI-02": { h: 1, a: 2 }
+        }
+      },
+      {
+        id: "m04", pronoNum: 4, comp: "Journée 4 • Domicile (D)", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", kickoff: "2026-09-12T21:00",
+        finished: true, ptsApplied: true, fh: 3, fa: 0,
+        preds: {
+          "JORGE-13": { h: 2, a: 1 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 1 },
+          "PIERRE-10": { h: 2, a: 1 }, "XINA-07": { h: 1, a: 0 }, "ADRIAN-22": { h: 1, a: 1 },
+          "PIERRE-21": { h: 1, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 1, a: 2 },
+          "LOREA-01": { h: 1, a: 0 }, "CHRISTOPHE-14": { h: 0, a: 0 }, "INAKI-15": { h: 2, a: 1 },
+          "LANDER-09": { h: 1, a: 1 }, "XABIER-04": { h: 2, a: 2 }, "JEANLOUIS-06": { h: 1, a: 0 },
+          "GORKA-12": { h: 2, a: 2 }, "ANDONI-02": { h: 1, a: 0 }
+        }
+      },
+      {
+        id: "m05", pronoNum: 5, comp: "Journée 5 • Domicile (D)", home: "ATHLETIC CLUB", away: "ELCHE", kickoff: "2026-09-19T18:30",
+        finished: true, ptsApplied: true, fh: 1, fa: 1,
+        preds: {
+          "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 4, a: 1 }, "JONATHAN-05": { h: 3, a: 0 },
+          "FREDERIC-17": { h: 3, a: 0 }, "INKO-24": { h: 2, a: 0 }, "LUKEN-19": { h: 3, a: 0 },
+          "PIERRE-10": { h: 2, a: 0 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 3, a: 0 },
+          "OLIVIER-20": { h: 2, a: 1 }, "PIERRE-21": { h: 2, a: 0 }, "ALAIN-08": { h: 3, a: 1 },
+          "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 }, "CHRISTOPHE-14": { h: 3, a: 0 },
+          "INAKI-15": { h: 3, a: 1 }, "LANDER-09": { h: 3, a: 0 }, "XABIER-04": { h: 2, a: 0 },
+          "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 1 }, "PIERRICK-16": { h: 3, a: 2 },
+          "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 2, a: 0 }
+        }
+      },
+      {
+        id: "m06", pronoNum: 6, comp: "Journée 6 • Domicile (D)", home: "ATHLETIC CLUB", away: "ALAVES", kickoff: "2026-09-26T21:00",
+        finished: true, ptsApplied: true, fh: 0, fa: 0,
+        preds: {
+          "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 }, "FREDERIC-17": { h: 1, a: 1 },
+          "INKO-24": { h: 1, a: 0 }, "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 0 },
+          "XINA-07": { h: 2, a: 0 }, "OLIVIER-20": { h: 2, a: 0 }, "PIERRE-21": { h: 1, a: 0 },
+          "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 }, "LOREA-01": { h: 2, a: 0 },
+          "CHRISTOPHE-14": { h: 2, a: 1 }, "INAKI-15": { h: 3, a: 1 }, "XABIER-04": { h: 2, a: 2 },
+          "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 0 }, "PIERRICK-16": { h: 1, a: 0 },
+          "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 1, a: 0 }
+        }
+      },
+      {
+        id: "m07", pronoNum: 7, comp: "Journée 7 • Extérieur (E)", home: "VALENCIA", away: "ATHLETIC CLUB", kickoff: "2026-10-03T16:15",
+        finished: true, ptsApplied: true, fh: 0, fa: 0,
+        preds: {
+          "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 1 },
+          "FREDERIC-17": { h: 1, a: 1 }, "LUKEN-19": { h: 0, a: 1 }, "XINA-07": { h: 1, a: 2 },
+          "OLIVIER-20": { h: 1, a: 2 }, "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 2, a: 2 },
+          "JULEN-03": { h: 1, a: 2 }, "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 0, a: 0 },
+          "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
+          "JEANLOUIS-06": { h: 1, a: 2 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
+          "ANDONI-02": { h: 1, a: 1 }
+        }
+      },
+      {
+        id: "m08", pronoNum: 8, comp: "Journée 8 • Extérieur (E)", home: "LEVANTE", away: "ATHLETIC CLUB", kickoff: "2026-10-17T18:30",
+        finished: true, ptsApplied: true, fh: 3, fa: 1,
+        preds: {
+          "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 }, "FREDERIC-17": { h: 3, a: 3 },
+          "LUKEN-19": { h: 0, a: 2 }, "PIERRE-10": { h: 2, a: 1 }, "OLIVIER-20": { h: 0, a: 1 },
+          "ALAIN-08": { h: 2, a: 2 }, "JULEN-03": { h: 0, a: 1 }, "LOREA-01": { h: 1, a: 1 },
+          "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
+          "JEANLOUIS-06": { h: 0, a: 1 }, "YANNICK-11": { h: 2, a: 2 }, "PIERRICK-16": { h: 1, a: 2 },
+          "GORKA-12": { h: 1, a: 1 }, "ANDONI-02": { h: 0, a: 1 }
+        }
+      },
+      {
+        id: "m09", pronoNum: 9, comp: "Journée 9 • Domicile (D)", home: "ATHLETIC CLUB", away: "GETAFE", kickoff: "2026-10-24T21:00",
+        finished: true, ptsApplied: true, fh: 4, fa: 0,
+        preds: {
+          "JORGE-13": { h: 0, a: 0 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 },
+          "FREDERIC-17": { h: 0, a: 0 }, "LUKEN-19": { h: 2, a: 1 }, "PIERRE-10": { h: 0, a: 1 },
+          "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 1, a: 2 }, "PIERRE-21": { h: 2, a: 0 },
+          "ALAIN-08": { h: 2, a: 1 }, "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 },
+          "CHRISTOPHE-14": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 3, a: 1 },
+          "XABIER-04": { h: 1, a: 0 }, "JEANLOUIS-06": { h: 2, a: 0 }, "YANNICK-11": { h: 2, a: 1 },
+          "PIERRICK-16": { h: 3, a: 1 }, "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 1, a: 0 }
+        }
+      },
+      {
+        id: "m10", pronoNum: 10, comp: "Journée 10 • Extérieur (E)", home: "PRAT", away: "ATHLETIC CLUB", kickoff: "2026-10-31T16:15",
+        finished: true, ptsApplied: true, fh: 1, fa: 6,
+        preds: {
+          "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 0, a: 4 }, "JONATHAN-05": { h: 0, a: 3 },
+          "FREDERIC-17": { h: 0, a: 3 }, "LUKEN-19": { h: 0, a: 4 }, "PIERRE-10": { h: 0, a: 3 },
+          "XINA-07": { h: 0, a: 3 }, "OLIVIER-20": { h: 1, a: 3 }, "PIERRE-21": { h: 0, a: 3 },
+          "ALAIN-08": { h: 1, a: 5 }, "JULEN-03": { h: 1, a: 3 }, "LOREA-01": { h: 0, a: 3 },
+          "LANDER-09": { h: 1, a: 3 }, "XABIER-04": { h: 1, a: 3 }, "JEANLOUIS-06": { h: 1, a: 5 },
+          "YANNICK-11": { h: 1, a: 4 }, "PIERRICK-16": { h: 1, a: 4 }, "GORKA-12": { h: 0, a: 3 },
+          "ANDONI-02": { h: 0, a: 2 }
+        }
+      },
+      {
+        id: "m11", pronoNum: 11, comp: "Journée 11 • Domicile (D)", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", kickoff: "2026-11-04T21:00",
+        finished: true, ptsApplied: true, fh: 2, fa: 1,
+        preds: {
+          "JORGE-13": { h: 3, a: 2 }, "JONATHAN-05": { h: 2, a: 1 }, "FREDERIC-17": { h: 3, a: 1 },
+          "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 2 }, "ANGE-23": { h: 2, a: 0 },
+          "XINA-07": { h: 1, a: 0 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+          "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+          "XABIER-04": { h: 0, a: 1 }, "JEANLOUIS-06": { h: 2, a: 1 }, "YANNICK-11": { h: 2, a: 1 },
+          "PIERRICK-16": { h: 2, a: 0 }, "GORKA-12": { h: 2, a: 1 }, "ANDONI-02": { h: 2, a: 1 }
+        }
+      },
+      {
+        id: "m12", pronoNum: 12, comp: "Journée 12 • Domicile (D)", home: "ATHLETIC CLUB", away: "GIRONA FC", kickoff: "2026-11-14T21:00",
+        finished: true, ptsApplied: true, fh: 2, fa: 0,
+        preds: {}
+      },
+      {
+        id: "m13", pronoNum: 13, comp: "Journée 13 • Domicile (D)", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", kickoff: "2026-11-20T21:00",
+        finished: true, ptsApplied: true, fh: 0, fa: 1,
+        preds: {
+          "LOREA-01": { h: 2, a: 0 }, "ANDONI-02": { h: 2, a: 1 }, "JULEN-03": { h: 1, a: 0 },
+          "XABIER-04": { h: 3, a: 1 }, "JONATHAN-05": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 2, a: 1 },
+          "XINA-07": { h: 3, a: 1 }, "ALAIN-08": { h: 3, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+          "GORKA-12": { h: 2, a: 0 }, "PIERRE-10": { h: 1, a: 1 }, "YANNICK-11": { h: 1, a: 0 },
+          "JORGE-13": { h: 2, a: 0 }, "CHRISTOPHE-14": { h: 3, a: 0 }, "INAKI-15": { h: 2, a: 1 },
+          "JEANYVES-18": { h: 2, a: 1 }, "FREDERIC-17": { h: 4, a: 1 }, "LUKEN-19": { h: 2, a: 0 },
+          "OLIVIER-20": { h: 1, a: 0 }, "PIERRE-21": { h: 2, a: 0 }
+        }
+      },
+      {
+        id: "m14", pronoNum: 14, comp: "Journée 14 • Extérieur (E)", home: "MALAGA CF", away: "ATHLETIC CLUB", kickoff: "2026-11-28T16:15",
+        finished: false, ptsApplied: false, fh: null, fa: null, preds: {}
+      }
+    ];
+
+    window.state = {
+      user: null,
+      matches: JSON.parse(JSON.stringify(HISTORIQUE_MATCHS)),
+      members: JSON.parse(JSON.stringify(MEMBERS)),
+      blog: [
+        {
+          id: "b13-analyse",
+          date: "20 nov. 2026",
+          title: "Analyse J13 : San Mamés surpris 0 - 1 par le RCD Espanyol",
+          body: "Sur cette 13e journée, 20 des 27 membres ont joué leur pronostic (74 %). La quasi-totalité misait sur un succès local (19 pronostics à domicile) et Pierre Curutcharry avait tenté le nul (1-1). Personne n'avait anticipé la victoire visiteuse 0-1 : aucun score exact (+6 pts) ni bon résultat (+3 pts), mais +1 pt de participation pour les 20 pronostiqueurs présents."
+        },
+        {
+          id: "b13-bilan",
+          date: "20 nov. 2026",
+          title: "Bilan des récents résultats & cap sur Málaga (J14)",
+          body: "Après les succès face à la Real Sociedad (2-1) et Girona (2-0), l'Athletic Club marque le pas à domicile contre l'Espanyol (0-1). Lorea Laborde (36 pts) et Andoni Urreiztieta (35 pts) mènent la danse devant Julen Laborde (29 pts), juste avant le déplacement à Málaga le 28 novembre."
+        }
+      ],
+      lastUpdate: "Journée 13 validée — Athletic Club 0 - 1 RCD Espanyol (20/11/2026)"
+    };
+    window.currentMatchId = "m13";
+
+    function byId(id) { return document.getElementById(id); }
+    function setText(id, txt) { var el = byId(id); if (el) el.textContent = txt; }
+    function getSign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
+    function formatPronoLabel(num) {
+      var n = parseInt(num, 10) || 1;
+      return "PRONO N° " + (n < 10 ? ("0" + n) : String(n));
+    }
+
+    window.afterLogin = function () {
+      var loginSec = byId("login-sec");
+      var nav = byId("nav");
+      var adm = byId("adm-sec");
+      var mem = byId("mem-sec");
+      if (loginSec) loginSec.classList.add("hidden");
+      if (nav) nav.classList.remove("hidden");
+
+      if (window.state.user && window.state.user.isAdmin) {
+        if (adm) adm.classList.remove("hidden");
+        if (mem) mem.classList.add("hidden");
+        var list = [];
+        for (var i = 0; i < MEMBERS.length; i++) {
+          list.push(MEMBERS[i].code + " (" + MEMBERS[i].name + ")");
+        }
+        setText("a-codes", list.join(" • "));
+      } else if (window.state.user) {
+        if (mem) mem.classList.remove("hidden");
+        if (adm) adm.classList.add("hidden");
+        setText("m-name", window.state.user.name);
+        window.renderMemberSummary();
+      }
+
+      window.tab("pronos");
+      window.populateMatchSelectors();
+      window.selMatch(window.currentMatchId);
+      window.renderLeaderboard();
+    };
+
+    window.populateMatchSelectors = function () {
+      var selIds = ["m-sel", "a-sel"];
+      for (var s = 0; s < selIds.length; s++) {
+        var sel = byId(selIds[s]);
+        if (!sel) continue;
+        sel.innerHTML = "";
+        for (var i = 0; i < window.state.matches.length; i++) {
+          var m = window.state.matches[i];
+          var opt = document.createElement("option");
+          opt.value = m.id;
+          opt.textContent = m.comp + " — " + m.home + " vs " + m.away + (m.finished ? (" (" + m.fh + "-" + m.fa + ")") : " (À venir)");
+          sel.appendChild(opt);
+        }
+        sel.value = window.currentMatchId;
+      }
+    };
+
+    window.selMatch = function (id) {
+      window.currentMatchId = id;
+      var m = null;
+      for (var i = 0; i < window.state.matches.length; i++) {
+        if (window.state.matches[i].id === id) { m = window.state.matches[i]; break; }
+      }
+      if (!m) m = window.state.matches[window.state.matches.length - 1];
+      if (!m) return;
+
+      var s1 = byId("m-sel"); if (s1) s1.value = m.id;
+      var s2 = byId("a-sel"); if (s2) s2.value = m.id;
+
+      setText("p-title", m.home + " vs " + m.away);
+      setText("p-stat", m.finished ? ("Score : " + m.fh + " - " + m.fa) : "Pronostics ouverts");
+      setText("p-meta", m.comp + " • " + String(m.kickoff || "").replace("T", " "));
+      setText("t-home", m.home);
+      setText("t-away", m.away);
+      setText("al-h", m.home);
+      setText("al-a", m.away);
+      setText("th-prono", formatPronoLabel(m.pronoNum));
+
+      if (m.finished) {
+        if (byId("fh")) byId("fh").value = m.fh;
+        if (byId("fa")) byId("fa").value = m.fa;
+      }
+
+      var formArea = byId("pred-form-area");
+      var closedArea = byId("pred-closed-area");
+      if (window.state.user && !window.state.user.isAdmin && formArea && closedArea) {
+        var pr = m.preds ? m.preds[window.state.user.code] : null;
+        if (byId("in-h")) byId("in-h").value = pr ? pr.h : "";
+        if (byId("in-a")) byId("in-a").value = pr ? pr.a : "";
+        if (m.finished) {
+          formArea.classList.add("hidden");
+          closedArea.classList.remove("hidden");
+          closedArea.textContent = "Match terminé (" + m.fh + " - " + m.fa + ")" + (pr ? (" • Ton prono : " + pr.h + " - " + pr.a) : " • Aucun prono enregistré");
+        } else {
+          formArea.classList.remove("hidden");
+          closedArea.classList.add("hidden");
+        }
+      }
+
+      window.renderAdminWaiting(m);
+      window.renderLeaderboard();
+    };
+
+    window.goNextOpenMatch = function () {
+      for (var i = 0; i < window.state.matches.length; i++) {
+        if (!window.state.matches[i].finished) {
+          window.selMatch(window.state.matches[i].id);
+          setText("fb-msg", "Match ouvert : " + window.state.matches[i].home + " vs " + window.state.matches[i].away);
+          return;
+        }
+      }
+    };
+
+    window.renderMemberSummary = function () {
+      if (!window.state.user || window.state.user.isAdmin) return;
+      var mem = null;
+      for (var i = 0; i < window.state.members.length; i++) {
+        if (window.state.members[i].code === window.state.user.code) { mem = window.state.members[i]; break; }
+      }
+      if (mem && byId("m-summary")) {
+        var cups = "";
+        for (var c = 0; c < (mem.cups || 0); c++) cups += "🏆";
+        byId("m-summary").innerHTML = "Total actuel : <strong>" + mem.points + " pts</strong>" + (cups ? (" " + cups) : "") + (mem.isChamp ? ' <span class="champ-tag">(tenant du titre)</span>' : "");
+      }
+    };
+
+    window.savePred = function () {
+      if (!window.state.user || window.state.user.isAdmin) return;
+      var m = null;
+      for (var i = 0; i < window.state.matches.length; i++) {
+        if (window.state.matches[i].id === window.currentMatchId) { m = window.state.matches[i]; break; }
+      }
+      if (!m || m.finished) return;
+      var h = parseInt(byId("in-h").value, 10);
+      var a = parseInt(byId("in-a").value, 10);
+      if (isNaN(h) || isNaN(a) || h < 0 || a < 0) {
+        setText("fb-msg", "Scores invalides.");
+        return;
+      }
+      if (!m.preds) m.preds = {};
+      m.preds[window.state.user.code] = { h: h, a: a };
+      setText("fb-msg", "Pronostic enregistré (" + h + " - " + a + ") !");
+      window.pushToFirebase();
+      window.renderLeaderboard();
+    };
+
+    window.addMatch = function () {
+      var hEl = byId("n-home");
+      var aEl = byId("n-away");
+      var home = hEl && hEl.value ? hEl.value.replace(/^\s+|\s+$/g, "").toUpperCase() : "";
+      var away = aEl && aEl.value ? aEl.value.replace(/^\s+|\s+$/g, "").toUpperCase() : "";
+      if (!home || !away) return;
+      var num = window.state.matches.length + 1;
+      var id = "m" + num;
+      var compType = byId("n-comp-type") && byId("n-comp-type").value ? byId("n-comp-type").value : "Journée";
+      var loc = home.indexOf("ATHLETIC") !== -1 ? "Domicile (D)" : "Extérieur (E)";
+      window.state.matches.push({
+        id: id,
+        pronoNum: num,
+        comp: compType + " • " + loc,
+        home: home,
+        away: away,
+        kickoff: byId("n-kick") && byId("n-kick").value ? byId("n-kick").value : "2026-12-05T21:00",
+        finished: false,
+        ptsApplied: false,
+        fh: null,
+        fa: null,
+        preds: {}
+      });
+      window.populateMatchSelectors();
+      window.selMatch(id);
+      window.pushToFirebase();
+    };
+
+    window.calcPts = function () {
+      var m = null;
+      for (var i = 0; i < window.state.matches.length; i++) {
+        if (window.state.matches[i].id === window.currentMatchId) { m = window.state.matches[i]; break; }
+      }
+      if (!m) return;
+      var fh = parseInt(byId("fh").value, 10);
+      var fa = parseInt(byId("fa").value, 10);
+      if (isNaN(fh) || isNaN(fa)) return;
+      m.fh = fh;
+      m.fa = fa;
+      m.finished = true;
+      if (!m.ptsApplied) {
+        var s = getSign(fh, fa);
+        for (var j = 0; j < window.state.members.length; j++) {
+          var mem = window.state.members[j];
+          var pr = m.preds ? m.preds[mem.code] : null;
+          if (!pr) continue;
+          if (pr.h === fh && pr.a === fa) mem.points += 6;
+          else if (getSign(pr.h, pr.a) === s) mem.points += 3;
+          else mem.points += 1;
+        }
+        m.ptsApplied = true;
+      }
+      window.state.lastUpdate = m.home + " " + fh + " - " + fa + " " + m.away;
+      window.renderMemberSummary();
+      window.renderLeaderboard();
+      window.renderAdminWaiting(m);
+      window.pushToFirebase();
+    };
+
+    window.renderAdminWaiting = function (m) {
+      if (!byId("a-track") || !m) return;
+      var missing = [];
+      for (var i = 0; i < window.state.members.length; i++) {
+        var mem = window.state.members[i];
+        if (!m.preds || !m.preds[mem.code]) missing.push(mem.name);
+      }
+      setText("a-track", missing.length ? ("En attente (" + missing.length + "/27) : " + missing.join(", ")) : "Tous ont pronostiqué.");
+    };
+
+    window.copyRecap = function () {
+      var m = null;
+      for (var i = 0; i < window.state.matches.length; i++) {
+        if (window.state.matches[i].id === window.currentMatchId) { m = window.state.matches[i]; break; }
+      }
+      if (!m) return;
+      var txt = m.home + " " + (m.finished ? m.fh : "?") + " - " + (m.finished ? m.fa : "?") + " " + m.away;
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).catch(function () {});
+      setText("copy-fb", "Récapitulatif copié !");
+    };
+
+    window.renderLeaderboard = function () {
+      var m = null;
+      for (var i = 0; i < window.state.matches.length; i++) {
+        if (window.state.matches[i].id === window.currentMatchId) { m = window.state.matches[i]; break; }
+      }
+      if (!m) m = window.state.matches[window.state.matches.length - 1];
+      var lb = byId("lb");
+      if (!lb || !m) return;
+
+      setText("th-prono", formatPronoLabel(m.pronoNum));
+
+      var predCount = 0;
+      if (m.preds) {
+        for (var k in m.preds) {
+          if (m.preds.hasOwnProperty(k)) predCount++;
+        }
+      }
+      setText("participation-display", "Participation : " + predCount + "/" + window.state.members.length);
+      setText("last-update", window.state.lastUpdate ? ("MAJ : " + window.state.lastUpdate) : "");
+      var canReveal = Boolean(m.finished || (window.state.user && window.state.user.isAdmin));
+      setText("vis-msg", canReveal ? "Pronostics révélés." : "Pronostics masqués jusqu'à la fin du match.");
+
+      var sorted = window.state.members.slice().sort(function (a, b) {
+        if ((b.points || 0) !== (a.points || 0)) return (b.points || 0) - (a.points || 0);
+        return a.name.localeCompare(b.name);
+      });
+
+      lb.innerHTML = "";
+      for (var idx = 0; idx < sorted.length; idx++) {
+        var mem = sorted[idx];
+        var pos = idx + 1;
+        var medal = pos === 1 ? "🥇 " : (pos === 2 ? "🥈 " : (pos === 3 ? "🥉 " : ""));
+        var cups = "";
+        for (var c = 0; c < (mem.cups || 0); c++) cups += "🏆";
+        var pr = m.preds ? m.preds[mem.code] : null;
+        var prText = "-";
+        if (pr) {
+          var showScore = Boolean(window.state.user && (window.state.user.isAdmin || window.state.user.code === mem.code || canReveal));
+          prText = showScore ? (pr.h + " - " + pr.a) : "✓";
+        }
+        var gain = "";
+        if (m.finished) {
+          if (!pr) gain = " (+0 pt)";
+          else if (pr.h === m.fh && pr.a === m.fa) gain = " (+6 pts)";
+          else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) gain = " (+3 pts)";
+          else gain = " (+1 pt)";
+        }
+
+        var tr = document.createElement("tr");
+        if (mem.isChamp) tr.className = "champ";
+        if (window.state.user && !window.state.user.isAdmin && window.state.user.code === mem.code) tr.className = "me-row";
+
+        var td1 = document.createElement("td");
+        td1.textContent = String(pos);
+
+        var td2 = document.createElement("td");
+        td2.appendChild(document.createTextNode(medal + mem.name + (cups ? (" " + cups) : "")));
+        if (mem.isChamp) {
+          var em = document.createElement("em");
+          em.className = "champ-tag";
+          em.textContent = "(tenant du titre)";
+          td2.appendChild(em);
+        }
+
+        var td3 = document.createElement("td");
+        td3.className = "prono-col";
+        td3.textContent = prText + gain;
+
+        var td4 = document.createElement("td");
+        td4.className = "pts-col";
+        var strong = document.createElement("strong");
+        strong.textContent = (mem.points || 0) + " pts";
+        td4.appendChild(strong);
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        lb.appendChild(tr);
+      }
+    };
+
+    window.fillFunnyBlogIdea = function () {
+      if (byId("b-title")) byId("b-title").value = "San Mamés surpris 0 - 1 : les leçons de la J13";
+      if (byId("b-body")) byId("b-body").value = "20/27 participants sur Athletic Club - RCD Espanyol (0-1). Aucun score exact trouvé, +1 pt de participation pour les membres ayant joué, et tous les regards tournés vers Málaga (J14).";
+    };
+
+    window.addBlogPost = function () {
+      var title = byId("b-title") && byId("b-title").value ? byId("b-title").value.replace(/^\s+|\s+$/g, "") : "";
+      var body = byId("b-body") && byId("b-body").value ? byId("b-body").value.replace(/^\s+|\s+$/g, "") : "";
+      if (!title || !body) return;
+      window.state.blog.unshift({
+        id: "b" + new Date().getTime(),
+        date: "21 nov. 2026",
+        title: title,
+        body: body
+      });
+      if (byId("b-title")) byId("b-title").value = "";
+      if (byId("b-body")) byId("b-body").value = "";
+      window.renderFunAndBlog();
+      window.pushToFirebase();
+    };
+
+    window.renderFunAndBlog = function () {
+      var cards = byId("fun-cards");
+      if (cards) {
+        cards.innerHTML = "";
+        var items = [
+          { label: "Dernier match (J13)", winner: "Athletic Club 0 - 1 RCD Espanyol", sub: "20/27 pronostics enregistrés, aucun score exact (+6 pts), +1 pt de participation." },
+          { label: "Dynamique récente", winner: "2 victoires avant le revers", sub: "Après Real Sociedad (2-1) et Girona (2-0), chute d'un but à San Mamés." },
+          { label: "Tête du classement", winner: "LABORDE Lorea (36 pts)", sub: "Suivie d'URREIZTIETA Andoni (35 pts) et LABORDE Julen (29 pts)." },
+          { label: "Prochain rendez-vous (J14)", winner: "MALAGA CF vs ATHLETIC CLUB", sub: "Coup d'envoi le 28 nov. 2026 à 16:15 : pronostics ouverts." }
+        ];
+        for (var i = 0; i < items.length; i++) {
+          var it = items[i];
+          var box = document.createElement("div");
+          box.className = "fun-box";
+          var d1 = document.createElement("div"); d1.className = "fun-label"; d1.textContent = it.label;
+          var d2 = document.createElement("div"); d2.className = "fun-winner"; d2.textContent = it.winner;
+          var d3 = document.createElement("div"); d3.className = "fun-sub"; d3.textContent = it.sub;
+          box.appendChild(d1); box.appendChild(d2); box.appendChild(d3);
+          cards.appendChild(box);
+        }
+      }
+
+      var blogEl = byId("blog-list");
+      if (blogEl) {
+        blogEl.innerHTML = "";
+        for (var b = 0; b < window.state.blog.length; b++) {
+          var post = window.state.blog[b];
+          var art = document.createElement("div");
+          art.className = "blog-post";
+          var meta = document.createElement("div"); meta.className = "blog-meta"; meta.textContent = post.date;
+          var h3 = document.createElement("h4"); h3.className = "blog-title"; h3.textContent = post.title;
+          var p = document.createElement("div"); p.className = "blog-body"; p.textContent = post.body;
+          art.appendChild(meta); art.appendChild(h3); art.appendChild(p);
+          blogEl.appendChild(art);
+        }
+      }
+    };
+
+    window.renderPalmares = function () {
+      var el = byId("palm-list");
+      if (!el) return;
+      el.innerHTML = "";
+      for (var i = 0; i < PALM.length; i++) {
+        var p = PALM[i];
+        var card = document.createElement("div");
+        card.className = "palm-card";
+
+        var head = document.createElement("div");
+        head.className = "palm-season";
+        head.textContent = "Saison " + p.y;
+        if (i === 0) {
+          var tag = document.createElement("span");
+          tag.textContent = "Tenant du titre";
+          head.appendChild(tag);
+        }
+
+        var rows = document.createElement("div");
+        rows.className = "palm-rows";
+
+        var entries = [
+          { cls: "palm-row p1", cup: "🏆", txt: p.p1 },
+          { cls: "palm-row", cup: "", txt: p.p2 },
+          { cls: "palm-row", cup: "", txt: p.p3 }
+        ];
+        for (var r = 0; r < entries.length; r++) {
+          var row = document.createElement("div");
+          row.className = entries[r].cls;
+          if (entries[r].cup) {
+            var ic = document.createElement("span");
+            ic.className = "palm-cup";
+            ic.textContent = entries[r].cup;
+            row.appendChild(ic);
+          }
+          var nm = document.createElement("span");
+          nm.className = "palm-name";
+          nm.textContent = entries[r].txt;
+          row.appendChild(nm);
+          rows.appendChild(row);
+        }
+
+        card.appendChild(head);
+        card.appendChild(rows);
+        el.appendChild(card);
+      }
+    };
+
+    window.pushToFirebase = function () {
+      setText("sync", "Sync...");
+      fetch(DB, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ matches: window.state.matches, members: window.state.members, blog: window.state.blog, lastUpdate: window.state.lastUpdate })
+      }).then(function () { setText("sync", "Synchronisé"); }).catch(function () { setText("sync", "Local"); });
+    };
+
+    window.forcePushSync = function () { window.pushToFirebase(); };
+  </script>
+</body>
+</html>
