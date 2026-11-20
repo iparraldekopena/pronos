@@ -28,7 +28,7 @@ table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9
 th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
 th { background: var(--noir); color: var(--blanc); text-transform: uppercase; font-size: 0.85rem; }
 tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-right: 5px solid var(--noir); font-weight: bold; }
-tr.me-row { outline: 2px solid var(--noir); background: #fff8e7; }
+tr.me-row { background: #E8F8EE; border-left: 5px solid #16A34A; border-right: 5px solid var(--noir); font-weight: bold; }
 .badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
 .badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold; }
 .hidden { display: none; }
@@ -417,7 +417,7 @@ function render() {
     }
 
     const isMe = user === x.code;
-    const rowClass = `${x.isChamp ? 'champ ' : ''}${isMe ? 'me-row' : ''}`.trim();
+    const rowClass = isMe ? 'me-row' : (x.isChamp ? 'champ' : '');
     const pointsLabel = (x.points <= 1) ? "pt" : "pts";
 
     return `<tr class="${rowClass}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
