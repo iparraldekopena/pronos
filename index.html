@@ -5,72 +5,318 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pronostics 2026/27 - Iparraldeko Peña</title>
 <style>
-:root { --rouge: #D91E18; --noir: #111111; --gris: #F2F2F2; --blanc: #FFFFFF; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--gris); color: var(--noir); margin: 0; }
-header { background: var(--noir); border-bottom: 5px solid var(--rouge); padding: 15px 10px; text-align: center; }
-.banner { max-width: 680px; margin: 0 auto; background: var(--blanc); border: 3px solid var(--rouge); border-radius: 8px; overflow: hidden; }
+:root {
+  --rouge: #D91E18;
+  --rouge-fonce: #A8140F;
+  --noir: #111111;
+  --noir-doux: #1C1C1C;
+  --gris: #ECEEF2;
+  --blanc: #FFFFFF;
+  --bordure: #E2E5EA;
+  --ombre: 0 8px 24px rgba(17, 17, 17, 0.08);
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(circle at top, #F7F8FA 0%, var(--gris) 100%);
+  color: var(--noir);
+  margin: 0;
+  line-height: 1.45;
+}
+header {
+  background: linear-gradient(135deg, var(--noir) 0%, #242424 100%);
+  border-bottom: 5px solid var(--rouge);
+  padding: 18px 12px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.banner {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--blanc);
+  border: 2px solid var(--rouge);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+}
 .banner img { width: 100%; display: block; }
-.sub-bar { background: var(--rouge); color: var(--blanc); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
-.nav { display: flex; gap: 8px; max-width: 680px; margin: 15px auto 0; padding: 0 15px; flex-wrap: wrap; }
-.nav button { flex: 1; min-width: 150px; background: var(--blanc); color: var(--noir); border: 2px solid var(--noir); padding: 11px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
-.nav button.active { background: var(--noir); color: var(--blanc); border-color: var(--rouge); }
-.container { max-width: 680px; margin: 15px auto 40px; padding: 0 15px; }
-.card { background: var(--blanc); border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd; border-top: 5px solid var(--rouge); }
-h2 { margin-top: 0; font-size: 1.15rem; border-bottom: 2px solid var(--noir); padding-bottom: 8px; text-transform: uppercase; }
-h3 { margin-bottom: 8px; font-size: 1rem; color: var(--noir); }
-input, select, textarea { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit; }
-textarea { min-height: 90px; resize: vertical; }
-.btn { background: var(--rouge); color: var(--blanc); border: 2px solid var(--noir); padding: 12px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
-.btn:hover { background: var(--noir); }
-.btn-secondary { background: var(--noir); color: var(--blanc); border: 2px solid var(--rouge); padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; text-transform: uppercase; }
-.btn-secondary:hover { background: var(--rouge); color: var(--blanc); }
-.btn-ghost { background: #fff; color: var(--noir); border: 2px dashed var(--noir); padding: 8px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 10px; }
-.btn-ghost:hover { background: #f3f3f3; }
-.match-box { background: var(--noir); color: var(--blanc); padding: 12px 15px; border-radius: 6px; border-left: 6px solid var(--rouge); margin-bottom: 12px; }
-.trend-card { background: #181818; color: var(--blanc); border-radius: 8px; padding: 14px 16px; margin-bottom: 15px; border: 1px solid #333; border-top: 4px solid var(--rouge); }
+.sub-bar {
+  background: linear-gradient(90deg, var(--rouge-fonce), var(--rouge), var(--rouge-fonce));
+  color: var(--blanc);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.nav {
+  display: flex;
+  gap: 10px;
+  max-width: 860px;
+  margin: 16px auto 0;
+  padding: 0 15px;
+  flex-wrap: wrap;
+}
+.nav button {
+  flex: 1;
+  min-width: 150px;
+  background: var(--blanc);
+  color: var(--noir);
+  border: 2px solid var(--noir);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.92rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  transition: all 0.18s ease;
+}
+.nav button:hover {
+  transform: translateY(-1px);
+  border-color: var(--rouge);
+}
+.nav button.active {
+  background: linear-gradient(135deg, var(--noir), var(--noir-doux));
+  color: var(--blanc);
+  border-color: var(--rouge);
+  box-shadow: 0 6px 16px rgba(217, 30, 24, 0.25);
+}
+.container { max-width: 860px; margin: 16px auto 48px; padding: 0 15px; }
+.card {
+  background: var(--blanc);
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+  border: 1px solid var(--bordure);
+  border-top: 5px solid var(--rouge);
+  box-shadow: var(--ombre);
+}
+h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+  border-bottom: 2px solid var(--noir);
+  padding-bottom: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+h3 { margin-bottom: 10px; font-size: 1rem; color: var(--noir); }
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 6px 0 14px;
+  border: 2px solid #D5D9E0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #FAFBFD;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--rouge);
+  background: var(--blanc);
+}
+textarea { min-height: 92px; resize: vertical; }
+.btn {
+  background: linear-gradient(135deg, var(--rouge), var(--rouge-fonce));
+  color: var(--blanc);
+  border: 2px solid var(--noir);
+  padding: 13px 16px;
+  border-radius: 9px;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 12px rgba(217, 30, 24, 0.25);
+  transition: all 0.18s ease;
+}
+.btn:hover:not(:disabled) {
+  background: var(--noir);
+  transform: translateY(-1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-secondary {
+  background: var(--noir);
+  color: var(--blanc);
+  border: 2px solid var(--rouge);
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  text-transform: uppercase;
+  transition: all 0.18s ease;
+}
+.btn-secondary:hover { background: var(--rouge); }
+.btn-ghost {
+  background: var(--blanc);
+  color: var(--noir);
+  border: 2px dashed #666;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: background 0.15s ease;
+}
+.btn-ghost:hover { background: #F4F5F7; }
+.match-box {
+  background: linear-gradient(135deg, var(--noir), #222222);
+  color: var(--blanc);
+  padding: 14px 16px;
+  border-radius: 10px;
+  border-left: 6px solid var(--rouge);
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.trend-card {
+  background: linear-gradient(145deg, #161616, #232323);
+  color: var(--blanc);
+  border-radius: 10px;
+  padding: 15px 16px;
+  margin-bottom: 15px;
+  border: 1px solid #353535;
+  border-top: 4px solid var(--rouge);
+}
 .trend-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.trend-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #bbb; font-weight: bold; }
-.trend-score-pill { background: var(--rouge); color: var(--blanc); padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; font-weight: bold; }
+.trend-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #bbb; font-weight: 700; }
+.trend-score-pill { background: var(--rouge); color: var(--blanc); padding: 4px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; }
 .trend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 10px; text-align: center; }
-.trend-box { background: #242424; border: 1px solid #383838; border-radius: 6px; padding: 8px 6px; }
+.trend-box { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 6px; }
 .trend-box span { display: block; font-size: 0.72rem; color: #ccc; margin-bottom: 2px; }
 .trend-box strong { font-size: 1.05rem; color: var(--blanc); }
-.trend-bar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: #333; margin-top: 6px; }
+.trend-bar { display: flex; height: 9px; border-radius: 99px; overflow: hidden; background: #333; margin-top: 6px; }
 .trend-bar-h { background: var(--rouge); }
 .trend-bar-d { background: #9ca3af; }
 .trend-bar-a { background: #ffffff; }
 .trend-legend { display: flex; justify-content: space-between; font-size: 0.74rem; color: #ccc; margin-top: 6px; }
 .trend-source { font-size: 0.75rem; color: #aaa; margin-top: 8px; font-style: italic; }
 .trend-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.trend-inputs label { display: block; font-size: 0.75rem; font-weight: bold; margin-bottom: 2px; }
+.trend-inputs label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 2px; }
 .trend-inputs input { margin: 0 0 10px; padding: 8px; font-size: 0.92rem; text-align: center; }
-.scores { display: flex; align-items: center; gap: 10px; margin: 15px 0; text-align: center; }
-.scores div { flex: 1; font-weight: bold; }
-.scores input { text-align: center; font-size: 1.5rem; font-weight: bold; width: 75px; margin: 8px auto 0; border: 2px solid var(--noir); }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.92rem; }
-th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
-th { background: var(--noir); color: var(--blanc); text-transform: uppercase; font-size: 0.85rem; }
-tr.champ { background-color: #FDECEA; border-left: 5px solid var(--rouge); border-right: 5px solid var(--noir); font-weight: bold; }
-tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-right: 5px solid var(--noir); font-weight: bold; }
-.badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
-.badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold; }
+.scores {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 14px;
+  background: #F8F9FB;
+  border-radius: 10px;
+  border: 1px solid var(--bordure);
+  text-align: center;
+}
+.scores div { flex: 1; font-weight: 800; }
+.scores input {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  width: 78px;
+  margin: 8px auto 0;
+  border: 2px solid var(--noir);
+  background: var(--blanc);
+  border-radius: 8px;
+}
+.table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--bordure); }
+table { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 0.92rem; background: var(--blanc); }
+th, td { padding: 11px 10px; text-align: left; border-bottom: 1px solid #ECEEF2; }
+th {
+  background: var(--noir);
+  color: var(--blanc);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+tbody tr:hover { background-color: #FAFAFC; }
+tr.champ { background-color: #FDECEA; border-left: 5px solid var(--rouge); font-weight: 700; }
+tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; font-weight: 700; }
+.badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 7px; border-radius: 999px; margin-left: 6px; }
+.badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 7px; border-radius: 999px; margin-left: 6px; font-weight: 700; }
 .hidden { display: none; }
-.palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
-.fun-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 18px; }
-.fun-box { background: #f8f8f8; border: 1px solid #ddd; border-left: 5px solid var(--rouge); border-radius: 6px; padding: 12px; }
-.fun-label { font-size: 0.78rem; text-transform: uppercase; font-weight: bold; color: #555; }
-.fun-winner { font-size: 1.02rem; font-weight: bold; color: var(--noir); margin-top: 4px; }
+.palmares-item {
+  border: 1px solid var(--bordure);
+  border-left: 6px solid var(--rouge);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #FAFBFD;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.fun-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.fun-box {
+  background: #FAFBFD;
+  border: 1px solid var(--bordure);
+  border-left: 5px solid var(--rouge);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.fun-label { font-size: 0.78rem; text-transform: uppercase; font-weight: 800; color: #555; }
+.fun-winner { font-size: 1.04rem; font-weight: 800; color: var(--noir); margin-top: 4px; }
 .fun-sub { font-size: 0.82rem; color: #444; margin-top: 4px; }
-.blog-post { border: 1px solid #ddd; border-left: 6px solid var(--noir); border-radius: 6px; padding: 14px; margin-bottom: 12px; background: #fafafa; }
-.blog-meta { font-size: 0.78rem; color: var(--rouge); font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
-.blog-title { font-size: 1.05rem; font-weight: bold; margin: 0 0 6px; color: var(--noir); }
-.blog-body { font-size: 0.9rem; line-height: 1.45; color: #222; white-space: pre-line; }
-.participation-box { background: #f8f8f8; border-left: 4px solid var(--rouge); padding: 8px 12px; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
-.member-summary { background: #f4f4f4; border-left: 4px solid #16A34A; padding: 10px 12px; font-size: 0.88rem; margin-bottom: 14px; border-radius: 4px; }
-.urgent-box { background: #fff3cd; border-left: 4px solid #d97706; color: #7c2d12; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
-.pts-gain { font-size: 0.78rem; color: #444; margin-left: 4px; font-weight: normal; }
-.arrow-up { color: #16a34a; font-weight: bold; margin-left: 4px; font-size: 0.85rem; }
-.arrow-down { color: #dc2626; font-weight: bold; margin-left: 4px; font-size: 0.85rem; }
+.blog-post {
+  border: 1px solid var(--bordure);
+  border-left: 6px solid var(--noir);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #FAFBFD;
+}
+.blog-meta { font-size: 0.78rem; color: var(--rouge); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+.blog-title { font-size: 1.06rem; font-weight: 800; margin: 0 0 6px; color: var(--noir); }
+.blog-body { font-size: 0.92rem; line-height: 1.5; color: #222; white-space: pre-line; }
+.participation-box {
+  background: #FAFBFD;
+  border: 1px solid var(--bordure);
+  border-left: 5px solid var(--rouge);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+.member-summary {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-left: 5px solid #16A34A;
+  padding: 11px 14px;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+  border-radius: 8px;
+}
+.urgent-box {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-left: 5px solid #D97706;
+  color: #7C2D12;
+  padding: 10px 14px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+.pts-gain { font-size: 0.78rem; color: #444; margin-left: 4px; font-weight: 500; }
+.arrow-up { color: #16a34a; font-weight: 800; margin-left: 4px; font-size: 0.85rem; }
+.arrow-down { color: #dc2626; font-weight: 800; margin-left: 4px; font-size: 0.85rem; }
+@media (max-width: 600px) {
+  .card { padding: 16px; border-radius: 10px; }
+  .trend-inputs { grid-template-columns: repeat(2, 1fr); }
+  th, td { padding: 9px 7px; font-size: 0.85rem; }
+}
 </style>
 </head>
 <body>
@@ -86,7 +332,7 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
   <button id="t-palm" onclick="tab('palm')">🏆 Palmarès</button>
 </div>
 <div class="container">
-  <div id="sync" style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:10px;">🟢 Prêt</div>
+  <div id="sync" style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:10px; font-weight:600;">🟢 Prêt</div>
   <div id="login-sec" class="card">
     <h2>Connexion Membre</h2>
     <p>Entrez votre code d'accès personnel :</p>
@@ -96,23 +342,23 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
   </div>
   <div id="v-pronos" class="hidden">
     <div id="mem-sec" class="card hidden">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <h2 style="border:none; margin:0;">Aupa <span id="m-name" style="color:var(--rouge);"></span> !</h2>
-        <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px; cursor:pointer;">Quitter</button>
+        <button onclick="logout()" style="padding:7px 13px; background:var(--noir); color:#fff; border:none; border-radius:7px; cursor:pointer; font-weight:600;">Quitter</button>
       </div>
-      <div style="font-size:0.82rem; background:#f8f8f8; padding:10px; border-radius:6px; margin-bottom:12px; border-left:4px solid var(--noir);">
+      <div style="font-size:0.83rem; background:#F8F9FB; padding:11px 14px; border-radius:8px; margin-bottom:12px; border-left:4px solid var(--noir);">
         <strong>Barème :</strong> Score exact : <strong>6 pts</strong> | Bon 1, N ou 2 : <strong>3 pts</strong> | Rien de bon : <strong>1 pt</strong> | Oubli : <strong>0 pt</strong>
       </div>
       <div id="m-summary" class="member-summary"></div>
       <div id="urgent-msg" class="urgent-box hidden"></div>
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px;">
         <span style="font-size:0.82rem; font-weight:bold; color:#444;">Match sélectionné :</span>
-        <button onclick="goNextOpenMatch()" style="padding:4px 10px; background:var(--noir); color:#fff; border:none; border-radius:4px; font-size:0.78rem; font-weight:bold; cursor:pointer;">Prochain match ouvert ➔</button>
+        <button onclick="goNextOpenMatch()" style="padding:5px 11px; background:var(--noir); color:#fff; border:none; border-radius:6px; font-size:0.78rem; font-weight:bold; cursor:pointer;">Prochain match ouvert ➔</button>
       </div>
       <select id="m-sel" onchange="selMatch(this.value)"></select>
       <div class="match-box">
-        <div style="display:flex; justify-content:space-between;"><strong id="p-title"></strong><span id="p-stat" style="font-size:0.8rem; background:var(--rouge); padding:2px 6px; border-radius:4px;"></span></div>
-        <div id="p-meta" style="font-size:0.85rem; color:#ddd; margin-top:4px;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;"><strong id="p-title"></strong><span id="p-stat" style="font-size:0.78rem; background:var(--rouge); padding:3px 9px; border-radius:999px; font-weight:700;"></span></div>
+        <div id="p-meta" style="font-size:0.85rem; color:#ddd; margin-top:5px;"></div>
       </div>
       <div id="trend-display" class="trend-card hidden"></div>
       <div class="scores">
@@ -127,8 +373,8 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
         <h2 style="border:none; margin:0;">Administration Peña</h2>
         <div style="display:flex; gap:8px;">
-          <button onclick="forcePushSync()" style="padding:6px 12px; background:var(--rouge); color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">↻ Sync Firebase</button>
-          <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px; cursor:pointer;">Quitter</button>
+          <button onclick="forcePushSync()" style="padding:6px 12px; background:var(--rouge); color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">↻ Sync Firebase</button>
+          <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:6px; cursor:pointer;">Quitter</button>
         </div>
       </div>
       <h3>1. Insérer un match</h3>
@@ -155,7 +401,7 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
       </div>
       <button class="btn" onclick="calcPts()">Valider le score et attribuer les points</button>
       <h3 style="margin-top:20px;">3. Tendance du match sélectionné</h3>
-      <div style="background:#f8f8f8; padding:12px; border-radius:6px;">
+      <div style="background:#f8f8f8; padding:12px; border-radius:8px;">
         <div class="trend-inputs">
           <div><label>Victoire Dom. (%)</label><input type="number" id="tr-h" min="0" max="100"></div>
           <div><label>Nul (%)</label><input type="number" id="tr-d" min="0" max="100"></div>
@@ -167,35 +413,39 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
         <button class="btn-secondary" style="margin-top:4px;" onclick="saveTrend()">Enregistrer la tendance</button>
       </div>
       <h3 style="margin-top:20px;">4. Publier un billet sur le Blog</h3>
-      <div style="background:#f8f8f8; padding:12px; border-radius:6px;">
+      <div style="background:#f8f8f8; padding:12px; border-radius:8px;">
         <button type="button" class="btn-ghost" onclick="fillFunnyBlogIdea()">✨ Générer une idée drôle pour le blog</button>
         <input type="text" id="b-title" placeholder="Titre du billet (ex: Débrief Athletic - Espanyol)">
         <textarea id="b-body" placeholder="Écris ton article ou compte rendu de la Peña..."></textarea>
         <button class="btn-secondary" style="margin-top:0;" onclick="addBlogPost()">Publier sur le Blog</button>
       </div>
       <h3 style="margin-top:20px;">5. Joueurs en attente</h3>
-      <div id="a-track" style="font-size:0.9rem; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
+      <div id="a-track" style="font-size:0.9rem; background:#f8f8f8; padding:10px; border-radius:8px;"></div>
       <button class="btn-secondary" onclick="copyRecap()">📋 Copier le récapitulatif du match</button>
       <p id="copy-fb" style="color:#16a34a; font-weight:bold; font-size:0.85rem; margin-top:6px; text-align:center;"></p>
       <h3 style="margin-top:20px;">6. Codes des 27 membres</h3>
-      <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
+      <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:8px;"></div>
     </div>
     <div class="card">
       <h2 id="lb-title">Classement Général & Pronostics</h2>
       <div id="participation-display" class="participation-box"></div>
       <p id="last-update" style="font-size:0.85rem; color:var(--rouge); font-weight:bold; margin-top:-2px; margin-bottom:10px;"></p>
       <p id="vis-msg" style="font-size:0.85rem;"></p>
-      <table><thead><tr><th>Pos</th><th>Membre</th><th id="col-p">Prono</th><th>Total</th></tr></thead><tbody id="lb"></tbody></table>
+      <div class="table-wrap">
+        <table><thead><tr><th>Pos</th><th>Membre</th><th id="col-p">Prono</th><th>Total</th></tr></thead><tbody id="lb"></tbody></table>
+      </div>
     </div>
   </div>
   <div id="v-fun" class="card hidden">
     <h2>Thèmes Amusants & Distinctions</h2>
     <div id="fun-cards" class="fun-grid"></div>
     <h3 id="exact-title">👑 Classement de la Reine du Score Exact (+6 pts)</h3>
-    <table>
-      <thead><tr><th>Pos</th><th>Membre</th><th>Scores exacts</th><th>Détails</th></tr></thead>
-      <tbody id="exact-lb"></tbody>
-    </table>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pos</th><th>Membre</th><th>Scores exacts</th><th>Détails</th></tr></thead>
+        <tbody id="exact-lb"></tbody>
+      </table>
+    </div>
     <h2 style="margin-top:24px;">📰 Blog • Iparraldeko Peña</h2>
     <div id="blog-list"></div>
   </div>
@@ -1059,75 +1309,4 @@ function render() {
     const memObj = data.members.find(x => x.code === user);
     if (!memObj) { logout(); return; }
     const fullName = memObj.name;
-    const firstName = fullName.split(' ').pop();
-    document.getElementById('m-name').textContent = firstName;
-
-    const myRankItem = rankedRows.find(r => r.member.code === user);
-    const myRank = myRankItem ? myRankItem.rank : "-";
-    const myDisplayedPts = myRankItem ? myRankItem.member.points : memObj.points;
-    const ep = m.preds ? m.preds[user] : null;
-    const predText = ep ? `<strong>${ep.h} - ${ep.a}</strong>` : `<span style="color:var(--rouge); font-weight:bold;">Non pronostiqué</span>`;
-    const ptUnit = myDisplayedPts <= 1 ? "pt" : "pts";
-    const dayTag = standings.isHistorical ? ` (fin J${standings.dayNumber})` : "";
-    document.getElementById('m-summary').innerHTML = `Rang${dayTag} : <strong>${myRank}e</strong> (${myDisplayedPts} ${ptUnit}) • Ton prono J${1 + idx} : ${predText}`;
-
-    document.getElementById('in-h').value = ep ? ep.h : ""; document.getElementById('in-a').value = ep ? ep.a : "";
-  }
-
-  if (standings.isHistorical) {
-    document.getElementById('lb-title').textContent = `Classement à l'issue de la Journée ${standings.dayNumber}`;
-    document.getElementById('last-update').textContent = `Classement cumulé à la fin de la Journée ${standings.dayNumber} (${fmtDate(m.kickoff).split(' à ')[0]})`;
-  } else {
-    document.getElementById('lb-title').textContent = `Classement Général & Pronostics`;
-    const finishedMatches = data.matches.filter(x => x.finished);
-    const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
-    document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
-  }
-
-  const totalMembers = data.members.length;
-  const playedCount = m.preds ? Object.keys(m.preds).length : 0;
-  const participationRate = totalMembers > 0 ? Math.round((playedCount / totalMembers) * 100) : 0;
-
-  document.getElementById('participation-display').textContent = `Taux de Participation pour la journée ${1 + idx} : ${participationRate}% (${playedCount}/${totalMembers} participants)`;
-
-  document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
-  document.getElementById('col-p').textContent = `Prono n°${1 + idx}`;
-  document.getElementById('lb').innerHTML = rankedRows.map(({ member: x, rank: rk, showRank }) => {
-    const p = m.preds ? m.preds[x.code] : null;
-    let pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
-    const earned = matchPointsEarned(p, m);
-    if (earned !== null) {
-      const unit = earned <= 1 ? "pt" : "pts";
-      pd += ` <span class="pts-gain">(+${earned} ${unit})</span>`;
-    }
-
-    let arrowHtml = "";
-    if (typeof x.prevRank === "number") {
-      if (rk < x.prevRank) arrowHtml = `<span class="arrow-up" title="Remontée (était ${x.prevRank}e)">▲</span>`;
-      else if (rk > x.prevRank) arrowHtml = `<span class="arrow-down" title="Descente (était ${x.prevRank}e)">▼</span>`;
-    }
-
-    const rankDisplay = showRank ? `<strong>${rk}</strong>${arrowHtml}` : arrowHtml;
-
-    let cupsDisplay = "";
-    if (x.cups && x.cups > 0) {
-      cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
-    }
-
-    const isMe = user === x.code;
-    const rowClass = isMe ? 'me-row' : (x.isChamp ? 'champ' : '');
-    const rowStyle = isMe ? ' style="background-color: #DCFCE7;"' : (x.isChamp ? ' style="background-color: #FDECEA;"' : '');
-    const pointsLabel = (x.points <= 1) ? "pt" : "pts";
-
-    return `<tr class="${rowClass}"${rowStyle}><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
-  }).join("");
-
-  renderFunAndBlog();
-  document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
-}
-render();
-sync(true);
-setInterval(() => { if (user) sync(true); }, 20000);
-</script>
-</body>
-</html>
+    const first
