@@ -28,10 +28,16 @@ table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9
 th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
 th { background: var(--noir); color: var(--blanc); text-transform: uppercase; font-size: 0.85rem; }
 tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-right: 5px solid var(--noir); font-weight: bold; }
+tr.me-row { outline: 2px solid var(--noir); background: #fff8e7; }
 .badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+.badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold; }
 .hidden { display: none; }
 .palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
 .participation-box { background: #f8f8f8; border-left: 4px solid var(--rouge); padding: 8px 12px; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
+.urgent-box { background: #fff3cd; border-left: 4px solid #d97706; color: #7c2d12; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
+.pts-gain { font-size: 0.78rem; color: #444; margin-left: 4px; font-weight: normal; }
+.arrow-up { color: #16a34a; font-weight: bold; margin-left: 4px; font-size: 0.85rem; }
+.arrow-down { color: #dc2626; font-weight: bold; margin-left: 4px; font-size: 0.85rem; }
 </style>
 </head>
 <body>
@@ -63,6 +69,7 @@ tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-righ
       <div style="font-size:0.82rem; background:#f8f8f8; padding:10px; border-radius:6px; margin-bottom:15px; border-left:4px solid var(--noir);">
         <strong>Barème :</strong> Score exact : <strong>6 pts</strong> | Bon 1, N ou 2 : <strong>3 pts</strong> | Rien de bon : <strong>1 pt</strong> | Oubli : <strong>0 pt</strong>
       </div>
+      <div id="urgent-msg" class="urgent-box hidden"></div>
       <select id="m-sel" onchange="selMatch(this.value)"></select>
       <div class="match-box">
         <div style="display:flex; justify-content:space-between;"><strong id="p-title"></strong><span id="p-stat" style="font-size:0.8rem; background:var(--rouge); padding:2px 6px; border-radius:4px;"></span></div>
@@ -77,9 +84,12 @@ tr.champ { background: #FDECEA; border-left: 5px solid var(--rouge); border-righ
       <p id="fb-msg" style="color:var(--rouge); font-weight:bold; text-align:center;"></p>
     </div>
     <div id="adm-sec" class="card hidden">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
         <h2 style="border:none; margin:0;">Administration Peña</h2>
-        <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px;">Quitter</button>
+        <div style="display:flex; gap:8px;">
+          <button onclick="forcePushSync()" style="padding:6px 12px; background:var(--rouge); color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">↻ Sync Firebase</button>
+          <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px; cursor:pointer;">Quitter</button>
+        </div>
       </div>
       <h3>1. Insérer un match</h3>
       <label style="font-size:0.85rem; font-weight:bold;">Compétition :</label>
@@ -179,17 +189,61 @@ function compareMembers(a, b) {
   return a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' });
 }
 
+function getRankedList(membersList) {
+  const sorted = [...membersList].sort(compareMembers);
+  let rk = 1;
+  return sorted.map((x, i) => {
+    let showRank = true;
+    if (i > 0) {
+      if (x.points < sorted[i - 1].points) { rk = i + 1; }
+      else { showRank = false; }
+    }
+    return { member: x, rank: rk, showRank };
+  });
+}
+
+function matchPointsEarned(pred, m) {
+  if (!m.finished || m.fh === null || m.fa === null) return null;
+  if (!pred) return 0;
+  if (pred.h === m.fh && pred.a === m.fa) return 6;
+  const predRes = pred.h > pred.a ? "1" : (pred.h < pred.a ? "2" : "N");
+  const realRes = m.fh > m.fa ? "1" : (m.fh < m.fa ? "2" : "N");
+  return predRes === realRes ? 3 : 1;
+}
+
+async function forcePushSync() {
+  const currentRanked = getRankedList(data.members);
+  data.members.forEach(m => {
+    const localMem = MEMBERS.find(lm => lm.code === m.code);
+    if (localMem) {
+      m.cups = localMem.cups;
+      m.isChamp = localMem.isChamp;
+    }
+    if (typeof m.prevRank !== "number") {
+      const found = currentRanked.find(item => item.member.code === m.code);
+      m.prevRank = found ? found.rank : 1;
+    }
+  });
+  await push();
+  alert("Base Firebase synchronisée !");
+}
+
 async function sync(silent) {
   try {
     const r = await fetch(DB);
     const d = await r.json();
     if (d && d.members && d.matches) {
       d.matches.forEach(m => { if (!m.preds) m.preds = {}; });
+      const ranked = getRankedList(d.members);
       d.members.forEach(m => {
         const localMem = MEMBERS.find(lm => lm.code === m.code);
         if (localMem) {
           m.cups = localMem.cups;
           m.isChamp = localMem.isChamp;
+        }
+        if (typeof m.prevRank !== "number") {
+          const found = ranked.find(item => item.member.code === m.code);
+          m.prevRank = found ? found.rank : 1;
         }
       });
       data = d;
@@ -260,6 +314,13 @@ async function calcPts() {
   const fh = parseInt(document.getElementById('fh').value), fa = parseInt(document.getElementById('fa').value);
   if (isNaN(fh) || isNaN(fa)) return alert("Score invalide.");
   if (!confirm(`Valider ${m.home} ${fh} - ${fa} ${m.away} ?`)) return;
+
+  const beforeRanked = getRankedList(data.members);
+  data.members.forEach(mem => {
+    const found = beforeRanked.find(item => item.member.code === mem.code);
+    mem.prevRank = found ? found.rank : 1;
+  });
+
   const res = fh > fa ? "1" : (fh < fa ? "2" : "N");
   data.members.forEach(mem => {
     const p = m.preds ? m.preds[mem.code] : null;
@@ -293,6 +354,16 @@ function render() {
   document.getElementById('p-stat').textContent = m.finished ? `Terminé (${m.fh}-${m.fa})` : (st ? "En cours" : "Ouvert");
   document.getElementById('t-home').textContent = m.home; document.getElementById('t-away').textContent = m.away;
   document.getElementById('save-btn').disabled = st;
+
+  const urgentEl = document.getElementById('urgent-msg');
+  const hoursLeft = (new Date(m.kickoff) - new Date()) / (1000 * 60 * 60);
+  if (!st && hoursLeft > 0 && hoursLeft <= 24) {
+    urgentEl.textContent = `⏰ Coup d'envoi dans moins de 24 h : pensez à valider votre pronostic !`;
+    urgentEl.classList.remove('hidden');
+  } else {
+    urgentEl.classList.add('hidden');
+  }
+
   if (user === "ADMIN") {
     document.getElementById('mem-sec').classList.add('hidden');
     document.getElementById('adm-sec').classList.remove('hidden');
@@ -322,26 +393,34 @@ function render() {
 
   document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
   document.getElementById('col-p').textContent = `Prono n°${13 + idx}`;
-  const sorted = [...data.members].sort(compareMembers);
-  let rk = 1;
-  document.getElementById('lb').innerHTML = sorted.map((x, i) => {
-    let showRank = true;
-    if (i > 0) {
-      if (x.points < sorted[i - 1].points) { rk = i + 1; }
-      else { showRank = false; }
-    }
+  const rankedRows = getRankedList(data.members);
+  document.getElementById('lb').innerHTML = rankedRows.map(({ member: x, rank: rk, showRank }) => {
     const p = m.preds ? m.preds[x.code] : null;
-    const pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
-    const rankDisplay = showRank ? `<strong>${rk}</strong>` : "";
+    let pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
+    const earned = matchPointsEarned(p, m);
+    if (earned !== null) {
+      const unit = earned <= 1 ? "pt" : "pts";
+      pd += ` <span class="pts-gain">(+${earned} ${unit})</span>`;
+    }
+
+    let arrowHtml = "";
+    if (typeof x.prevRank === "number") {
+      if (rk < x.prevRank) arrowHtml = `<span class="arrow-up" title="Remontée (était ${x.prevRank}e)">▲</span>`;
+      else if (rk > x.prevRank) arrowHtml = `<span class="arrow-down" title="Descente (était ${x.prevRank}e)">▼</span>`;
+    }
+
+    const rankDisplay = showRank ? `<strong>${rk}</strong>${arrowHtml}` : arrowHtml;
 
     let cupsDisplay = "";
     if (x.cups && x.cups > 0) {
       cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
     }
 
+    const isMe = user === x.code;
+    const rowClass = `${x.isChamp ? 'champ ' : ''}${isMe ? 'me-row' : ''}`.trim();
     const pointsLabel = (x.points <= 1) ? "pt" : "pts";
 
-    return `<tr class="${x.isChamp ? 'champ' : ''}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
+    return `<tr class="${rowClass}"><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
   }).join("");
   document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
 }
