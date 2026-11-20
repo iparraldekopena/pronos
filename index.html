@@ -11,13 +11,15 @@ header { background: var(--noir); border-bottom: 5px solid var(--rouge); padding
 .banner { max-width: 680px; margin: 0 auto; background: var(--blanc); border: 3px solid var(--rouge); border-radius: 8px; overflow: hidden; }
 .banner img { width: 100%; display: block; }
 .sub-bar { background: var(--rouge); color: var(--blanc); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
-.nav { display: flex; gap: 10px; max-width: 680px; margin: 15px auto 0; padding: 0 15px; }
-.nav button { flex: 1; background: var(--blanc); color: var(--noir); border: 2px solid var(--noir); padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem; }
+.nav { display: flex; gap: 8px; max-width: 680px; margin: 15px auto 0; padding: 0 15px; flex-wrap: wrap; }
+.nav button { flex: 1; min-width: 150px; background: var(--blanc); color: var(--noir); border: 2px solid var(--noir); padding: 11px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
 .nav button.active { background: var(--noir); color: var(--blanc); border-color: var(--rouge); }
 .container { max-width: 680px; margin: 15px auto 40px; padding: 0 15px; }
 .card { background: var(--blanc); border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #ddd; border-top: 5px solid var(--rouge); }
 h2 { margin-top: 0; font-size: 1.15rem; border-bottom: 2px solid var(--noir); padding-bottom: 8px; text-transform: uppercase; }
-input, select { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
+h3 { margin-bottom: 8px; font-size: 1rem; color: var(--noir); }
+input, select, textarea { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-family: inherit; }
+textarea { min-height: 90px; resize: vertical; }
 .btn { background: var(--rouge); color: var(--blanc); border: 2px solid var(--noir); padding: 12px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
 .btn:hover { background: var(--noir); }
 .btn-secondary { background: var(--noir); color: var(--blanc); border: 2px solid var(--rouge); padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; text-transform: uppercase; }
@@ -52,6 +54,15 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
 .badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold; }
 .hidden { display: none; }
 .palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+.fun-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.fun-box { background: #f8f8f8; border: 1px solid #ddd; border-left: 5px solid var(--rouge); border-radius: 6px; padding: 12px; }
+.fun-label { font-size: 0.78rem; text-transform: uppercase; font-weight: bold; color: #555; }
+.fun-winner { font-size: 1.02rem; font-weight: bold; color: var(--noir); margin-top: 4px; }
+.fun-sub { font-size: 0.82rem; color: #444; margin-top: 4px; }
+.blog-post { border: 1px solid #ddd; border-left: 6px solid var(--noir); border-radius: 6px; padding: 14px; margin-bottom: 12px; background: #fafafa; }
+.blog-meta { font-size: 0.78rem; color: var(--rouge); font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
+.blog-title { font-size: 1.05rem; font-weight: bold; margin: 0 0 6px; color: var(--noir); }
+.blog-body { font-size: 0.9rem; line-height: 1.45; color: #222; white-space: pre-line; }
 .participation-box { background: #f8f8f8; border-left: 4px solid var(--rouge); padding: 8px 12px; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
 .member-summary { background: #f4f4f4; border-left: 4px solid #16A34A; padding: 10px 12px; font-size: 0.88rem; margin-bottom: 14px; border-radius: 4px; }
 .urgent-box { background: #fff3cd; border-left: 4px solid #d97706; color: #7c2d12; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
@@ -68,8 +79,9 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
   </div>
 </header>
 <div id="nav" class="nav hidden">
-  <button id="t-pronos" class="active" onclick="tab('pronos')">⚽ Pronostics & Classement</button>
-  <button id="t-palm" onclick="tab('palm')">🏆 Palmarès (2016-2026)</button>
+  <button id="t-pronos" class="active" onclick="tab('pronos')">⚽ Pronostics</button>
+  <button id="t-fun" onclick="tab('fun')">🎯 Fun & Blog</button>
+  <button id="t-palm" onclick="tab('palm')">🏆 Palmarès</button>
 </div>
 <div class="container">
   <div id="sync" style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:10px;">Connexion à la base de données...</div>
@@ -149,14 +161,20 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
           <div><label>Score favori</label><input type="text" id="tr-sc" placeholder="1-0"></div>
         </div>
         <label style="display:block; font-size:0.75rem; font-weight:bold; margin-bottom:2px;">Source de la tendance :</label>
-        <input type="text" id="tr-src" placeholder="Ex: Simulations / Statistiques ou Pronostics de la Peña" style="margin:0 0 10px; padding:8px; font-size:0.9rem;">
+        <input type="text" id="tr-src" placeholder="Ex: Simulations / statistiques match" style="margin:0 0 10px; padding:8px; font-size:0.9rem;">
         <button class="btn-secondary" style="margin-top:4px;" onclick="saveTrend()">Enregistrer la tendance</button>
       </div>
-      <h3 style="margin-top:20px;">4. Joueurs en attente</h3>
+      <h3 style="margin-top:20px;">4. Publier un billet sur le Blog</h3>
+      <div style="background:#f8f8f8; padding:12px; border-radius:6px;">
+        <input type="text" id="b-title" placeholder="Titre du billet (ex: Débrief Athletic - Espanyol)">
+        <textarea id="b-body" placeholder="Écris ton article ou compte rendu de la Peña..."></textarea>
+        <button class="btn-secondary" style="margin-top:0;" onclick="addBlogPost()">Publier sur le Blog</button>
+      </div>
+      <h3 style="margin-top:20px;">5. Joueurs en attente</h3>
       <div id="a-track" style="font-size:0.9rem; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
       <button class="btn-secondary" onclick="copyRecap()">📋 Copier le récapitulatif du match</button>
       <p id="copy-fb" style="color:#16a34a; font-weight:bold; font-size:0.85rem; margin-top:6px; text-align:center;"></p>
-      <h3 style="margin-top:20px;">5. Codes des 27 membres</h3>
+      <h3 style="margin-top:20px;">6. Codes des 27 membres</h3>
       <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
     </div>
     <div class="card">
@@ -166,6 +184,17 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
       <p id="vis-msg" style="font-size:0.85rem;"></p>
       <table><thead><tr><th>Pos</th><th>Membre</th><th id="col-p">Prono</th><th>Total</th></tr></thead><tbody id="lb"></tbody></table>
     </div>
+  </div>
+  <div id="v-fun" class="card hidden">
+    <h2>Thèmes Amusants & Distinctions</h2>
+    <div id="fun-cards" class="fun-grid"></div>
+    <h3>🎯 Classement du Roi du Score Exact (+6 pts)</h3>
+    <table>
+      <thead><tr><th>Pos</th><th>Membre</th><th>Scores exacts</th><th>Détails</th></tr></thead>
+      <tbody id="exact-lb"></tbody>
+    </table>
+    <h2 style="margin-top:24px;">📰 Blog • Iparraldeko Peña</h2>
+    <div id="blog-list"></div>
   </div>
   <div id="v-palm" class="card hidden">
     <h2>Palmarès • Iparraldeko Peña</h2>
@@ -189,9 +218,9 @@ const MEMBERS = [
   { code: "YANNICK-11", name: "QUEYROU Yannick", points: 21, isChamp: false, cups: 0 },
   { code: "GORKA-12", name: "SANCHEZ Gorka", points: 20, isChamp: false, cups: 0 },
   { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 19, isChamp: false, cups: 0 },
-  { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 18, isChamp: false, cups: 0 },
-  { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 18, isChamp: false, cups: 0 },
-  { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 18, isChamp: false, cups: 1 },
+  { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 19, isChamp: false, cups: 0 },
+  { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 19, isChamp: false, cups: 0 },
+  { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false, cups: 1 },
   { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 18, isChamp: false, cups: 0 },
   { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 15, isChamp: false, cups: 0 },
   { code: "LUKEN-19", name: "CROUZAT Luken", points: 14, isChamp: false, cups: 0 },
@@ -216,7 +245,177 @@ const PALM = [
   { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
   { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
 ];
+
+// Historique des 12 premières journées issues des tableaux fournis
+const HISTORIQUE_MATCHS = [
+  {
+    id: "m01", comp: "Journée 1", home: "SEVILLA FC", away: "ATHLETIC CLUB", kickoff: "2026-08-15T19:00",
+    finished: true, fh: 1, fa: 3,
+    preds: {
+      "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
+      "PIERRE-10": { h: 0, a: 1 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 2, a: 0 },
+      "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+      "LOREA-01": { h: 2, a: 1 }, "CHRISTOPHE-14": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+      "XABIER-04": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 3, a: 1 }, "GORKA-12": { h: 2, a: 0 },
+      "ANDONI-02": { h: 2, a: 1 }
+    },
+    trend: null
+  },
+  {
+    id: "m02", comp: "Journée 2", home: "BARCELONA", away: "ATHLETIC CLUB", kickoff: "2026-08-22T21:00",
+    finished: true, fh: 2, fa: 0,
+    preds: {
+      "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
+      "PIERRE-10": { h: 3, a: 0 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 3, a: 1 },
+      "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 5, a: 0 }, "JULEN-03": { h: 3, a: 1 },
+      "LOREA-01": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 3 }, "LANDER-09": { h: 3, a: 0 },
+      "XABIER-04": { h: 3, a: 1 }, "JEANLOUIS-06": { h: 4, a: 2 }, "GORKA-12": { h: 2, a: 1 },
+      "ANDONI-02": { h: 2, a: 1 }
+    },
+    trend: null
+  },
+  {
+    id: "m03", comp: "Journée 3", home: "CELTA VIGO", away: "ATHLETIC CLUB", kickoff: "2026-08-29T18:30",
+    finished: true, fh: 0, fa: 2,
+    preds: {
+      "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 3, a: 1 }, "JONATHAN-05": { h: 1, a: 1 },
+      "PIERRE-10": { h: 1, a: 1 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 1, a: 0 },
+      "OLIVIER-20": { h: 1, a: 1 }, "ALAIN-08": { h: 3, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+      "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+      "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 1, a: 1 }, "GORKA-12": { h: 0, a: 1 },
+      "ANDONI-02": { h: 1, a: 2 }
+    },
+    trend: null
+  },
+  {
+    id: "m04", comp: "Journée 4", home: "ATLETICO MADRID", away: "ATHLETIC CLUB", kickoff: "2026-09-12T21:00",
+    finished: true, fh: 3, fa: 0,
+    preds: {
+      "JORGE-13": { h: 2, a: 1 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 1 },
+      "PIERRE-10": { h: 2, a: 1 }, "XINA-07": { h: 1, a: 0 }, "ADRIAN-22": { h: 1, a: 1 },
+      "PIERRE-21": { h: 1, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 1, a: 2 },
+      "LOREA-01": { h: 1, a: 0 }, "CHRISTOPHE-14": { h: 0, a: 0 }, "INAKI-15": { h: 2, a: 1 },
+      "LANDER-09": { h: 1, a: 1 }, "XABIER-04": { h: 2, a: 2 }, "JEANLOUIS-06": { h: 1, a: 0 },
+      "GORKA-12": { h: 2, a: 2 }, "ANDONI-02": { h: 1, a: 0 }
+    },
+    trend: null
+  },
+  {
+    id: "m05", comp: "Journée 5", home: "ELCHE", away: "ATHLETIC CLUB", kickoff: "2026-09-19T18:30",
+    finished: true, fh: 1, fa: 1,
+    preds: {
+      "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 4, a: 1 }, "JONATHAN-05": { h: 3, a: 0 },
+      "FREDERIC-17": { h: 3, a: 0 }, "INKO-24": { h: 2, a: 0 }, "LUKEN-19": { h: 3, a: 0 },
+      "PIERRE-10": { h: 2, a: 0 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 3, a: 0 },
+      "OLIVIER-20": { h: 2, a: 1 }, "PIERRE-21": { h: 2, a: 0 }, "ALAIN-08": { h: 3, a: 1 },
+      "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 }, "CHRISTOPHE-14": { h: 3, a: 0 },
+      "INAKI-15": { h: 3, a: 1 }, "LANDER-09": { h: 3, a: 0 }, "XABIER-04": { h: 2, a: 0 },
+      "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 1 }, "PIERRICK-16": { h: 3, a: 2 },
+      "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 2, a: 0 }
+    },
+    trend: null
+  },
+  {
+    id: "m06", comp: "Journée 6", home: "ALAVES", away: "ATHLETIC CLUB", kickoff: "2026-09-26T21:00",
+    finished: true, fh: 0, fa: 0,
+    preds: {
+      "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 }, "FREDERIC-17": { h: 1, a: 1 },
+      "INKO-24": { h: 1, a: 0 }, "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 0 },
+      "XINA-07": { h: 2, a: 0 }, "OLIVIER-20": { h: 2, a: 0 }, "PIERRE-21": { h: 1, a: 0 },
+      "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 }, "LOREA-01": { h: 2, a: 0 },
+      "CHRISTOPHE-14": { h: 2, a: 1 }, "INAKI-15": { h: 3, a: 1 }, "XABIER-04": { h: 2, a: 2 },
+      "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 0 }, "PIERRICK-16": { h: 1, a: 0 },
+      "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 1, a: 0 }
+    },
+    trend: null
+  },
+  {
+    id: "m07", comp: "Journée 7", home: "VALENCIA", away: "ATHLETIC CLUB", kickoff: "2026-10-03T16:15",
+    finished: true, fh: 0, fa: 0,
+    preds: {
+      "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 1 },
+      "FREDERIC-17": { h: 1, a: 1 }, "LUKEN-19": { h: 0, a: 1 }, "XINA-07": { h: 1, a: 2 },
+      "OLIVIER-20": { h: 1, a: 2 }, "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 2, a: 2 },
+      "JULEN-03": { h: 1, a: 2 }, "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 0, a: 0 },
+      "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
+      "JEANLOUIS-06": { h: 1, a: 2 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
+      "ANDONI-02": { h: 1, a: 1 }
+    },
+    trend: null
+  },
+  {
+    id: "m08", comp: "Journée 8", home: "LEVANTE", away: "ATHLETIC CLUB", kickoff: "2026-10-17T18:30",
+    finished: true, fh: 3, fa: 1,
+    preds: {
+      "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 }, "FREDERIC-17": { h: 3, a: 3 },
+      "LUKEN-19": { h: 0, a: 2 }, "PIERRE-10": { h: 2, a: 1 }, "OLIVIER-20": { h: 0, a: 1 },
+      "ALAIN-08": { h: 2, a: 2 }, "JULEN-03": { h: 0, a: 1 }, "LOREA-01": { h: 1, a: 1 },
+      "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
+      "JEANLOUIS-06": { h: 0, a: 1 }, "YANNICK-11": { h: 2, a: 2 }, "PIERRICK-16": { h: 1, a: 2 },
+      "GORKA-12": { h: 1, a: 1 }, "ANDONI-02": { h: 0, a: 1 }
+    },
+    trend: null
+  },
+  {
+    id: "m09", comp: "Journée 9", home: "GETAFE", away: "ATHLETIC CLUB", kickoff: "2026-10-24T21:00",
+    finished: true, fh: 4, fa: 0,
+    preds: {
+      "JORGE-13": { h: 0, a: 0 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 },
+      "FREDERIC-17": { h: 0, a: 0 }, "LUKEN-19": { h: 2, a: 1 }, "PIERRE-10": { h: 0, a: 1 },
+      "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 1, a: 2 }, "PIERRE-21": { h: 2, a: 0 },
+      "ALAIN-08": { h: 2, a: 1 }, "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 },
+      "CHRISTOPHE-14": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 3, a: 1 },
+      "XABIER-04": { h: 1, a: 0 }, "JEANLOUIS-06": { h: 2, a: 0 }, "YANNICK-11": { h: 2, a: 1 },
+      "PIERRICK-16": { h: 3, a: 1 }, "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 1, a: 0 }
+    },
+    trend: null
+  },
+  {
+    id: "m10", comp: "Journée 10", home: "PRAT", away: "ATHLETIC CLUB", kickoff: "2026-10-31T16:15",
+    finished: true, fh: 1, fa: 6,
+    preds: {
+      "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 0, a: 4 }, "JONATHAN-05": { h: 0, a: 3 },
+      "FREDERIC-17": { h: 0, a: 3 }, "LUKEN-19": { h: 0, a: 4 }, "PIERRE-10": { h: 0, a: 3 },
+      "XINA-07": { h: 0, a: 3 }, "OLIVIER-20": { h: 1, a: 3 }, "PIERRE-21": { h: 0, a: 3 },
+      "ALAIN-08": { h: 1, a: 5 }, "JULEN-03": { h: 1, a: 3 }, "LOREA-01": { h: 0, a: 3 },
+      "LANDER-09": { h: 1, a: 3 }, "XABIER-04": { h: 1, a: 3 }, "JEANLOUIS-06": { h: 1, a: 5 },
+      "YANNICK-11": { h: 1, a: 4 }, "PIERRICK-16": { h: 1, a: 4 }, "GORKA-12": { h: 0, a: 3 },
+      "ANDONI-02": { h: 0, a: 2 }
+    },
+    trend: null
+  },
+  {
+    id: "m11", comp: "Journée 11", home: "REAL SOCIEDAD", away: "ATHLETIC CLUB", kickoff: "2026-11-04T21:00",
+    finished: true, fh: 2, fa: 1,
+    preds: {
+      "JORGE-13": { h: 3, a: 2 }, "JONATHAN-05": { h: 2, a: 1 }, "FREDERIC-17": { h: 3, a: 1 },
+      "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 2 }, "ANGE-23": { h: 2, a: 0 },
+      "XINA-07": { h: 1, a: 0 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+      "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+      "XABIER-04": { h: 0, a: 1 }, "JEANLOUIS-06": { h: 2, a: 1 }, "YANNICK-11": { h: 2, a: 1 },
+      "PIERRICK-16": { h: 2, a: 2 }, "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 2, a: 1 }
+    },
+    trend: null
+  },
+  {
+    id: "m12", comp: "Journée 12", home: "OSASUNA", away: "ATHLETIC CLUB", kickoff: "2026-11-07T18:30",
+    finished: true, fh: 1, fa: 1,
+    preds: {
+      "JORGE-13": { h: 1, a: 3 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 },
+      "FREDERIC-17": { h: 2, a: 2 }, "LUKEN-19": { h: 0, a: 1 }, "PIERRE-10": { h: 2, a: 1 },
+      "BERTRAND-25": { h: 1, a: 2 }, "XINA-07": { h: 1, a: 3 }, "OLIVIER-20": { h: 1, a: 2 },
+      "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 1, a: 2 }, "JULEN-03": { h: 1, a: 1 },
+      "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 1, a: 1 }, "INAKI-15": { h: 0, a: 2 },
+      "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 0, a: 2 },
+      "YANNICK-11": { h: 1, a: 1 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
+      "ANDONI-02": { h: 1, a: 1 }
+    },
+    trend: null
+  }
+];
+
 const MATCHES = [
+  ...HISTORIQUE_MATCHS,
   {
     id: "m13",
     comp: "La Liga • San Mamés",
@@ -242,7 +441,16 @@ const MATCHES = [
     trend: null
   }
 ];
-let data = { members: MEMBERS, matches: MATCHES };
+const DEFAULT_BLOG = [
+  {
+    id: "b1",
+    date: "20 novembre 2026",
+    title: "Soirée Athletic Club - RCD Espanyol à San Mamés !",
+    body: "Aupa Peña ! Coup d'envoi ce soir à 21h00 pour la 13e journée. N'oubliez pas de valider vos pronostics avant le coup d'envoi, et rendez-vous juste après le match pour les points et les mouvements au classement !"
+  }
+];
+
+let data = { members: MEMBERS, matches: MATCHES, blog: DEFAULT_BLOG };
 let user = localStorage.getItem('penaUser') || null;
 let selId = "m13";
 
@@ -307,6 +515,20 @@ async function saveTrend() {
   alert("Tendance enregistrée pour ce match !");
 }
 
+async function addBlogPost() {
+  await sync(true);
+  const title = document.getElementById('b-title').value.trim();
+  const body = document.getElementById('b-body').value.trim();
+  if (!title || !body) return alert("Renseigne un titre et un texte pour le billet.");
+  if (!Array.isArray(data.blog)) data.blog = [...DEFAULT_BLOG];
+  const dateStr = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  data.blog.unshift({ id: "b" + Date.now(), date: dateStr, title, body });
+  document.getElementById('b-title').value = "";
+  document.getElementById('b-body').value = "";
+  await push();
+  alert("Billet publié sur le Blog !");
+}
+
 function copyRecap() {
   const idx = data.matches.findIndex(x => x.id === selId);
   const m = data.matches[idx] || data.matches[0];
@@ -315,7 +537,7 @@ function copyRecap() {
   const miss = [...data.members].sort(compareMembers).filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
 
   let lines = [
-    `⚽ Pronostic n°${13 + idx} : ${m.home} - ${m.away}`,
+    `⚽ Pronostic n°${1 + idx} : ${m.home} - ${m.away}`,
     `Participation : ${playedCount}/${totalMembers}`
   ];
   if (m.finished && m.fh !== null && m.fa !== null) {
@@ -343,6 +565,26 @@ function fallbackCopy(text) {
   document.getElementById('copy-fb').textContent = "✔ Récapitulatif copié dans le presse-papiers !";
 }
 
+function mergeMatchesWithHistory(matchesList) {
+  const list = Array.isArray(matchesList) ? [...matchesList] : [];
+  HISTORIQUE_MATCHS.forEach(hm => {
+    const existingIdx = list.findIndex(m => m.id === hm.id);
+    if (existingIdx === -1) {
+      list.push({ ...hm });
+    } else {
+      if (!list[existingIdx].preds || Object.keys(list[existingIdx].preds).length === 0) {
+        list[existingIdx].preds = hm.preds || {};
+      }
+      if (!list[existingIdx].finished && hm.finished) {
+        list[existingIdx].finished = hm.finished;
+        list[existingIdx].fh = hm.fh;
+        list[existingIdx].fa = hm.fa;
+      }
+    }
+  });
+  return list;
+}
+
 async function forcePushSync() {
   const currentRanked = getRankedList(data.members);
   data.members.forEach(m => {
@@ -356,6 +598,7 @@ async function forcePushSync() {
       m.prevRank = found ? found.rank : 1;
     }
   });
+  data.matches = mergeMatchesWithHistory(data.matches);
   data.matches.forEach(m => {
     const localMatch = MATCHES.find(lm => lm.id === m.id);
     if (!m.trend && localMatch && localMatch.trend) {
@@ -364,6 +607,9 @@ async function forcePushSync() {
       m.trend.source = (localMatch && localMatch.trend && localMatch.trend.source) || "Données externes / statistiques";
     }
   });
+  if (!Array.isArray(data.blog) || data.blog.length === 0) {
+    data.blog = [...DEFAULT_BLOG];
+  }
   await push();
   alert("Base Firebase synchronisée !");
 }
@@ -373,6 +619,7 @@ async function sync(silent) {
     const r = await fetch(DB);
     const d = await r.json();
     if (d && d.members && d.matches) {
+      d.matches = mergeMatchesWithHistory(d.matches);
       d.matches.forEach(m => {
         if (!m.preds) m.preds = {};
         const localMatch = MATCHES.find(lm => lm.id === m.id);
@@ -391,6 +638,9 @@ async function sync(silent) {
           m.prevRank = found ? found.rank : 1;
         }
       });
+      if (!Array.isArray(d.blog) || d.blog.length === 0) {
+        d.blog = [...DEFAULT_BLOG];
+      }
       data = d;
     } else { await push(); }
     document.getElementById('sync').textContent = "🟢 Synchronisé en direct avec la Peña";
@@ -407,9 +657,11 @@ async function push() {
 }
 function tab(t) {
   document.getElementById('v-pronos').classList.toggle('hidden', t !== 'pronos');
-  document.getElementById('v-palm').classList.toggle('hidden', t === 'pronos');
+  document.getElementById('v-fun').classList.toggle('hidden', t !== 'fun');
+  document.getElementById('v-palm').classList.toggle('hidden', t !== 'palm');
   document.getElementById('t-pronos').classList.toggle('active', t === 'pronos');
-  document.getElementById('t-palm').classList.toggle('active', t !== 'pronos');
+  document.getElementById('t-fun').classList.toggle('active', t === 'fun');
+  document.getElementById('t-palm').classList.toggle('active', t === 'palm');
 }
 function login() {
   const c = document.getElementById('code-in').value.trim().toUpperCase();
@@ -527,23 +779,125 @@ function renderTrendCard(m) {
     <div class="trend-source">Source : ${sourceText}</div>
   `;
 }
+
+function renderFunAndBlog() {
+  const finished = [...data.matches].filter(m => m.finished && m.fh !== null && m.fa !== null).sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+
+  const statsMap = {};
+  data.members.forEach(mem => {
+    statsMap[mem.code] = {
+      member: mem,
+      exactCount: 0,
+      exactMatches: [],
+      drawPreds: 0,
+      awayPreds: 0,
+      streak: 0,
+      bestStreak: 0
+    };
+  });
+
+  finished.forEach(m => {
+    data.members.forEach(mem => {
+      const stObj = statsMap[mem.code];
+      const p = m.preds ? m.preds[mem.code] : null;
+      const earned = matchPointsEarned(p, m) || 0;
+
+      if (p) {
+        if (p.h === p.a) stObj.drawPreds += 1;
+        if (p.a > p.h) stObj.awayPreds += 1;
+        if (p.h === m.fh && p.a === m.fa) {
+          stObj.exactCount += 1;
+          stObj.exactMatches.push(`${m.home.slice(0, 3)}-${m.away.slice(0, 3)} (${p.h}-${p.a})`);
+        }
+      }
+
+      if (earned >= 3) {
+        stObj.streak += 1;
+        if (stObj.streak > stObj.bestStreak) stObj.bestStreak = stObj.streak;
+      } else {
+        stObj.streak = 0;
+      }
+    });
+  });
+
+  const allStats = Object.values(statsMap);
+
+  const exactSorted = [...allStats].sort((a, b) => {
+    if (b.exactCount !== a.exactCount) return b.exactCount - a.exactCount;
+    return compareMembers(a.member, b.member);
+  });
+
+  const kingExact = exactSorted[0];
+  const streakLeader = [...allStats].sort((a, b) => b.streak - a.streak || b.bestStreak - a.bestStreak || compareMembers(a.member, b.member))[0];
+  const drawFan = [...allStats].sort((a, b) => b.drawPreds - a.drawPreds || compareMembers(a.member, b.member))[0];
+  const awayFan = [...allStats].sort((a, b) => b.awayPreds - a.awayPreds || compareMembers(a.member, b.member))[0];
+
+  document.getElementById('fun-cards').innerHTML = `
+    <div class="fun-box">
+      <div class="fun-label">🎯 Roi du Score Exact</div>
+      <div class="fun-winner">${kingExact && kingExact.exactCount > 0 ? kingExact.member.name : "En attente d'un score exact"}</div>
+      <div class="fun-sub">${kingExact && kingExact.exactCount > 0 ? `${kingExact.exactCount} score(s) exact(s)` : "Les scores exacts (+6 pts) sont comptabilisés dès qu'un match est validé."}</div>
+    </div>
+    <div class="fun-box">
+      <div class="fun-label">🔥 Série en cours</div>
+      <div class="fun-winner">${streakLeader && streakLeader.streak > 0 ? `${streakLeader.member.name} (${streakLeader.streak} match${streakLeader.streak > 1 ? "s" : ""})` : "Pas encore de série"}</div>
+      <div class="fun-sub">Matchs consécutifs avec résultat trouvé (+3 ou +6 pts)</div>
+    </div>
+    <div class="fun-box">
+      <div class="fun-label">🤝 Spécialiste du Nul</div>
+      <div class="fun-winner">${drawFan && drawFan.drawPreds > 0 ? `${drawFan.member.name} (${drawFan.drawPreds})` : "Aucun nul pronostiqué"}</div>
+      <div class="fun-sub">Scores d'égalité joués sur les matchs terminés</div>
+    </div>
+    <div class="fun-box">
+      <div class="fun-label">✈️ Aventurier Extérieur</div>
+      <div class="fun-winner">${awayFan && awayFan.awayPreds > 0 ? `${awayFan.member.name} (${awayFan.awayPreds})` : "Aucun succès extérieur joué"}</div>
+      <div class="fun-sub">Victoires à l'extérieur pronostiquées</div>
+    </div>
+  `;
+
+  document.getElementById('exact-lb').innerHTML = exactSorted.map((item, idx) => {
+    const isMe = user === item.member.code;
+    const rowClass = isMe ? 'me-row' : (item.member.isChamp ? 'champ' : '');
+    const rowStyle = isMe ? ' style="background-color: #DCFCE7;"' : (item.member.isChamp ? ' style="background-color: #FDECEA;"' : '');
+    const details = item.exactMatches.length ? item.exactMatches.join(", ") : "-";
+    return `<tr class="${rowClass}"${rowStyle}><td><strong>${idx + 1}</strong></td><td>${item.member.name}</td><td><strong>${item.exactCount}</strong></td><td style="font-size:0.82rem; color:#444;">${details}</td></tr>`;
+  }).join("");
+
+  const posts = Array.isArray(data.blog) && data.blog.length ? data.blog : DEFAULT_BLOG;
+  document.getElementById('blog-list').innerHTML = posts.map(p => `
+    <div class="blog-post">
+      <div class="blog-meta">${p.date || "Iparraldeko Peña"}</div>
+      <div class="blog-title">${p.title}</div>
+      <div class="blog-body">${p.body}</div>
+    </div>
+  `).join("");
+}
+
 function render() {
   document.getElementById('login-sec').classList.toggle('hidden', !!user);
   document.getElementById('nav').classList.toggle('hidden', !user);
-  document.getElementById('v-pronos').classList.toggle('hidden', !user);
-  if (!user) return;
+  if (!user) {
+    document.getElementById('v-pronos').classList.add('hidden');
+    document.getElementById('v-fun').classList.add('hidden');
+    document.getElementById('v-palm').classList.add('hidden');
+    return;
+  }
+  const activeTabBtn = document.querySelector('.nav button.active');
+  const currentTab = activeTabBtn ? activeTabBtn.id.replace('t-', '') : 'pronos';
+  tab(currentTab);
+
   data.matches.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
   const ms = document.getElementById('m-sel'), as = document.getElementById('a-sel');
   ms.innerHTML = ""; as.innerHTML = "";
   data.matches.forEach((m, i) => {
-    const lbl = `Pronostic n° ${13 + i} : ${m.home} - ${m.away} ${m.finished ? '('+m.fh+'-'+m.fa+')' : ''}`;
+    const lbl = `Pronostic n° ${1 + i} : ${m.home} - ${m.away} ${m.finished ? '('+m.fh+'-'+m.fa+')' : ''}`;
     ms.add(new Option(lbl, m.id)); as.add(new Option(lbl, m.id));
   });
   ms.value = selId; as.value = selId;
   const idx = data.matches.findIndex(x => x.id === selId);
   const m = data.matches[idx];
   const st = started(m);
-  document.getElementById('p-title').textContent = `Pronostic n° ${13 + idx} : ${m.home} - ${m.away}`;
+  document.getElementById('p-title').textContent = `Pronostic n° ${1 + idx} : ${m.home} - ${m.away}`;
   document.getElementById('p-meta').textContent = `${fmtDate(m.kickoff)} • ${m.comp}`;
   document.getElementById('p-stat').textContent = m.finished ? `Terminé (${m.fh}-${m.fa})` : (st ? "En cours" : "Ouvert");
   document.getElementById('t-home').textContent = m.home; document.getElementById('t-away').textContent = m.away;
@@ -592,7 +946,7 @@ function render() {
     const ep = m.preds ? m.preds[user] : null;
     const predText = ep ? `<strong>${ep.h} - ${ep.a}</strong>` : `<span style="color:var(--rouge); font-weight:bold;">Non pronostiqué</span>`;
     const ptUnit = memObj.points <= 1 ? "pt" : "pts";
-    document.getElementById('m-summary').innerHTML = `Rang actuel : <strong>${myRank}e</strong> (${memObj.points} ${ptUnit}) • Ton prono J${13 + idx} : ${predText}`;
+    document.getElementById('m-summary').innerHTML = `Rang actuel : <strong>${myRank}e</strong> (${memObj.points} ${ptUnit}) • Ton prono J${1 + idx} : ${predText}`;
 
     document.getElementById('in-h').value = ep ? ep.h : ""; document.getElementById('in-a').value = ep ? ep.a : "";
   }
@@ -604,10 +958,10 @@ function render() {
   const playedCount = m.preds ? Object.keys(m.preds).length : 0;
   const participationRate = totalMembers > 0 ? Math.round((playedCount / totalMembers) * 100) : 0;
 
-  document.getElementById('participation-display').textContent = `Taux de Participation pour la journée ${13 + idx} : ${participationRate}% (${playedCount}/${totalMembers} participants)`;
+  document.getElementById('participation-display').textContent = `Taux de Participation pour la journée ${1 + idx} : ${participationRate}% (${playedCount}/${totalMembers} participants)`;
 
   document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
-  document.getElementById('col-p').textContent = `Prono n°${13 + idx}`;
+  document.getElementById('col-p').textContent = `Prono n°${1 + idx}`;
   document.getElementById('lb').innerHTML = rankedRows.map(({ member: x, rank: rk, showRank }) => {
     const p = m.preds ? m.preds[x.code] : null;
     let pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
@@ -637,6 +991,8 @@ function render() {
 
     return `<tr class="${rowClass}"${rowStyle}><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
   }).join("");
+
+  renderFunAndBlog();
   document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
 }
 sync();
