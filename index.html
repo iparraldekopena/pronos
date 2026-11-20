@@ -191,7 +191,7 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
   <div id="v-fun" class="card hidden">
     <h2>Thèmes Amusants & Distinctions</h2>
     <div id="fun-cards" class="fun-grid"></div>
-    <h3>🎯 Classement du Roi du Score Exact (+6 pts)</h3>
+    <h3 id="exact-title">👑 Classement de la Reine du Score Exact (+6 pts)</h3>
     <table>
       <thead><tr><th>Pos</th><th>Membre</th><th>Scores exacts</th><th>Détails</th></tr></thead>
       <tbody id="exact-lb"></tbody>
@@ -206,6 +206,7 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
 </div>
 <script>
 const DB = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+const FEMALE_CODES = ["LOREA-01", "XINA-07"];
 
 const MEMBERS = [
   { code: "LOREA-01", name: "LABORDE Lorea", points: 35, isChamp: false, cups: 2 },
@@ -449,13 +450,13 @@ const DEFAULT_BLOG = [
     id: "b1",
     date: "20 novembre 2026",
     title: "Alerte générale : ce soir à San Mamés, les boules de cristal chauffent !",
-    body: "À 21h00, Athletic Club - RCD Espanyol. Certains ont déjà sorti le pendule, d'autres copient sur le voisin au dernier moment, et quelques-uns misent encore sur un score improbable en espérant le +6 pts du miracle. Rappel : après le coup de sifflet final, les flèches vertes et rouges risquent de faire quelques victimes !"
+    body: "À 21h00, Athletic Club - RCD Espanyol. Lorea mène la danse et vise encore les scores exacts pendant que d'autres sortent le pendule ou copient sur le voisin au dernier moment. Rappel : après le coup de sifflet final, les flèches vertes et rouges risquent de faire quelques victimes !"
   },
   {
     id: "b2",
     date: "14 novembre 2026",
     title: "Enquête : qui a mis de la colle sur les cages d'Alavés et de Valence ?",
-    body: "Deux 0-0 d'affilée sur les journées 6 et 7 : les gardiens ont pris la grosse tête et les attaquants ont cherché le ballon dans les tribunes. Bravo à ceux qui avaient flairé la disette de buts !"
+    body: "Deux 0-0 d'affilée sur les journées 6 et 7 : les gardiens ont pris la grosse tête et les attaquants ont cherché le ballon dans les tribunes. Bravo à celles et ceux qui avaient flairé la disette de buts !"
   }
 ];
 
@@ -469,14 +470,19 @@ const FUNNY_IDEAS = [
     body: "Les pronostics sont verrouillés, la pression monte et les calculettes tournent à plein régime. Qui va grimper comme une fusée et qui va glisser sur une peau de banane ? Réponse après le match !"
   },
   {
-    title: "Spécial chasseurs de +6 pts : le grand frisson de la lucarne",
-    body: "Rien ne fait plus vibrer la Peña qu'un score exact sorti de nulle part à la 89e minute. Les rois du +6 pts ont déjà aiguisé leur flair pour la prochaine journée !"
+    title: "Spécial chasseuses et chasseurs de +6 pts : le grand frisson de la lucarne",
+    body: "Rien ne fait plus vibrer la Peña qu'un score exact sorti de nulle part à la 89e minute. Les reines et rois du +6 pts ont déjà aiguisé leur flair pour la prochaine journée !"
   }
 ];
 
 let data = { members: MEMBERS, matches: MATCHES, blog: DEFAULT_BLOG };
 let user = localStorage.getItem('penaUser') || null;
 let selId = "m13";
+
+function isFemaleMember(mem) {
+  if (!mem) return false;
+  return FEMALE_CODES.includes(mem.code) || /\b(Lorea|Xina)\b/i.test(mem.name || "");
+}
 
 function compareMembers(a, b) {
   if (b.points !== a.points) return b.points - a.points;
@@ -860,13 +866,20 @@ function renderFunAndBlog() {
     });
 
   const kingExact = exactSorted[0];
+  const exactIsFemale = kingExact ? isFemaleMember(kingExact.member) : true;
+  const exactTitleLabel = exactIsFemale ? "Reine du Score Exact" : "Roi du Score Exact";
+  document.getElementById('exact-title').textContent = `👑 Classement de la ${exactTitleLabel} (+6 pts)`;
+
   const streakLeader = [...allStats].sort((a, b) => b.streak - a.streak || b.bestStreak - a.bestStreak || compareMembers(a.member, b.member))[0];
   const drawFan = [...allStats].sort((a, b) => b.drawPreds - a.drawPreds || compareMembers(a.member, b.member))[0];
   const awayFan = [...allStats].sort((a, b) => b.awayPreds - a.awayPreds || compareMembers(a.member, b.member))[0];
 
+  const drawLabel = drawFan && isFemaleMember(drawFan.member) ? "Spécialiste du Nul" : "Spécialiste du Nul";
+  const awayLabel = awayFan && isFemaleMember(awayFan.member) ? "Aventurière Extérieur" : "Aventurier Extérieur";
+
   document.getElementById('fun-cards').innerHTML = `
     <div class="fun-box">
-      <div class="fun-label">🎯 Roi du Score Exact</div>
+      <div class="fun-label">👑 ${exactTitleLabel}</div>
       <div class="fun-winner">${kingExact ? kingExact.member.name : "En attente d'un score exact"}</div>
       <div class="fun-sub">${kingExact ? `${kingExact.exactCount} score(s) exact(s)` : "Aucun score exact validé pour l'instant."}</div>
     </div>
@@ -876,12 +889,12 @@ function renderFunAndBlog() {
       <div class="fun-sub">Matchs consécutifs avec résultat trouvé (+3 ou +6 pts)</div>
     </div>
     <div class="fun-box">
-      <div class="fun-label">🤝 Spécialiste du Nul</div>
+      <div class="fun-label">🤝 ${drawLabel}</div>
       <div class="fun-winner">${drawFan && drawFan.drawPreds > 0 ? `${drawFan.member.name} (${drawFan.drawPreds})` : "Aucun nul pronostiqué"}</div>
       <div class="fun-sub">Scores d'égalité joués sur les matchs terminés</div>
     </div>
     <div class="fun-box">
-      <div class="fun-label">✈️ Aventurier Extérieur</div>
+      <div class="fun-label">✈️ ${awayLabel}</div>
       <div class="fun-winner">${awayFan && awayFan.awayPreds > 0 ? `${awayFan.member.name} (${awayFan.awayPreds})` : "Aucun succès extérieur joué"}</div>
       <div class="fun-sub">Victoires à l'extérieur pronostiquées</div>
     </div>
