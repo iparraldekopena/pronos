@@ -276,6 +276,7 @@ tr.champ { background-color: #FDECEA; border-left: 5px solid var(--rouge); font-
 tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; font-weight: 700; }
 .badge-champ { background: var(--noir); color: var(--blanc); border: 1px solid var(--rouge); font-size: 0.7rem; padding: 2px 7px; border-radius: 999px; margin-left: 6px; }
 .badge-me { background: var(--rouge); color: var(--blanc); font-size: 0.68rem; padding: 2px 7px; border-radius: 999px; margin-left: 6px; font-weight: 700; }
+.rank-medal { font-size: 0.95rem; vertical-align: middle; }
 .hidden { display: none; }
 .palmares-item {
   border: 1px solid var(--bordure);
@@ -535,9 +536,10 @@ const PALM = [
   { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
 ];
 
+// Ordre remis en place selon la capture : "D" = Athletic reçoit, "E" = Athletic joue à l'extérieur
 const HISTORIQUE_MATCHS = [
   {
-    id: "m01", comp: "Journée 1", home: "SEVILLA FC", away: "ATHLETIC CLUB", kickoff: "2026-08-15T19:00",
+    id: "m01", comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC", kickoff: "2026-08-15T19:00",
     finished: true, fh: 1, fa: 3,
     preds: {
       "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
@@ -550,7 +552,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m02", comp: "Journée 2", home: "BARCELONA", away: "ATHLETIC CLUB", kickoff: "2026-08-22T21:00",
+    id: "m02", comp: "Journée 2 • Extérieur (E)", home: "BARCELONA", away: "ATHLETIC CLUB", kickoff: "2026-08-22T21:00",
     finished: true, fh: 2, fa: 0,
     preds: {
       "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
@@ -563,7 +565,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m03", comp: "Journée 3", home: "CELTA VIGO", away: "ATHLETIC CLUB", kickoff: "2026-08-29T18:30",
+    id: "m03", comp: "Journée 3 • Extérieur (E)", home: "CELTA VIGO", away: "ATHLETIC CLUB", kickoff: "2026-08-29T18:30",
     finished: true, fh: 0, fa: 2,
     preds: {
       "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 3, a: 1 }, "JONATHAN-05": { h: 1, a: 1 },
@@ -576,7 +578,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m04", comp: "Journée 4", home: "ATLETICO MADRID", away: "ATHLETIC CLUB", kickoff: "2026-09-12T21:00",
+    id: "m04", comp: "Journée 4 • Domicile (D)", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", kickoff: "2026-09-12T21:00",
     finished: true, fh: 3, fa: 0,
     preds: {
       "JORGE-13": { h: 2, a: 1 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 1 },
@@ -589,7 +591,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m05", comp: "Journée 5", home: "ELCHE", away: "ATHLETIC CLUB", kickoff: "2026-09-19T18:30",
+    id: "m05", comp: "Journée 5 • Domicile (D)", home: "ATHLETIC CLUB", away: "ELCHE", kickoff: "2026-09-19T18:30",
     finished: true, fh: 1, fa: 1,
     preds: {
       "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 4, a: 1 }, "JONATHAN-05": { h: 3, a: 0 },
@@ -604,7 +606,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m06", comp: "Journée 6", home: "ALAVES", away: "ATHLETIC CLUB", kickoff: "2026-09-26T21:00",
+    id: "m06", comp: "Journée 6 • Domicile (D)", home: "ATHLETIC CLUB", away: "ALAVES", kickoff: "2026-09-26T21:00",
     finished: true, fh: 0, fa: 0,
     preds: {
       "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 }, "FREDERIC-17": { h: 1, a: 1 },
@@ -618,7 +620,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m07", comp: "Journée 7", home: "VALENCIA", away: "ATHLETIC CLUB", kickoff: "2026-10-03T16:15",
+    id: "m07", comp: "Journée 7 • Extérieur (E)", home: "VALENCIA", away: "ATHLETIC CLUB", kickoff: "2026-10-03T16:15",
     finished: true, fh: 0, fa: 0,
     preds: {
       "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 1 },
@@ -632,7 +634,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m08", comp: "Journée 8", home: "LEVANTE", away: "ATHLETIC CLUB", kickoff: "2026-10-17T18:30",
+    id: "m08", comp: "Journée 8 • Extérieur (E)", home: "LEVANTE", away: "ATHLETIC CLUB", kickoff: "2026-10-17T18:30",
     finished: true, fh: 3, fa: 1,
     preds: {
       "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 }, "FREDERIC-17": { h: 3, a: 3 },
@@ -645,7 +647,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m09", comp: "Journée 9", home: "GETAFE", away: "ATHLETIC CLUB", kickoff: "2026-10-24T21:00",
+    id: "m09", comp: "Journée 9 • Domicile (D)", home: "ATHLETIC CLUB", away: "GETAFE", kickoff: "2026-10-24T21:00",
     finished: true, fh: 4, fa: 0,
     preds: {
       "JORGE-13": { h: 0, a: 0 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 },
@@ -659,7 +661,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m10", comp: "Journée 10", home: "PRAT", away: "ATHLETIC CLUB", kickoff: "2026-10-31T16:15",
+    id: "m10", comp: "Journée 10 • Extérieur (E)", home: "PRAT", away: "ATHLETIC CLUB", kickoff: "2026-10-31T16:15",
     finished: true, fh: 1, fa: 6,
     preds: {
       "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 0, a: 4 }, "JONATHAN-05": { h: 0, a: 3 },
@@ -673,7 +675,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m11", comp: "Journée 11", home: "REAL SOCIEDAD", away: "ATHLETIC CLUB", kickoff: "2026-11-04T21:00",
+    id: "m11", comp: "Journée 11 • Domicile (D)", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", kickoff: "2026-11-04T21:00",
     finished: true, fh: 2, fa: 1,
     preds: {
       "JORGE-13": { h: 3, a: 2 }, "JONATHAN-05": { h: 2, a: 1 }, "FREDERIC-17": { h: 3, a: 1 },
@@ -686,7 +688,7 @@ const HISTORIQUE_MATCHS = [
     trend: null
   },
   {
-    id: "m12", comp: "Journée 12", home: "OSASUNA", away: "ATHLETIC CLUB", kickoff: "2026-11-07T18:30",
+    id: "m12", comp: "Journée 12 • Extérieur (E)", home: "OSASUNA", away: "ATHLETIC CLUB", kickoff: "2026-11-07T18:30",
     finished: true, fh: 1, fa: 1,
     preds: {
       "JORGE-13": { h: 1, a: 3 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 },
@@ -785,6 +787,13 @@ function getRankedList(membersList) {
     }
     return { member: x, rank: rk, showRank };
   });
+}
+
+function getMedalForRank(rk) {
+  if (rk === 1) return "🥇";
+  if (rk === 2) return "🥈";
+  if (rk === 3) return "🥉";
+  return "";
 }
 
 function matchPointsEarned(pred, m) {
@@ -952,6 +961,9 @@ function mergeMatchesWithHistory(matchesList) {
     if (existingIdx === -1) {
       list.push({ ...hm });
     } else {
+      list[existingIdx].comp = hm.comp;
+      list[existingIdx].home = hm.home;
+      list[existingIdx].away = hm.away;
       if (!list[existingIdx].preds || Object.keys(list[existingIdx].preds).length === 0) {
         list[existingIdx].preds = hm.preds || {};
       }
@@ -1336,104 +1348,4 @@ function render() {
 
     const miss = [...data.members].sort(compareMembers).filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
     document.getElementById('a-track').innerHTML = miss.length ? `<strong>En attente (${miss.length}) :</strong> ${miss.join(", ")}` : "<strong>Tout le monde a joué !</strong>";
-    document.getElementById('a-codes').innerHTML = [...data.members].sort(compareMembers).map(x => `<div><strong>${x.name}</strong> : ${x.code}</div>`).join("");
-  } else {
-    document.getElementById('adm-sec').classList.add('hidden');
-    document.getElementById('mem-sec').classList.remove('hidden');
-
-    const memObj = data.members.find(x => x.code === user);
-    if (!memObj) { logout(); return; }
-    const fullName = memObj.name;
-    const firstName = fullName.split(' ').pop();
-    document.getElementById('m-name').textContent = firstName;
-
-    const myRankItem = rankedRows.find(r => r.member.code === user);
-    const myRank = myRankItem ? myRankItem.rank : "-";
-    const myDisplayedPts = myRankItem ? myRankItem.member.points : memObj.points;
-    const ep = m.preds ? m.preds[user] : null;
-    const predText = ep ? `<strong>${ep.h} - ${ep.a}</strong>` : `<span style="color:var(--rouge); font-weight:bold;">Non pronostiqué</span>`;
-    const ptUnit = myDisplayedPts <= 1 ? "pt" : "pts";
-    const dayTag = standings.isHistorical ? ` (fin J${standings.dayNumber})` : "";
-    document.getElementById('m-summary').innerHTML = `Rang${dayTag} : <strong>${myRank}e</strong> (${myDisplayedPts} ${ptUnit}) • Ton prono J${1 + idx} : ${predText}`;
-
-    const predFormArea = document.getElementById('pred-form-area');
-    const predClosedArea = document.getElementById('pred-closed-area');
-    if (st) {
-      predFormArea.classList.add('hidden');
-      predClosedArea.classList.remove('hidden');
-      const earned = matchPointsEarned(ep, m);
-      const pronoLine = ep ? `Ton pronostic enregistré : <strong>${m.home} ${ep.h} - ${ep.a} ${m.away}</strong>` : `Tu n'avais pas enregistré de pronostic sur ce match.`;
-      const gainLine = earned !== null ? ` • Points obtenus : <strong>+${earned} ${earned <= 1 ? "pt" : "pts"}</strong>` : "";
-      predClosedArea.innerHTML = `🔒 <strong>Pronostics fermés</strong> pour ce match. ${pronoLine}${gainLine}`;
-    } else {
-      predFormArea.classList.remove('hidden');
-      predClosedArea.classList.add('hidden');
-      document.getElementById('in-h').value = ep ? ep.h : "";
-      document.getElementById('in-a').value = ep ? ep.a : "";
-    }
-  }
-
-  if (standings.isHistorical) {
-    document.getElementById('lb-title').textContent = `Classement à l'issue de la Journée ${standings.dayNumber}`;
-    document.getElementById('last-update').textContent = `Classement cumulé à la fin de la Journée ${standings.dayNumber} (${fmtDate(m.kickoff).split(' à ')[0]})`;
-  } else {
-    document.getElementById('lb-title').textContent = `Classement Général & Pronostics`;
-    const finishedMatches = data.matches.filter(x => x.finished);
-    const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
-    document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
-  }
-
-  const totalMembers = data.members.length;
-  const playedCount = m.preds ? Object.keys(m.preds).length : 0;
-  const participationRate = totalMembers > 0 ? Math.round((playedCount / totalMembers) * 100) : 0;
-
-  document.getElementById('participation-display').textContent = `Taux de Participation pour la journée ${1 + idx} : ${participationRate}% (${playedCount}/${totalMembers} participants)`;
-
-  document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
-  document.getElementById('col-p').textContent = `Prono n°${1 + idx}`;
-  document.getElementById('lb').innerHTML = rankedRows.map(({ member: x, rank: rk, showRank }) => {
-    const p = m.preds ? m.preds[x.code] : null;
-    let pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
-    const earned = matchPointsEarned(p, m);
-    if (earned !== null) {
-      const unit = earned <= 1 ? "pt" : "pts";
-      pd += ` <span class="pts-gain">(+${earned} ${unit})</span>`;
-    }
-
-    let arrowHtml = "";
-    if (typeof x.prevRank === "number") {
-      if (rk < x.prevRank) arrowHtml = `<span class="arrow-up" title="Remontée (était ${x.prevRank}e)">▲</span>`;
-      else if (rk > x.prevRank) arrowHtml = `<span class="arrow-down" title="Descente (était ${x.prevRank}e)">▼</span>`;
-    }
-
-    let medal = "";
-    if (showRank) {
-      if (rk === 1) medal = " 🥇";
-      else if (rk === 2) medal = " 🥈";
-      else if (rk === 3) medal = " 🥉";
-    }
-
-    const rankDisplay = showRank ? `<strong>${rk}</strong>${medal}${arrowHtml}` : arrowHtml;
-
-    let cupsDisplay = "";
-    if (x.cups && x.cups > 0) {
-      cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
-    }
-
-    const isMe = user === x.code;
-    const rowClass = isMe ? 'me-row' : (x.isChamp ? 'champ' : '');
-    const rowStyle = isMe ? ' style="background-color: #DCFCE7;"' : (x.isChamp ? ' style="background-color: #FDECEA;"' : '');
-    const pointsLabel = (x.points <= 1) ? "pt" : "pts";
-
-    return `<tr class="${rowClass}"${rowStyle}><td>${rankDisplay}</td><td>${x.name}${cupsDisplay}${x.isChamp ? '<span class="badge-champ">Tenant du Titre</span>' : ''}${isMe ? '<span class="badge-me">Toi</span>' : ''}</td><td>${pd}</td><td><strong>${x.points} ${pointsLabel}</strong></td></tr>`;
-  }).join("");
-
-  renderFunAndBlog();
-  document.getElementById('palm-list').innerHTML = PALM.map(p => `<div class="palmares-item"><strong style="color:var(--rouge);">Saison ${p.y}</strong><br>1er : <strong>${p.p1.toUpperCase()} 🏆</strong><br>2e : ${p.p2}<br>3e : ${p.p3}</div>`).join("");
-}
-render();
-sync(true);
-setInterval(() => { if (user) sync(true); }, 20000);
-</script>
-</body>
-</html>
+    document.getElementById('a-codes').innerHTML = [...data.members
