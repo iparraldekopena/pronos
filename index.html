@@ -181,7 +181,7 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
       <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
     </div>
     <div class="card">
-      <h2>Classement Général & Pronostics</h2>
+      <h2 id="lb-title">Classement Général & Pronostics</h2>
       <div id="participation-display" class="participation-box"></div>
       <p id="last-update" style="font-size:0.85rem; color:var(--rouge); font-weight:bold; margin-top:-2px; margin-bottom:10px;"></p>
       <p id="vis-msg" style="font-size:0.85rem;"></p>
@@ -509,6 +509,56 @@ function matchPointsEarned(pred, m) {
   const predRes = pred.h > pred.a ? "1" : (pred.h < pred.a ? "2" : "N");
   const realRes = m.fh > m.fa ? "1" : (m.fh < m.fa ? "2" : "N");
   return predRes === realRes ? 3 : 1;
+}
+
+function getStandingsForMatch(targetMatch, orderedMatches) {
+  const sortedMatches = [...orderedMatches].sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
+  const targetIdx = sortedMatches.findIndex(x => x.id === targetMatch.id);
+
+  if (!targetMatch.finished || targetIdx === -1) {
+    return {
+      isHistorical: false,
+      dayNumber: targetIdx + 1,
+      rows: getRankedList(data.members)
+    };
+  }
+
+  const pointsByCode = {};
+  const prevPointsByCode = {};
+  data.members.forEach(mem => {
+    pointsByCode[mem.code] = 0;
+    prevPointsByCode[mem.code] = 0;
+  });
+
+  for (let i = 0; i <= targetIdx; i++) {
+    const gm = sortedMatches[i];
+    if (!gm.finished || gm.fh === null || gm.fa === null) continue;
+    data.members.forEach(mem => {
+      const p = gm.preds ? gm.preds[mem.code] : null;
+      const pts = matchPointsEarned(p, gm) || 0;
+      pointsByCode[mem.code] += pts;
+      if (i < targetIdx) {
+        prevPointsByCode[mem.code] += pts;
+      }
+    });
+  }
+
+  const prevSnapshot = data.members.map(mem => ({ ...mem, points: prevPointsByCode[mem.code] }));
+  const prevRanked = getRankedList(prevSnapshot);
+  const prevRankMap = {};
+  prevRanked.forEach(item => { prevRankMap[item.member.code] = item.rank; });
+
+  const currentSnapshot = data.members.map(mem => ({
+    ...mem,
+    points: pointsByCode[mem.code],
+    prevRank: targetIdx > 0 ? prevRankMap[mem.code] : undefined
+  }));
+
+  return {
+    isHistorical: true,
+    dayNumber: targetIdx + 1,
+    rows: getRankedList(currentSnapshot)
+  };
 }
 
 function goNextOpenMatch() {
@@ -954,7 +1004,8 @@ function render() {
 
   renderTrendCard(m);
 
-  const rankedRows = getRankedList(data.members);
+  const standings = getStandingsForMatch(m, data.matches);
+  const rankedRows = standings.rows;
 
   const urgentEl = document.getElementById('urgent-msg');
   const hoursLeft = (new Date(m.kickoff) - new Date()) / (1000 * 60 * 60);
@@ -992,16 +1043,25 @@ function render() {
 
     const myRankItem = rankedRows.find(r => r.member.code === user);
     const myRank = myRankItem ? myRankItem.rank : "-";
+    const myDisplayedPts = myRankItem ? myRankItem.member.points : memObj.points;
     const ep = m.preds ? m.preds[user] : null;
     const predText = ep ? `<strong>${ep.h} - ${ep.a}</strong>` : `<span style="color:var(--rouge); font-weight:bold;">Non pronostiqué</span>`;
-    const ptUnit = memObj.points <= 1 ? "pt" : "pts";
-    document.getElementById('m-summary').innerHTML = `Rang actuel : <strong>${myRank}e</strong> (${memObj.points} ${ptUnit}) • Ton prono J${1 + idx} : ${predText}`;
+    const ptUnit = myDisplayedPts <= 1 ? "pt" : "pts";
+    const dayTag = standings.isHistorical ? ` (fin J${standings.dayNumber})` : "";
+    document.getElementById('m-summary').innerHTML = `Rang${dayTag} : <strong>${myRank}e</strong> (${myDisplayedPts} ${ptUnit}) • Ton prono J${1 + idx} : ${predText}`;
 
     document.getElementById('in-h').value = ep ? ep.h : ""; document.getElementById('in-a').value = ep ? ep.a : "";
   }
-  const finishedMatches = data.matches.filter(x => x.finished);
-  const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
-  document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
+
+  if (standings.isHistorical) {
+    document.getElementById('lb-title').textContent = `Classement à l'issue de la Journée ${standings.dayNumber}`;
+    document.getElementById('last-update').textContent = `Classement cumulé à la fin de la Journée ${standings.dayNumber} (${fmtDate(m.kickoff).split(' à ')[0]})`;
+  } else {
+    document.getElementById('lb-title').textContent = `Classement Général & Pronostics`;
+    const finishedMatches = data.matches.filter(x => x.finished);
+    const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
+    document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
+  }
 
   const totalMembers = data.members.length;
   const playedCount = m.preds ? Object.keys(m.preds).length : 0;
