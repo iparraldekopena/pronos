@@ -357,7 +357,8 @@ function render() {
 
   const urgentEl = document.getElementById('urgent-msg');
   const hoursLeft = (new Date(m.kickoff) - new Date()) / (1000 * 60 * 60);
-  if (!st && hoursLeft > 0 && hoursLeft <= 24) {
+  const hasUserPred = user && user !== "ADMIN" && m.preds && !!m.preds[user];
+  if (!st && !hasUserPred && hoursLeft > 0 && hoursLeft <= 24) {
     urgentEl.textContent = `⏰ Coup d'envoi dans moins de 24 h : pensez à valider votre pronostic !`;
     urgentEl.classList.remove('hidden');
   } else {
