@@ -174,6 +174,11 @@ let data = { members: MEMBERS, matches: MATCHES };
 let user = localStorage.getItem('penaUser') || null;
 let selId = "m13";
 
+function compareMembers(a, b) {
+  if (b.points !== a.points) return b.points - a.points;
+  return a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' });
+}
+
 async function sync(silent) {
   try {
     const r = await fetch(DB);
@@ -292,13 +297,13 @@ function render() {
     document.getElementById('mem-sec').classList.add('hidden');
     document.getElementById('adm-sec').classList.remove('hidden');
     document.getElementById('al-h').textContent = m.home; document.getElementById('al-a').textContent = m.away;
-    const miss = data.members.filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
+    const miss = [...data.members].sort(compareMembers).filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
     document.getElementById('a-track').innerHTML = miss.length ? `<strong>En attente (${miss.length}) :</strong> ${miss.join(", ")}` : "<strong>Tout le monde a joué !</strong>";
-    document.getElementById('a-codes').innerHTML = data.members.map(x => `<div><strong>${x.name}</strong> : ${x.code}</div>`).join("");
+    document.getElementById('a-codes').innerHTML = [...data.members].sort(compareMembers).map(x => `<div><strong>${x.name}</strong> : ${x.code}</div>`).join("");
   } else {
     document.getElementById('adm-sec').classList.add('hidden');
     document.getElementById('mem-sec').classList.remove('hidden');
-    
+
     const fullName = data.members.find(x => x.code === user).name;
     const firstName = fullName.split(' ').pop();
     document.getElementById('m-name').textContent = firstName;
@@ -309,8 +314,7 @@ function render() {
   const finishedMatches = data.matches.filter(x => x.finished);
   const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
   document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
-  
-  // Calcul du taux de participation pour la journée active
+
   const totalMembers = data.members.length;
   const playedCount = m.preds ? Object.keys(m.preds).length : 0;
   const participationRate = totalMembers > 0 ? Math.round((playedCount / totalMembers) * 100) : 0;
@@ -318,7 +322,7 @@ function render() {
 
   document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
   document.getElementById('col-p').textContent = `Prono n°${13 + idx}`;
-  const sorted = [...data.members].sort((a, b) => b.points - a.points);
+  const sorted = [...data.members].sort(compareMembers);
   let rk = 1;
   document.getElementById('lb').innerHTML = sorted.map((x, i) => {
     let showRank = true;
@@ -329,7 +333,7 @@ function render() {
     const p = m.preds ? m.preds[x.code] : null;
     const pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
     const rankDisplay = showRank ? `<strong>${rk}</strong>` : "";
-    
+
     let cupsDisplay = "";
     if (x.cups && x.cups > 0) {
       cupsDisplay = ` <span style="font-size:0.85rem;" title="${x.cups} victoire(s)">${"🏆".repeat(x.cups)}</span>`;
