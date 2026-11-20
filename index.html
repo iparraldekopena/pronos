@@ -20,6 +20,8 @@ h2 { margin-top: 0; font-size: 1.15rem; border-bottom: 2px solid var(--noir); pa
 input, select { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
 .btn { background: var(--rouge); color: var(--blanc); border: 2px solid var(--noir); padding: 12px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
 .btn:hover { background: var(--noir); }
+.btn-secondary { background: var(--noir); color: var(--blanc); border: 2px solid var(--rouge); padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; text-transform: uppercase; }
+.btn-secondary:hover { background: var(--rouge); color: var(--blanc); }
 .match-box { background: var(--noir); color: var(--blanc); padding: 12px 15px; border-radius: 6px; border-left: 6px solid var(--rouge); margin-bottom: 15px; }
 .scores { display: flex; align-items: center; gap: 10px; margin: 15px 0; text-align: center; }
 .scores div { flex: 1; font-weight: bold; }
@@ -34,6 +36,10 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
 .hidden { display: none; }
 .palmares-item { border: 1px solid var(--noir); border-left: 6px solid var(--rouge); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
 .participation-box { background: #f8f8f8; border-left: 4px solid var(--rouge); padding: 8px 12px; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
+.member-summary { background: #f4f4f4; border-left: 4px solid #16A34A; padding: 10px 12px; font-size: 0.88rem; margin-bottom: 14px; border-radius: 4px; }
+.stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.stat-pill { background: #f8f8f8; border: 1px solid #e5e5e5; border-top: 3px solid var(--noir); border-radius: 6px; padding: 8px; text-align: center; font-size: 0.8rem; }
+.stat-pill strong { display: block; font-size: 1rem; color: var(--rouge); margin-top: 2px; }
 .urgent-box { background: #fff3cd; border-left: 4px solid #d97706; color: #7c2d12; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; border-radius: 4px; }
 .pts-gain { font-size: 0.78rem; color: #444; margin-left: 4px; font-weight: normal; }
 .arrow-up { color: #16a34a; font-weight: bold; margin-left: 4px; font-size: 0.85rem; }
@@ -66,10 +72,15 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
         <h2 style="border:none; margin:0;">Aupa <span id="m-name" style="color:var(--rouge);"></span> !</h2>
         <button onclick="logout()" style="padding:6px 12px; background:var(--noir); color:#fff; border:none; border-radius:4px; cursor:pointer;">Quitter</button>
       </div>
-      <div style="font-size:0.82rem; background:#f8f8f8; padding:10px; border-radius:6px; margin-bottom:15px; border-left:4px solid var(--noir);">
+      <div style="font-size:0.82rem; background:#f8f8f8; padding:10px; border-radius:6px; margin-bottom:12px; border-left:4px solid var(--noir);">
         <strong>Barème :</strong> Score exact : <strong>6 pts</strong> | Bon 1, N ou 2 : <strong>3 pts</strong> | Rien de bon : <strong>1 pt</strong> | Oubli : <strong>0 pt</strong>
       </div>
+      <div id="m-summary" class="member-summary"></div>
       <div id="urgent-msg" class="urgent-box hidden"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px;">
+        <span style="font-size:0.82rem; font-weight:bold; color:#444;">Match sélectionné :</span>
+        <button onclick="goNextOpenMatch()" style="padding:4px 10px; background:var(--noir); color:#fff; border:none; border-radius:4px; font-size:0.78rem; font-weight:bold; cursor:pointer;">Prochain match ouvert ➔</button>
+      </div>
       <select id="m-sel" onchange="selMatch(this.value)"></select>
       <div class="match-box">
         <div style="display:flex; justify-content:space-between;"><strong id="p-title"></strong><span id="p-stat" style="font-size:0.8rem; background:var(--rouge); padding:2px 6px; border-radius:4px;"></span></div>
@@ -116,11 +127,14 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
       <button class="btn" onclick="calcPts()">Valider le score et attribuer les points</button>
       <h3 style="margin-top:20px;">3. Joueurs en attente</h3>
       <div id="a-track" style="font-size:0.9rem; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
+      <button class="btn-secondary" onclick="copyRecap()">📋 Copier le récapitulatif du match</button>
+      <p id="copy-fb" style="color:#16a34a; font-weight:bold; font-size:0.85rem; margin-top:6px; text-align:center;"></p>
       <h3 style="margin-top:20px;">4. Codes des 27 membres</h3>
       <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
     </div>
     <div class="card">
       <h2>Classement Général & Pronostics</h2>
+      <div id="stats-strip" class="stats-strip"></div>
       <div id="participation-display" class="participation-box"></div>
       <p id="last-update" style="font-size:0.85rem; color:var(--rouge); font-weight:bold; margin-top:-2px; margin-bottom:10px;"></p>
       <p id="vis-msg" style="font-size:0.85rem;"></p>
@@ -211,6 +225,52 @@ function matchPointsEarned(pred, m) {
   return predRes === realRes ? 3 : 1;
 }
 
+function goNextOpenMatch() {
+  const openMatch = data.matches.find(x => !started(x));
+  if (openMatch) {
+    selId = openMatch.id;
+    render();
+  } else {
+    alert("Aucun match ouvert supplémentaire pour le moment.");
+  }
+}
+
+function copyRecap() {
+  const idx = data.matches.findIndex(x => x.id === selId);
+  const m = data.matches[idx] || data.matches[0];
+  const playedCount = m.preds ? Object.keys(m.preds).length : 0;
+  const totalMembers = data.members.length;
+  const miss = [...data.members].sort(compareMembers).filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
+
+  let lines = [
+    `⚽ Pronostic n°${13 + idx} : ${m.home} - ${m.away}`,
+    `Participation : ${playedCount}/${totalMembers}`
+  ];
+  if (m.finished && m.fh !== null && m.fa !== null) {
+    lines.push(`Score final : ${m.home} ${m.fh} - ${m.fa} ${m.away}`);
+  }
+  lines.push(miss.length ? `En attente (${miss.length}) : ${miss.join(", ")}` : "Tout le monde a pronostiqué !");
+
+  const text = lines.join("\n");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('copy-fb').textContent = "✔ Récapitulatif copié dans le presse-papiers !";
+    }).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  document.getElementById('copy-fb').textContent = "✔ Récapitulatif copié dans le presse-papiers !";
+}
+
 async function forcePushSync() {
   const currentRanked = getRankedList(data.members);
   data.members.forEach(m => {
@@ -274,7 +334,7 @@ function login() {
   else document.getElementById('err').textContent = "Code invalide.";
 }
 function logout() { user = null; localStorage.removeItem('penaUser'); render(); }
-function selMatch(id) { selId = id; render(); }
+function selMatch(id) { selId = id; document.getElementById('copy-fb').textContent = ""; render(); }
 function started(m) { return new Date() >= new Date(m.kickoff) || m.finished; }
 function fmtDate(s) {
   const d = new Date(s);
@@ -355,6 +415,8 @@ function render() {
   document.getElementById('t-home').textContent = m.home; document.getElementById('t-away').textContent = m.away;
   document.getElementById('save-btn').disabled = st;
 
+  const rankedRows = getRankedList(data.members);
+
   const urgentEl = document.getElementById('urgent-msg');
   const hoursLeft = (new Date(m.kickoff) - new Date()) / (1000 * 60 * 60);
   const hasUserPred = user && user !== "ADMIN" && m.preds && !!m.preds[user];
@@ -376,25 +438,40 @@ function render() {
     document.getElementById('adm-sec').classList.add('hidden');
     document.getElementById('mem-sec').classList.remove('hidden');
 
-    const fullName = data.members.find(x => x.code === user).name;
+    const memObj = data.members.find(x => x.code === user);
+    const fullName = memObj.name;
     const firstName = fullName.split(' ').pop();
     document.getElementById('m-name').textContent = firstName;
 
+    const myRankItem = rankedRows.find(r => r.member.code === user);
+    const myRank = myRankItem ? myRankItem.rank : "-";
     const ep = m.preds ? m.preds[user] : null;
+    const predText = ep ? `<strong>${ep.h} - ${ep.a}</strong>` : `<span style="color:var(--rouge); font-weight:bold;">Non pronostiqué</span>`;
+    const ptUnit = memObj.points <= 1 ? "pt" : "pts";
+    document.getElementById('m-summary').innerHTML = `Rang actuel : <strong>${myRank}e</strong> (${memObj.points} ${ptUnit}) • Ton prono J${13 + idx} : ${predText}`;
+
     document.getElementById('in-h').value = ep ? ep.h : ""; document.getElementById('in-a').value = ep ? ep.a : "";
   }
   const finishedMatches = data.matches.filter(x => x.finished);
   const lastDateText = finishedMatches.length > 0 ? fmtDate(finishedMatches[finishedMatches.length - 1].kickoff).split(' à ')[0] : "07 novembre 2026";
   document.getElementById('last-update').textContent = `Classement mis à jour au ${lastDateText}`;
 
+  const topPts = rankedRows.length > 0 ? rankedRows[0].member.points : 0;
+  const topUnit = topPts <= 1 ? "pt" : "pts";
   const totalMembers = data.members.length;
   const playedCount = m.preds ? Object.keys(m.preds).length : 0;
   const participationRate = totalMembers > 0 ? Math.round((playedCount / totalMembers) * 100) : 0;
+
+  document.getElementById('stats-strip').innerHTML = `
+    <div class="stat-pill">Leader actuel<strong>${topPts} ${topUnit}</strong></div>
+    <div class="stat-pill">Matchs joués<strong>${finishedMatches.length}</strong></div>
+    <div class="stat-pill">Joués (J${13 + idx})<strong>${playedCount}/${totalMembers}</strong></div>
+  `;
+
   document.getElementById('participation-display').textContent = `Taux de Participation pour la journée ${13 + idx} : ${participationRate}% (${playedCount}/${totalMembers} participants)`;
 
   document.getElementById('vis-msg').innerHTML = st ? "🔓 <strong>Pronostics révélés</strong> (match commencé)" : "🔒 <strong>Pronostics masqués</strong> jusqu'au coup d'envoi.";
   document.getElementById('col-p').textContent = `Prono n°${13 + idx}`;
-  const rankedRows = getRankedList(data.members);
   document.getElementById('lb').innerHTML = rankedRows.map(({ member: x, rank: rk, showRank }) => {
     const p = m.preds ? m.preds[x.code] : null;
     let pd = p ? ((st || user === "ADMIN" || x.code === user) ? `<strong>${p.h} - ${p.a}</strong>` : `<span style="color:var(--rouge);">Validé ✔</span>`) : "-";
