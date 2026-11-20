@@ -22,7 +22,23 @@ input, select { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px soli
 .btn:hover { background: var(--noir); }
 .btn-secondary { background: var(--noir); color: var(--blanc); border: 2px solid var(--rouge); padding: 10px 14px; border-radius: 6px; font-size: 0.88rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; text-transform: uppercase; }
 .btn-secondary:hover { background: var(--rouge); color: var(--blanc); }
-.match-box { background: var(--noir); color: var(--blanc); padding: 12px 15px; border-radius: 6px; border-left: 6px solid var(--rouge); margin-bottom: 15px; }
+.match-box { background: var(--noir); color: var(--blanc); padding: 12px 15px; border-radius: 6px; border-left: 6px solid var(--rouge); margin-bottom: 12px; }
+.trend-card { background: #181818; color: var(--blanc); border-radius: 8px; padding: 14px 16px; margin-bottom: 15px; border: 1px solid #333; border-top: 4px solid var(--rouge); }
+.trend-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.trend-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #bbb; font-weight: bold; }
+.trend-score-pill { background: var(--rouge); color: var(--blanc); padding: 3px 8px; border-radius: 4px; font-size: 0.82rem; font-weight: bold; }
+.trend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 10px; text-align: center; }
+.trend-box { background: #242424; border: 1px solid #383838; border-radius: 6px; padding: 8px 6px; }
+.trend-box span { display: block; font-size: 0.72rem; color: #ccc; margin-bottom: 2px; }
+.trend-box strong { font-size: 1.05rem; color: var(--blanc); }
+.trend-bar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: #333; margin-top: 6px; }
+.trend-bar-h { background: var(--rouge); }
+.trend-bar-d { background: #9ca3af; }
+.trend-bar-a { background: #ffffff; }
+.trend-legend { display: flex; justify-content: space-between; font-size: 0.74rem; color: #ccc; margin-top: 6px; }
+.trend-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.trend-inputs label { display: block; font-size: 0.75rem; font-weight: bold; margin-bottom: 2px; }
+.trend-inputs input { margin: 0 0 10px; padding: 8px; font-size: 0.92rem; text-align: center; }
 .scores { display: flex; align-items: center; gap: 10px; margin: 15px 0; text-align: center; }
 .scores div { flex: 1; font-weight: bold; }
 .scores input { text-align: center; font-size: 1.5rem; font-weight: bold; width: 75px; margin: 8px auto 0; border: 2px solid var(--noir); }
@@ -86,6 +102,7 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
         <div style="display:flex; justify-content:space-between;"><strong id="p-title"></strong><span id="p-stat" style="font-size:0.8rem; background:var(--rouge); padding:2px 6px; border-radius:4px;"></span></div>
         <div id="p-meta" style="font-size:0.85rem; color:#ddd; margin-top:4px;"></div>
       </div>
+      <div id="trend-display" class="trend-card hidden"></div>
       <div class="scores">
         <div><div id="t-home"></div><input type="number" id="in-h" min="0" max="20"></div>
         <div style="flex:0; font-size:1.5rem;">-</div>
@@ -125,11 +142,21 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
         <div><div id="al-a"></div><input type="number" id="fa" min="0"></div>
       </div>
       <button class="btn" onclick="calcPts()">Valider le score et attribuer les points</button>
-      <h3 style="margin-top:20px;">3. Joueurs en attente</h3>
+      <h3 style="margin-top:20px;">3. Tendance du match sélectionné</h3>
+      <div style="background:#f8f8f8; padding:12px; border-radius:6px;">
+        <div class="trend-inputs">
+          <div><label>Victoire Dom. (%)</label><input type="number" id="tr-h" min="0" max="100"></div>
+          <div><label>Nul (%)</label><input type="number" id="tr-d" min="0" max="100"></div>
+          <div><label>Victoire Ext. (%)</label><input type="number" id="tr-a" min="0" max="100"></div>
+          <div><label>Score favori</label><input type="text" id="tr-sc" placeholder="1-0"></div>
+        </div>
+        <button class="btn-secondary" style="margin-top:4px;" onclick="saveTrend()">Enregistrer la tendance</button>
+      </div>
+      <h3 style="margin-top:20px;">4. Joueurs en attente</h3>
       <div id="a-track" style="font-size:0.9rem; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
       <button class="btn-secondary" onclick="copyRecap()">📋 Copier le récapitulatif du match</button>
       <p id="copy-fb" style="color:#16a34a; font-weight:bold; font-size:0.85rem; margin-top:6px; text-align:center;"></p>
-      <h3 style="margin-top:20px;">4. Codes des 27 membres</h3>
+      <h3 style="margin-top:20px;">5. Codes des 27 membres</h3>
       <div id="a-codes" style="font-size:0.85rem; columns:2; background:#f8f8f8; padding:10px; border-radius:6px;"></div>
     </div>
     <div class="card">
@@ -191,8 +218,30 @@ const PALM = [
   { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
 ];
 const MATCHES = [
-  { id: "m13", comp: "La Liga • San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", kickoff: "2026-11-20T21:00", finished: false, fh: null, fa: null, preds: {} },
-  { id: "m14", comp: "La Liga • La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", kickoff: "2026-11-28T16:15", finished: false, fh: null, fa: null, preds: {} }
+  {
+    id: "m13",
+    comp: "La Liga • San Mamés",
+    home: "ATHLETIC CLUB",
+    away: "RCD ESPANYOL",
+    kickoff: "2026-11-20T21:00",
+    finished: false,
+    fh: null,
+    fa: null,
+    preds: {},
+    trend: { homePct: 63, drawPct: 22, awayPct: 15, score: "1 - 0" }
+  },
+  {
+    id: "m14",
+    comp: "La Liga • La Rosaleda",
+    home: "MALAGA CF",
+    away: "ATHLETIC CLUB",
+    kickoff: "2026-11-28T16:15",
+    finished: false,
+    fh: null,
+    fa: null,
+    preds: {},
+    trend: null
+  }
 ];
 let data = { members: MEMBERS, matches: MATCHES };
 let user = localStorage.getItem('penaUser') || null;
@@ -233,6 +282,28 @@ function goNextOpenMatch() {
   } else {
     alert("Aucun match ouvert supplémentaire pour le moment.");
   }
+}
+
+async function saveTrend() {
+  await sync(true);
+  const m = data.matches.find(x => x.id === selId);
+  if (!m) return;
+  const hPct = parseInt(document.getElementById('tr-h').value, 10);
+  const dPct = parseInt(document.getElementById('tr-d').value, 10);
+  const aPct = parseInt(document.getElementById('tr-a').value, 10);
+  const sc = document.getElementById('tr-sc').value.trim();
+
+  if ([hPct, dPct, aPct].some(n => isNaN(n) || n < 0 || n > 100)) {
+    return alert("Indiquez des pourcentages valides entre 0 et 100.");
+  }
+  m.trend = {
+    homePct: hPct,
+    drawPct: dPct,
+    awayPct: aPct,
+    score: sc || "1 - 0"
+  };
+  await push();
+  alert("Tendance enregistrée pour ce match !");
 }
 
 function copyRecap() {
@@ -284,6 +355,12 @@ async function forcePushSync() {
       m.prevRank = found ? found.rank : 1;
     }
   });
+  data.matches.forEach(m => {
+    const localMatch = MATCHES.find(lm => lm.id === m.id);
+    if (!m.trend && localMatch && localMatch.trend) {
+      m.trend = localMatch.trend;
+    }
+  });
   await push();
   alert("Base Firebase synchronisée !");
 }
@@ -293,7 +370,11 @@ async function sync(silent) {
     const r = await fetch(DB);
     const d = await r.json();
     if (d && d.members && d.matches) {
-      d.matches.forEach(m => { if (!m.preds) m.preds = {}; });
+      d.matches.forEach(m => {
+        if (!m.preds) m.preds = {};
+        const localMatch = MATCHES.find(lm => lm.id === m.id);
+        if (!m.trend && localMatch && localMatch.trend) m.trend = localMatch.trend;
+      });
       const ranked = getRankedList(d.members);
       d.members.forEach(m => {
         const localMem = MEMBERS.find(lm => lm.code === m.code);
@@ -360,7 +441,7 @@ async function addMatch() {
   const away = document.getElementById('n-away').value.trim().toUpperCase();
   const kickoff = document.getElementById('n-kick').value;
   if (!home || !away || !kickoff) return alert("Remplissez tous les champs.");
-  const nm = { id: "m" + Date.now(), comp, home, away, kickoff, finished: false, fh: null, fa: null, preds: {} };
+  const nm = { id: "m" + Date.now(), comp, home, away, kickoff, finished: false, fh: null, fa: null, preds: {}, trend: null };
   data.matches.push(nm);
   data.matches.sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff));
   selId = nm.id;
@@ -393,6 +474,52 @@ async function calcPts() {
   await push();
   alert("Points attribués !");
 }
+function renderTrendCard(m) {
+  const el = document.getElementById('trend-display');
+  if (!m || !m.trend) {
+    el.classList.add('hidden');
+    el.innerHTML = "";
+    return;
+  }
+  const h = Math.max(0, Number(m.trend.homePct) || 0);
+  const d = Math.max(0, Number(m.trend.drawPct) || 0);
+  const a = Math.max(0, Number(m.trend.awayPct) || 0);
+  const total = h + d + a || 100;
+  const wH = (h / total) * 100;
+  const wD = (d / total) * 100;
+  const wA = (a / total) * 100;
+
+  let favLabel = "Équilibré";
+  if (h >= d && h >= a) favLabel = `${m.home} favori (${h}%)`;
+  else if (a >= h && a >= d) favLabel = `${m.away} favori (${a}%)`;
+  else favLabel = `Match nul pressenti (${d}%)`;
+
+  el.classList.remove('hidden');
+  el.innerHTML = `
+    <div class="trend-top">
+      <div>
+        <div class="trend-title">Tendance du match</div>
+        <div style="font-weight:bold; font-size:0.95rem; margin-top:2px;">${favLabel}</div>
+      </div>
+      <div class="trend-score-pill">Score probable : ${m.trend.score || "1 - 0"}</div>
+    </div>
+    <div class="trend-grid">
+      <div class="trend-box"><span>Victoire Dom.</span><strong>${h}%</strong></div>
+      <div class="trend-box"><span>Match nul</span><strong>${d}%</strong></div>
+      <div class="trend-box"><span>Victoire Ext.</span><strong>${a}%</strong></div>
+    </div>
+    <div class="trend-bar">
+      <div class="trend-bar-h" style="width:${wH}%;"></div>
+      <div class="trend-bar-d" style="width:${wD}%;"></div>
+      <div class="trend-bar-a" style="width:${wA}%;"></div>
+    </div>
+    <div class="trend-legend">
+      <span>Dom. ${h}%</span>
+      <span>Nul ${d}%</span>
+      <span>Ext. ${a}%</span>
+    </div>
+  `;
+}
 function render() {
   document.getElementById('login-sec').classList.toggle('hidden', !!user);
   document.getElementById('nav').classList.toggle('hidden', !user);
@@ -415,6 +542,8 @@ function render() {
   document.getElementById('t-home').textContent = m.home; document.getElementById('t-away').textContent = m.away;
   document.getElementById('save-btn').disabled = st;
 
+  renderTrendCard(m);
+
   const rankedRows = getRankedList(data.members);
 
   const urgentEl = document.getElementById('urgent-msg');
@@ -431,6 +560,13 @@ function render() {
     document.getElementById('mem-sec').classList.add('hidden');
     document.getElementById('adm-sec').classList.remove('hidden');
     document.getElementById('al-h').textContent = m.home; document.getElementById('al-a').textContent = m.away;
+
+    const tr = m.trend || { homePct: "", drawPct: "", awayPct: "", score: "" };
+    document.getElementById('tr-h').value = tr.homePct;
+    document.getElementById('tr-d').value = tr.drawPct;
+    document.getElementById('tr-a').value = tr.awayPct;
+    document.getElementById('tr-sc').value = tr.score;
+
     const miss = [...data.members].sort(compareMembers).filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
     document.getElementById('a-track').innerHTML = miss.length ? `<strong>En attente (${miss.length}) :</strong> ${miss.join(", ")}` : "<strong>Tout le monde a joué !</strong>";
     document.getElementById('a-codes').innerHTML = [...data.members].sort(compareMembers).map(x => `<div><strong>${x.name}</strong> : ${x.code}</div>`).join("");
