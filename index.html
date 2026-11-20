@@ -36,6 +36,7 @@ input, select { width: 100%; padding: 12px; margin: 6px 0 14px; border: 2px soli
 .trend-bar-d { background: #9ca3af; }
 .trend-bar-a { background: #ffffff; }
 .trend-legend { display: flex; justify-content: space-between; font-size: 0.74rem; color: #ccc; margin-top: 6px; }
+.trend-source { font-size: 0.75rem; color: #aaa; margin-top: 8px; font-style: italic; }
 .trend-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .trend-inputs label { display: block; font-size: 0.75rem; font-weight: bold; margin-bottom: 2px; }
 .trend-inputs input { margin: 0 0 10px; padding: 8px; font-size: 0.92rem; text-align: center; }
@@ -147,6 +148,8 @@ tr.me-row { background-color: #DCFCE7; border-left: 5px solid #16A34A; border-ri
           <div><label>Victoire Ext. (%)</label><input type="number" id="tr-a" min="0" max="100"></div>
           <div><label>Score favori</label><input type="text" id="tr-sc" placeholder="1-0"></div>
         </div>
+        <label style="display:block; font-size:0.75rem; font-weight:bold; margin-bottom:2px;">Source de la tendance :</label>
+        <input type="text" id="tr-src" placeholder="Ex: Simulations / Statistiques ou Pronostics de la Peña" style="margin:0 0 10px; padding:8px; font-size:0.9rem;">
         <button class="btn-secondary" style="margin-top:4px;" onclick="saveTrend()">Enregistrer la tendance</button>
       </div>
       <h3 style="margin-top:20px;">4. Joueurs en attente</h3>
@@ -224,7 +227,7 @@ const MATCHES = [
     fh: null,
     fa: null,
     preds: {},
-    trend: { homePct: 63, drawPct: 22, awayPct: 15, score: "1 - 0" }
+    trend: { homePct: 63, drawPct: 22, awayPct: 15, score: "1 - 0", source: "Simulations & statistiques match" }
   },
   {
     id: "m14",
@@ -288,6 +291,7 @@ async function saveTrend() {
   const dPct = parseInt(document.getElementById('tr-d').value, 10);
   const aPct = parseInt(document.getElementById('tr-a').value, 10);
   const sc = document.getElementById('tr-sc').value.trim();
+  const src = document.getElementById('tr-src').value.trim();
 
   if ([hPct, dPct, aPct].some(n => isNaN(n) || n < 0 || n > 100)) {
     return alert("Indiquez des pourcentages valides entre 0 et 100.");
@@ -296,7 +300,8 @@ async function saveTrend() {
     homePct: hPct,
     drawPct: dPct,
     awayPct: aPct,
-    score: sc || "1 - 0"
+    score: sc || "1 - 0",
+    source: src || "Données externes / statistiques"
   };
   await push();
   alert("Tendance enregistrée pour ce match !");
@@ -355,6 +360,8 @@ async function forcePushSync() {
     const localMatch = MATCHES.find(lm => lm.id === m.id);
     if (!m.trend && localMatch && localMatch.trend) {
       m.trend = localMatch.trend;
+    } else if (m.trend && !m.trend.source) {
+      m.trend.source = (localMatch && localMatch.trend && localMatch.trend.source) || "Données externes / statistiques";
     }
   });
   await push();
@@ -370,6 +377,7 @@ async function sync(silent) {
         if (!m.preds) m.preds = {};
         const localMatch = MATCHES.find(lm => lm.id === m.id);
         if (!m.trend && localMatch && localMatch.trend) m.trend = localMatch.trend;
+        else if (m.trend && !m.trend.source) m.trend.source = (localMatch && localMatch.trend && localMatch.trend.source) || "Données externes / statistiques";
       });
       const ranked = getRankedList(d.members);
       d.members.forEach(m => {
@@ -490,6 +498,8 @@ function renderTrendCard(m) {
   else if (a >= h && a >= d) favLabel = `${m.away} favori (${a}%)`;
   else favLabel = `Match nul pressenti (${d}%)`;
 
+  const sourceText = m.trend.source ? m.trend.source : "Données externes / statistiques";
+
   el.classList.remove('hidden');
   el.innerHTML = `
     <div class="trend-top">
@@ -514,6 +524,7 @@ function renderTrendCard(m) {
       <span>Nul ${d}%</span>
       <span>Ext. ${a}%</span>
     </div>
+    <div class="trend-source">Source : ${sourceText}</div>
   `;
 }
 function render() {
@@ -557,11 +568,12 @@ function render() {
     document.getElementById('adm-sec').classList.remove('hidden');
     document.getElementById('al-h').textContent = m.home; document.getElementById('al-a').textContent = m.away;
 
-    const tr = m.trend || { homePct: "", drawPct: "", awayPct: "", score: "" };
+    const tr = m.trend || { homePct: "", drawPct: "", awayPct: "", score: "", source: "" };
     document.getElementById('tr-h').value = tr.homePct;
     document.getElementById('tr-d').value = tr.drawPct;
     document.getElementById('tr-a').value = tr.awayPct;
     document.getElementById('tr-sc').value = tr.score;
+    document.getElementById('tr-src').value = tr.source || "";
 
     const miss = [...data.members].sort(compareMembers).filter(x => !m.preds || !m.preds[x.code]).map(x => x.name);
     document.getElementById('a-track').innerHTML = miss.length ? `<strong>En attente (${miss.length}) :</strong> ${miss.join(", ")}` : "<strong>Tout le monde a joué !</strong>";
