@@ -87,7 +87,7 @@
     button {
       cursor: pointer;
       font-weight: 600;
-      transition: background 0.15s ease, transform 0.1s ease;
+      transition: background 0.15s ease;
     }
 
     button:hover { background: #272e3b; }
@@ -159,6 +159,7 @@
       align-items: center;
       gap: 8px;
       margin: 12px 0;
+      flex-wrap: wrap;
     }
 
     .score-inputs input {
@@ -204,26 +205,6 @@
     .badge-me { background: rgba(255, 90, 84, 0.25); color: #ff8a86; }
     .pts-gain { color: var(--accent-2); font-size: 0.82rem; font-weight: 600; }
 
-    .trend-box-wrap {
-      margin-top: 14px;
-      background: var(--card-2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-    }
-
-    .trend-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .trend-title { font-weight: 700; font-size: 0.9rem; }
-    .trend-score-pill { background: var(--card); padding: 3px 9px; border-radius: 999px; font-size: 0.8rem; color: var(--gold); }
-    .trend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
-    .trend-box { background: var(--card); border-radius: 8px; padding: 8px; text-align: center; }
-    .trend-box span { display: block; font-size: 0.75rem; color: var(--muted); }
-    .trend-bar { display: flex; height: 8px; border-radius: 999px; overflow: hidden; background: var(--card); }
-    .trend-bar-h { background: #3498db; }
-    .trend-bar-d { background: #95a5a6; }
-    .trend-bar-a { background: var(--accent); }
-    .trend-legend, .trend-source { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
-
     .fun-grid, .palmares-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -244,7 +225,7 @@
     .blog-meta { font-size: 0.78rem; color: var(--muted); }
     .blog-title { margin: 4px 0 6px; font-size: 1rem; }
     .blog-body { font-size: 0.9rem; }
-    .codes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 6px; font-size: 0.84rem; margin-top: 10px; }
+    .codes-grid { margin-top: 12px; font-size: 0.84rem; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -267,7 +248,7 @@
 
     <section id="login-sec" class="card">
       <h2 style="margin-top:0;">Connexion membre ou administrateur</h2>
-      <p class="muted">Entre ton code membre (ex. <code>LOREA-01</code>, <code>GORKA-12</code>) ou <code>ADMIN-PENA</code>.</p>
+      <p class="muted">Entre ton code membre ou <code>ADMIN-PENA</code>.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
         <input id="code-in" type="text" placeholder="Code d'accès" onkeydown="if(event.key==='Enter') login()" />
         <button class="primary" onclick="login()">Se connecter</button>
@@ -323,22 +304,10 @@
         </div>
       </div>
 
-      <div class="card" style="margin-top:12px; background:var(--card-2);">
-        <h3 style="margin-top:0;">Tendance du match sélectionné</h3>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <input id="tr-h" type="number" min="0" max="100" placeholder="Dom %" style="width:90px;" />
-          <input id="tr-d" type="number" min="0" max="100" placeholder="Nul %" style="width:90px;" />
-          <input id="tr-a" type="number" min="0" max="100" placeholder="Ext %" style="width:90px;" />
-          <input id="tr-sc" type="text" placeholder="Score favori (ex: 2-1)" style="width:150px;" />
-          <input id="tr-src" type="text" placeholder="Source" style="flex:1; min-width:150px;" />
-          <button onclick="saveTrend()">Enregistrer tendance</button>
-        </div>
-      </div>
-
       <div id="a-codes" class="codes-grid"></div>
     </section>
 
-    <main id="v-pronos">
+    <main id="v-pronos" class="hidden">
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
           <label for="m-sel" class="muted">Match sélectionné :</label>
@@ -347,10 +316,10 @@
 
         <div class="match-head">
           <div>
-            <div id="p-title" class="match-title">ATHLETIC CLUB vs RCD ESPANYOL</div>
+            <div id="p-title" class="match-title"></div>
             <div id="p-meta" class="muted"></div>
           </div>
-          <span id="p-stat" class="pill">Score : 0 - 1</span>
+          <span id="p-stat" class="pill"></span>
         </div>
 
         <div id="pred-form-area" class="hidden">
@@ -365,8 +334,6 @@
           <div id="fb-msg" class="ok"></div>
         </div>
         <div id="pred-closed-area" class="muted" style="margin-top:8px;"></div>
-
-        <div id="trend-display" class="trend-box-wrap hidden"></div>
       </div>
 
       <div class="card">
@@ -400,21 +367,6 @@
       </div>
 
       <div class="card">
-        <h3 style="margin-top:0;">Scores exacts (+6 pts)</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Joueur</th>
-              <th>Exacts</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody id="exact-lb"></tbody>
-        </table>
-      </div>
-
-      <div class="card">
         <h3 style="margin-top:0;">Blog de la Peña</h3>
         <div style="display:grid; gap:8px; margin-bottom:10px;">
           <input id="b-title" type="text" placeholder="Titre de l'article" />
@@ -439,7 +391,6 @@
   <script>
   (function () {
     const DB = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
-    const FEMALE_CODES = ["LOREA-01"];
 
     const MEMBERS = [
       { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false, cups: 2 },
@@ -479,31 +430,4 @@
       { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
       { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
       { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
-      { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
-      { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
-      { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
-    ];
-
-    const HISTORIQUE_MATCHS = [
-      {
-        id: "m01", comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC", kickoff: "2026-08-15T19:00",
-        finished: true, ptsApplied: true, fh: 1, fa: 3,
-        preds: {
-          "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
-          "PIERRE-10": { h: 0, a: 1 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 2, a: 0 },
-          "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
-          "LOREA-01": { h: 2, a: 1 }, "CHRISTOPHE-14": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
-          "XABIER-04": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 3, a: 1 }, "GORKA-12": { h: 2, a: 0 },
-          "ANDONI-02": { h: 2, a: 1 }
-        },
-        trend: null
-      },
-      {
-        id: "m02", comp: "Journée 2 • Extérieur (E)", home: "BARCELONA", away: "ATHLETIC CLUB", kickoff: "2026-08-22T21:00",
-        finished: true, ptsApplied: true, fh: 2, fa: 0,
-        preds: {
-          "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
-          "PIERRE-10": { h: 3, a: 0 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 3, a: 1 },
-          "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 5, a: 0 }, "JULEN-03": { h: 3, a: 1 },
-          "LOREA-01": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 3 }, "LANDER-09": { h: 3, a: 0 },
-          "XABIER-04": { h: 3,
+      { y: "2018/19", p1: "LABOR
