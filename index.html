@@ -137,23 +137,57 @@
     .match-focus-dark {
       background: #111317;
       color: #ffffff;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-top: 6px;
+      border-radius: 14px;
+      padding: 20px 18px;
+      margin-top: 8px;
+      text-align: center;
     }
 
     .match-focus-title {
-      margin: 0 0 6px;
-      font-size: 1.45rem;
+      margin: 0 0 8px;
+      font-size: 1.85rem;
       font-weight: 900;
       color: #ffffff;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.6px;
+      text-align: center;
     }
 
     .match-focus-meta {
       color: #e5e7eb;
       font-size: 1.05rem;
       font-weight: 700;
+      text-align: center;
+    }
+
+    .pred-box-dark {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #2a2f3a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pred-inputs-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .btn-valider-rouge {
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: #ffffff;
+      padding: 11px 24px;
+      font-size: 1rem;
+      font-weight: 800;
+      border-radius: 10px;
     }
 
     .hidden { display: none !important; }
@@ -353,15 +387,17 @@
         <div class="match-focus-dark">
           <h3 id="match-title" class="match-focus-title"></h3>
           <div id="match-meta" class="match-focus-meta"></div>
-        </div>
 
-        <div id="pred-box" class="hidden" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-          <span id="lbl-home" style="font-weight:700;"></span>
-          <input id="pred-h" type="number" min="0" style="width:72px; text-align:center;" />
-          <span>-</span>
-          <input id="pred-a" type="number" min="0" style="width:72px; text-align:center;" />
-          <span id="lbl-away" style="font-weight:700;"></span>
-          <button id="btn-save-pred" class="primary" type="button" onclick="window.savePred()">Valider prono</button>
+          <div id="pred-box" class="pred-box-dark hidden">
+            <div class="pred-inputs-row">
+              <span id="lbl-home"></span>
+              <input id="pred-h" type="number" min="0" style="width:72px; text-align:center;" />
+              <span>-</span>
+              <input id="pred-a" type="number" min="0" style="width:72px; text-align:center;" />
+              <span id="lbl-away"></span>
+            </div>
+            <button id="btn-save-pred" class="btn-valider-rouge" type="button" onclick="window.savePred()">valider prono</button>
+          </div>
         </div>
         <div id="pred-ok" class="ok"></div>
       </div>
@@ -801,7 +837,7 @@
       appState.currentId = id;
       var m = findMatch(id);
       el("match-select").value = m.id;
-      setTxt("match-title", m.home + " vs " + m.away);
+      setTxt("match-title", m.home + " PRONOSTIC _ PRONOSTIC " + m.away);
       setTxt("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score final : " + m.fh + " - " + m.fa) : " • Pronostics ouverts"));
       setTxt("lbl-home", m.home);
       setTxt("lbl-away", m.away);
