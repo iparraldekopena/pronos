@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iparraldeko Peña — Classement Pronostic n° 13</title>
+  <title>Iparraldeko Peña — Pronostics & Classement</title>
   <style>
     :root {
       --bg: #0c0e12;
@@ -1060,7 +1060,7 @@
 
       <section class="standings-card">
         <div class="standings-top">
-          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DU PRONOSTIC N° 13</h2>
+          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DU PRONOSTIC N° 14</h2>
           <div id="participation-banner" class="participation-banner"></div>
           <div id="cumul-sub" class="cumul-sub"></div>
           <div id="revealed-note" class="revealed-note">🔒 Pronostic terminé</div>
@@ -1078,7 +1078,7 @@
               <tr>
                 <th>POS</th>
                 <th>MEMBRE</th>
-                <th id="th-prono" class="right">PRONO N° 13</th>
+                <th id="th-prono" class="right">PRONO N° 14</th>
                 <th class="right">TOTAL</th>
               </tr>
             </thead>
@@ -1634,8 +1634,15 @@
       }
     ];
 
+    function getDefaultMatchId() {
+      const sorted = [...window.MATCHES].sort((a, b) => a.num - b.num);
+      const nextOpen = sorted.find(m => !m.finished);
+      if (nextOpen) return nextOpen.id;
+      return sorted.length > 0 ? sorted[sorted.length - 1].id : "m14";
+    }
+
     let currentUser = null;
-    let currentMatchId = "m13";
+    let currentMatchId = getDefaultMatchId();
     let currentBlogFilter = "ALL";
     let remoteData = { preds: {} };
 
@@ -1820,7 +1827,7 @@
     };
 
     function getMemberMatchEntry(member, matchObj) {
-      const num = matchObj ? matchObj.num : 13;
+      const num = matchObj ? matchObj.num : 14;
       const matchPreds = (remoteData.preds && remoteData.preds[matchObj.id]) || {};
       const p = matchPreds[member.code];
 
@@ -1982,6 +1989,8 @@
         console.warn("Connexion sans base distante :", e);
       }
 
+      currentMatchId = getDefaultMatchId();
+
       document.getElementById("sec-login").classList.add("hidden");
       document.getElementById("member-logo").classList.remove("hidden");
       document.getElementById("aupa-banner").classList.remove("hidden");
@@ -2003,7 +2012,10 @@
         ? "Mode administrateur actif"
         : `Code : ${currentUser.code}`;
 
-      const latestStanding = computeStandingsUpTo(13);
+      const latestFinishedNum = window.MATCHES
+        .filter(m => m.finished)
+        .reduce((acc, m) => Math.max(acc, Number(m.num) || 0), 0) || 13;
+      const latestStanding = computeStandingsUpTo(latestFinishedNum);
       const userRow = latestStanding.rows.find(r => r.code === currentUser.code);
       const displayPts = userRow ? userRow.calcPoints : 0;
 
@@ -2019,6 +2031,7 @@
 
     window.doLogout = function() {
       currentUser = null;
+      currentMatchId = getDefaultMatchId();
       document.getElementById("code-in").value = "";
       document.getElementById("login-err").textContent = "";
       document.getElementById("sec-login").classList.remove("hidden");
@@ -2172,7 +2185,7 @@
       const banner = document.getElementById("participation-banner");
       tbody.innerHTML = "";
 
-      const matchNum = matchObj ? matchObj.num : 13;
+      const matchNum = matchObj ? matchObj.num : 14;
       const started = isMatchStarted(matchObj);
       const { rows } = computeStandingsUpTo(matchNum);
       const prevRankMap = matchNum > 1 ? computeStandingsUpTo(matchNum - 1).rankMap : {};
