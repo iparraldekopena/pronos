@@ -134,6 +134,28 @@
       box-shadow: 0 4px 18px rgba(20, 24, 31, 0.04);
     }
 
+    .match-focus-dark {
+      background: #111317;
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 6px;
+    }
+
+    .match-focus-title {
+      margin: 0 0 6px;
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+    }
+
+    .match-focus-meta {
+      color: #e5e7eb;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
     .hidden { display: none !important; }
 
     input, select, button {
@@ -189,27 +211,18 @@
     }
 
     th.prono-col, td.prono-col {
-      background: #111317;
-      color: #ffffff;
-      font-weight: 900;
-      font-size: 1.08rem;
-      letter-spacing: 0.4px;
+      background: var(--bg-white);
+      color: var(--text-main);
+      font-weight: 700;
       text-align: center;
-      border-left: 1px solid #2a2f3a;
-      border-right: 1px solid #2a2f3a;
-      border-bottom-color: #252a34;
-    }
-
-    th.prono-col {
-      font-size: 0.88rem;
-      letter-spacing: 0.7px;
-      border-bottom: 2px solid #383f4d;
+      border-left: 1px solid #edf0f5;
+      border-right: 1px solid #edf0f5;
     }
 
     td.pts-col { font-weight: 800; text-align: right; }
 
-    tr.row-champ td:not(.prono-col) { background: var(--accent-soft); }
-    tr.row-me td:not(.prono-col) { background: var(--green-soft); }
+    tr.row-champ td, tr.row-champ td.prono-col { background: var(--accent-soft); }
+    tr.row-me td, tr.row-me td.prono-col { background: var(--green-soft); }
 
     .tag {
       display: inline-block;
@@ -337,8 +350,10 @@
           <label for="match-select" class="muted" style="font-weight:700;">Choisir une journée :</label>
           <select id="match-select" onchange="window.showMatch(this.value)"></select>
         </div>
-        <h3 id="match-title" style="margin:0 0 4px;"></h3>
-        <div id="match-meta" class="muted"></div>
+        <div class="match-focus-dark">
+          <h3 id="match-title" class="match-focus-title"></h3>
+          <div id="match-meta" class="match-focus-meta"></div>
+        </div>
 
         <div id="pred-box" class="hidden" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
           <span id="lbl-home" style="font-weight:700;"></span>
