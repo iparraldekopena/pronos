@@ -20,9 +20,7 @@
       --green-text: #166534;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -114,6 +112,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+      text-align: left;
     }
 
     .aupa-title {
@@ -139,9 +138,7 @@
       box-shadow: 0 4px 18px rgba(20, 24, 31, 0.04);
     }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     input, select, button {
       font-family: inherit;
@@ -153,43 +150,16 @@
       color: var(--text-main);
     }
 
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    button {
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.15s ease, transform 0.08s ease;
-    }
-
-    button:active {
-      transform: scale(0.99);
-    }
-
+    button { cursor: pointer; font-weight: 700; }
     button.primary, button.active {
       background: var(--accent);
       border-color: var(--accent);
       color: #ffffff;
     }
 
-    .err {
-      color: var(--accent);
-      font-weight: 700;
-      margin-top: 8px;
-    }
-
-    .ok {
-      color: var(--green-text);
-      font-weight: 700;
-      margin-top: 8px;
-    }
-
-    .muted {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
+    .err { color: var(--accent); font-weight: 700; margin-top: 8px; }
+    .ok { color: var(--green-text); font-weight: 700; margin-top: 8px; }
+    .muted { color: var(--text-muted); font-size: 0.9rem; }
 
     .table-wrap {
       width: 100%;
@@ -219,7 +189,6 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text-muted);
-      background: var(--bg-white);
       border-bottom: 2px solid var(--border);
     }
 
@@ -232,18 +201,10 @@
       border-right: 1px solid #edf0f5;
     }
 
-    td.pts-col {
-      font-weight: 800;
-      text-align: right;
-    }
+    td.pts-col { font-weight: 800; text-align: right; }
 
-    tr.row-champ td, tr.row-champ td.prono-col {
-      background: var(--accent-soft);
-    }
-
-    tr.row-me td, tr.row-me td.prono-col {
-      background: var(--green-soft);
-    }
+    tr.row-champ td, tr.row-champ td.prono-col { background: var(--accent-soft); }
+    tr.row-me td, tr.row-me td.prono-col { background: var(--green-soft); }
 
     .tag {
       display: inline-block;
@@ -252,18 +213,10 @@
       border-radius: 999px;
       font-size: 0.74rem;
       font-weight: 700;
-      font-style: normal;
     }
 
-    .tag-champ {
-      background: #fbd2d7;
-      color: #8f131b;
-    }
-
-    .tag-me {
-      background: #c7ebd4;
-      color: var(--green-text);
-    }
+    .tag-champ { background: #fbd2d7; color: #8f131b; }
+    .tag-me { background: #c7ebd4; color: var(--green-text); }
 
     .palm-summary {
       display: flex;
@@ -279,7 +232,6 @@
       padding: 6px 12px;
       font-size: 0.84rem;
       font-weight: 700;
-      color: var(--text-main);
     }
 
     .palm-grid {
@@ -315,11 +267,7 @@
       border-bottom-color: var(--accent-border);
     }
 
-    .palm-rows {
-      padding: 12px 14px;
-      display: grid;
-      gap: 7px;
-    }
+    .palm-rows { padding: 12px 14px; display: grid; gap: 7px; }
 
     .palm-row {
       display: flex;
@@ -338,10 +286,7 @@
       font-weight: 800;
     }
 
-    .palm-rank {
-      font-weight: 800;
-      min-width: 34px;
-    }
+    .palm-rank { font-weight: 800; min-width: 34px; }
   </style>
 </head>
 <body>
@@ -357,7 +302,7 @@
           id="logo-img"
           class="logo-img"
           src="LOGO%20IPARRALDEKO%20PENA%20(2)%20copie.jpg"
-          alt="Iparraldeko Peña — Euskal Herria — Athletic Club"
+          alt="Iparraldeko Peña"
         />
         <div id="logo-fallback" class="logo-fallback hidden">IPARRALDEKO PEÑA</div>
       </div>
@@ -370,7 +315,7 @@
         <div id="aupa-stats" class="muted" style="font-weight:700;"></div>
       </div>
 
-      <nav id="nav" class="nav-bar hidden" aria-label="Navigation principale">
+      <nav id="nav" class="nav-bar hidden">
         <button id="tab-pronos" class="active" type="button">Pronos & Classement</button>
         <button id="tab-palm" type="button">Palmarès</button>
         <button id="btn-logout" type="button">Déconnexion</button>
@@ -379,7 +324,7 @@
 
     <section id="sec-login" class="card">
       <h2 style="margin-top:0;">Connexion à l'espace membre</h2>
-      <p class="muted">Saisis ton code joueur (par exemple <strong>ALAIN-08</strong>) ou <strong>ADMIN-PENA</strong>.</p>
+      <p class="muted">Saisis ton code joueur (ex. <strong>ALAIN-08</strong>) ou <strong>ADMIN-PENA</strong>.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
         <input id="code-in" type="text" placeholder="Ex. ALAIN-08" autocomplete="off" />
         <button id="btn-login" class="primary" type="button">Se connecter</button>
@@ -411,10 +356,6 @@
         <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px;">
           <h2 style="margin:0;">Classement général</h2>
           <div id="part-info" class="muted"></div>
-        </div>
-        <div class="muted" style="margin-top:4px;">
-          Légende : <span style="background:var(--green-soft); padding:2px 7px; border-radius:6px; font-weight:700;">Vert pâle</span> = toi •
-          <span style="background:var(--accent-soft); padding:2px 7px; border-radius:6px; font-weight:700;">Rouge pâle</span> = tenant du titre
         </div>
         <div class="table-wrap">
           <table>
@@ -714,14 +655,6 @@
         return MATCHES[MATCHES.length - 1];
       }
 
-      var logoImg = byId("logo-img");
-      if (logoImg) {
-        logoImg.addEventListener("error", function () {
-          logoImg.classList.add("hidden");
-          if (byId("logo-fallback")) byId("logo-fallback").classList.remove("hidden");
-        });
-      }
-
       function renderPalmares() {
         var grid = byId("palm-grid");
         var summary = byId("palm-summary");
@@ -947,6 +880,14 @@
           }
         }
         setText("login-err", "Code inconnu (" + raw + ").");
+      }
+
+      var logoImg = byId("logo-img");
+      if (logoImg) {
+        logoImg.addEventListener("error", function () {
+          logoImg.classList.add("hidden");
+          if (byId("logo-fallback")) byId("logo-fallback").classList.remove("hidden");
+        });
       }
 
       byId("btn-login").addEventListener("click", doLogin);
