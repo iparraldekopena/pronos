@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iparraldeko Peña — Pronostics & Classement</title>
+  <title>Iparraldeko Peña — Classement Journée 13</title>
   <style>
     :root {
       --bg: #0c0e12;
@@ -19,6 +19,8 @@
       --me-bg: rgba(59, 130, 246, 0.14);
       --me-border: rgba(59, 130, 246, 0.45);
       --champ-bg: rgba(245, 158, 11, 0.12);
+      --up: #16a34a;
+      --down: #dc2626;
     }
 
     * {
@@ -31,11 +33,11 @@
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .wrap {
-      max-width: 920px;
+      max-width: 960px;
       margin: 0 auto;
     }
 
@@ -48,7 +50,6 @@
       font-size: 0.9rem;
     }
 
-    /* En-tête et navigation */
     .top-bar {
       display: flex;
       align-items: center;
@@ -103,7 +104,6 @@
       background: var(--accent-hover);
     }
 
-    /* Connexion */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -137,7 +137,6 @@
       font-size: 0.92rem;
     }
 
-    /* Bandeau membre */
     .aupa-banner {
       display: flex;
       align-items: center;
@@ -146,59 +145,54 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 18px 22px;
+      padding: 16px 22px;
       margin-bottom: 18px;
       flex-wrap: wrap;
     }
 
     .aupa-heading {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       font-weight: 800;
-      letter-spacing: 0.02em;
     }
 
     .aupa-stats {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--gold);
     }
 
-    /* Match Focus */
+    /* Bloc Match Focus */
     .match-focus {
       background: var(--focus-bg);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 26px 20px;
-      margin-bottom: 22px;
+      padding: 22px 20px;
+      margin-bottom: 20px;
       text-align: center;
     }
 
     .match-selector-bar {
       display: flex;
       justify-content: center;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .match-title {
-      font-size: clamp(1.45rem, 3.6vw, 2.35rem);
+      font-size: clamp(1.3rem, 3vw, 2rem);
       font-weight: 800;
-      text-align: center;
-      line-height: 1.2;
-      margin: 0 0 10px;
-      letter-spacing: 0.01em;
+      margin: 0 0 8px;
     }
 
     .match-meta {
-      text-align: center;
       color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 18px;
+      font-size: 0.92rem;
+      margin-bottom: 14px;
     }
 
     .pred-box {
-      margin-top: 16px;
-      padding-top: 18px;
+      margin-top: 14px;
+      padding-top: 16px;
       border-top: 1px solid #1f2430;
     }
 
@@ -206,51 +200,77 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .team-big {
-      font-size: clamp(1.15rem, 2.5vw, 1.65rem);
+      font-size: 1.25rem;
       font-weight: 800;
-      min-width: 150px;
-      text-align: center;
+      min-width: 140px;
     }
 
     .score-input {
-      width: 72px;
+      width: 68px;
       text-align: center;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
     }
 
-    .score-sep {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--muted);
-    }
-
     .pred-ok {
-      margin-top: 10px;
+      margin-top: 8px;
       color: #4ade80;
       font-weight: 600;
-      min-height: 1.3em;
+      min-height: 1.2em;
     }
 
-    /* Classement */
-    .lb-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
+    /* Carte Classement style capture */
+    .standings-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
     }
 
-    .lb-header h2 {
-      margin: 0;
-      font-size: 1.2rem;
+    .standings-top {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .standings-main-title {
+      margin: 0 0 14px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .participation-banner {
+      background: var(--surface-2);
+      border-left: 4px solid var(--accent);
+      padding: 11px 14px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .cumul-sub {
+      color: #ef4444;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    .revealed-note {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
     }
 
     table {
@@ -258,67 +278,122 @@
       border-collapse: collapse;
     }
 
-    th,
-    td {
-      padding: 11px 10px;
+    thead th {
+      background: #10141c;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 12px;
       border-bottom: 1px solid var(--border);
       text-align: left;
-    }
-
-    th {
-      color: var(--muted);
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .prono-col,
-    .pts-col {
-      text-align: right;
       white-space: nowrap;
-      font-variant-numeric: tabular-nums;
     }
 
-    .pts-col {
-      font-weight: 700;
+    thead th.right {
+      text-align: right;
     }
 
-    tr.row-champ {
+    tbody td {
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr.row-champ {
       background: var(--champ-bg);
     }
 
-    tr.row-me {
+    tbody tr.row-me {
       background: var(--me-bg);
       outline: 1px solid var(--me-border);
     }
 
-    .tag {
+    .pos-cell {
+      font-weight: 700;
+      white-space: nowrap;
+      min-width: 56px;
+    }
+
+    .arrow-up {
+      color: var(--up);
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+
+    .arrow-down {
+      color: var(--down);
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+
+    .member-name {
+      font-weight: 600;
+    }
+
+    .medal {
+      margin-right: 4px;
+      font-size: 0.95rem;
+    }
+
+    .trophy-icon {
+      margin-left: 3px;
+      font-size: 0.95rem;
+    }
+
+    .tenant-badge {
       display: inline-block;
       margin-left: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f59e0b;
+      color: #111827;
+      font-size: 0.74rem;
+      font-weight: 800;
+      vertical-align: middle;
+    }
+
+    .me-badge {
+      display: inline-block;
+      margin-left: 6px;
       padding: 2px 7px;
       border-radius: 6px;
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
       font-size: 0.72rem;
       font-weight: 700;
       vertical-align: middle;
     }
 
-    .tag-champ {
-      background: rgba(245, 158, 11, 0.2);
-      color: #fbbf24;
+    .prono-cell {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
     }
 
-    .tag-me {
-      background: rgba(59, 130, 246, 0.25);
-      color: #93c5fd;
+    .gain-pos {
+      color: var(--up);
+      font-weight: 700;
+      margin-left: 4px;
     }
 
-    .cup-plain {
-      margin-left: 6px;
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 1rem;
-      vertical-align: middle;
+    .gain-zero {
+      color: var(--muted);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .total-cell {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
     }
 
     /* Palmarès */
@@ -360,14 +435,6 @@
 
     .palm-row:last-child {
       border-bottom: none;
-    }
-
-    .palm-row.p1 {
-      font-weight: 700;
-    }
-
-    .palm-rank {
-      min-width: 28px;
     }
   </style>
 </head>
@@ -423,22 +490,27 @@
         </div>
       </section>
 
-      <section class="card">
-        <div class="lb-header">
-          <h2>Classement général</h2>
-          <div id="part-info" class="muted"></div>
+      <section class="standings-card">
+        <div class="standings-top">
+          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DE LA JOURNÉE 13</h2>
+          <div id="participation-banner" class="participation-banner"></div>
+          <div id="cumul-sub" class="cumul-sub"></div>
+          <div id="revealed-note" class="revealed-note">🔒 Pronostics révélés (match commencé)</div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 56px;">#</th>
-              <th>Joueur</th>
-              <th id="th-prono" class="prono-col">PRONO</th>
-              <th class="pts-col">POINTS</th>
-            </tr>
-          </thead>
-          <tbody id="lb-body"></tbody>
-        </table>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>POS</th>
+                <th>MEMBRE</th>
+                <th id="th-prono" class="right">PRONO N°13</th>
+                <th class="right">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody id="lb-body"></tbody>
+          </table>
+        </div>
       </section>
     </main>
 
@@ -450,71 +522,68 @@
   <script>
     window.DB_URL = window.DB_URL || "";
 
+    // 26 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio) alignés sur le classement de la Journée 13
     window.MEMBERS = [
-      { code: "ARIAS-01", name: "ARIAS RUIZ Jorge", points: 0, isChamp: false },
-      { code: "BARRUTIA-01", name: "BARRUTIA Xabier", points: 0, isChamp: false },
-      { code: "CAZAURAN-01", name: "CAZAURAN Jean-Yves", points: 0, isChamp: false },
-      { code: "CORDEIRO-01", name: "CORDEIRO Jonathan", points: 0, isChamp: false },
-      { code: "CROUZAT-F", name: "CROUZAT Frédéric", points: 0, isChamp: false },
-      { code: "CROUZAT-I", name: "CROUZAT Inko", points: 0, isChamp: false },
-      { code: "CROUZAT-L", name: "CROUZAT Luken", points: 0, isChamp: false },
-      { code: "CURUTCHARRY-01", name: "CURUTCHARRY Pierre", points: 0, isChamp: false },
-      { code: "DIAZ-DEBAT-01", name: "DIAZ-DEBAT Bertrand", points: 0, isChamp: false },
-      { code: "DULONG-01", name: "DULONG Xina", points: 0, isChamp: false },
-      { code: "ESCALANTE-01", name: "ESCALANTE Ange", points: 0, isChamp: false },
-      { code: "FERNANDEZ-01", name: "FERNANDEZ Adrian", points: 0, isChamp: false },
-      { code: "GOBBI-01", name: "GOBBI Olivier", points: 0, isChamp: false },
-      { code: "GOYENEIX-01", name: "GOYENEIX Pierre", points: 0, isChamp: false },
-      { code: "ALAIN-01", name: "LABORDE Alain", points: 0, isChamp: false },
-      { code: "JULEN-03", name: "LABORDE Julen", points: 0, isChamp: true },
-      { code: "LOREA-01", name: "LABORDE Lorea", points: 0, isChamp: false },
-      { code: "LEGRAS-01", name: "LEGRAS Peio", points: 0, isChamp: false },
-      { code: "MARITORENA-01", name: "MARITORENA Christophe", points: 0, isChamp: false },
-      { code: "MENDIOLA-I", name: "MENDIOLA Iñaki", points: 0, isChamp: false },
-      { code: "MENDIOLA-L", name: "MENDIOLA Lander", points: 0, isChamp: false },
-      { code: "PARRILLA-01", name: "PARRILLA ETCHART Xabier", points: 0, isChamp: false },
-      { code: "PONTACQ-01", name: "PONTACQ Jean-Louis", points: 0, isChamp: false },
-      { code: "QUEYROU-01", name: "QUEYROU Yannick", points: 0, isChamp: false },
-      { code: "ROCHE-01", name: "ROCHE Pierrick", points: 0, isChamp: false },
-      { code: "SANCHEZ-01", name: "SANCHEZ Gorka", points: 0, isChamp: false },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 0, isChamp: false }
-    ];
+      { code: "LOREA-01", name: "LABORDE Lorea", pos: "1", arrow: "", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1, points: 36 },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", pos: "2", arrow: "", medal: "🥈", cups: 1, isTenant: false, prono13: "2 - 1", gain13: 1, points: 35 },
+      { code: "JULEN-03", name: "LABORDE Julen", pos: "3", arrow: "", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0", gain13: 1, points: 29 },
+      { code: "PARRILLA-01", name: "PARRILLA ETCHART Xabier", pos: "4", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, points: 28 },
+      { code: "CORDEIRO-01", name: "CORDEIRO Jonathan", pos: "5", arrow: "", medal: "", cups: 1, isTenant: false, prono13: "2 - 0", gain13: 1, points: 27 },
+      { code: "PONTACQ-01", name: "PONTACQ Jean-Louis", pos: "6", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 26 },
+      { code: "DULONG-01", name: "DULONG Xina", pos: "7", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, points: 25 },
+      { code: "ALAIN-01", name: "LABORDE Alain", pos: "8", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, points: 23 },
+      { code: "MENDIOLA-L", name: "MENDIOLA Lander", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 23 },
+      { code: "SANCHEZ-01", name: "SANCHEZ Gorka", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 23 },
+      { code: "CURUTCHARRY-01", name: "CURUTCHARRY Pierre", pos: "11", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 1", gain13: 1, points: 22 },
+      { code: "QUEYROU-01", name: "QUEYROU Yannick", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, points: 22 },
+      { code: "ARIAS-01", name: "ARIAS RUIZ Jorge", pos: "13", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 20 },
+      { code: "MARITORENA-01", name: "MARITORENA Christophe", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1, points: 20 },
+      { code: "MENDIOLA-I", name: "MENDIOLA Iñaki", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 20 },
+      { code: "CAZAURAN-01", name: "CAZAURAN Jean-Yves", pos: "16", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 19 },
+      { code: "CROUZAT-F", name: "CROUZAT Frédéric", pos: "", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1, points: 19 },
+      { code: "ROCHE-01", name: "ROCHE Pierrick", pos: "", arrow: "down", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, points: 19 },
+      { code: "CROUZAT-L", name: "CROUZAT Luken", pos: "19", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 15 },
+      { code: "GOBBI-01", name: "GOBBI Olivier", pos: "20", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, points: 14 },
+      { code: "GOYENEIX-01", name: "GOYENEIX Pierre", pos: "21", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 12 },
+      { code: "FERNANDEZ-01", name: "FERNANDEZ Adrian", pos: "22", arrow: "", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, points: 8 },
+      { code: "ESCALANTE-01", name: "ESCALANTE Ange", pos: "23", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 3 },
+      { code: "CROUZAT-I", name: "CROUZAT Inko", pos: "24", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 2 },
+      { code: "DIAZ-DEBAT-01", name: "DIAZ-DEBAT Bertrand", pos: "25", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 1 },
+      { code: "BARRUTIA-01", name: "BARRUTIA Xabier", pos: "26", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 },
+      { code: "LEGRAS-01", name: "LEGRAS Peio", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 }
+    ].slice(0, 26); // Garde exactement 26 lignes (ajuste la ligne 25 si tu veux LEGRAS Peio à 0 pt)
 
     window.MATCHES = [
-      { id: "m13", num: 13, comp: "Liga", dayName: "Vendredi", date: "20 Novembre", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
-      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
+      { id: "m13", num: 13, comp: "Liga", dayName: "vendredi", date: "20 novembre 2026", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
+      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
     ];
 
     window.PALM = [
       {
-        title: "Champion en titre",
+        title: "Tenant du Titre",
         holder: "JULEN-03",
-        rows: [
-          { rank: "1er", name: "LABORDE Julen", detail: "Saison 2025/26" }
-        ]
+        rows: [{ rank: "🏆", name: "LABORDE Julen", detail: "Champion en titre" }]
       },
       {
         title: "Coupes de la Peña",
         holder: "LOREA-01",
         rows: [
-          { rank: "🏆", name: "LABORDE Lorea", detail: "Coupe d'Hiver" },
-          { rank: "🏆", name: "URREIZTIETA Andoni", detail: "Coupe de Printemps" }
+          { rank: "🏆", name: "LABORDE Lorea", detail: "2 trophées" },
+          { rank: "🏆", name: "URREIZTIETA Andoni", detail: "1 trophée" },
+          { rank: "🏆", name: "LABORDE Julen", detail: "1 trophée" },
+          { rank: "🏆", name: "CORDEIRO Jonathan", detail: "1 trophée" },
+          { rank: "🏆", name: "ROCHE Pierrick", detail: "1 trophée" },
+          { rank: "🏆", name: "FERNANDEZ Adrian", detail: "1 trophée" }
         ]
       }
     ];
 
     let currentUser = null;
-    let currentMatchId = "m14";
+    let currentMatchId = "m13";
     let remoteData = { preds: {} };
 
-    function ptsLabel(n) {
-      return (n === 0 || n === 1) ? "point" : "pts";
-    }
-
-    function cupIcons(code) {
-      const count = (code === "LOREA-01") ? 2 : (code === "ANDONI-02" ? 1 : 0);
-      if (!count) return "";
-      return `<span class="cup-plain">${"🏆".repeat(count)}</span>`;
+    function ptsWord(n) {
+      return (n === 0 || n === 1) ? "pt" : "pts";
     }
 
     function getFirstName(fullName) {
@@ -572,7 +641,7 @@
       }
 
       if (raw === "ADMIN-PENA") {
-        currentUser = { code: "ADMIN-PENA", name: "Administrateur Peña", points: 0, isChamp: false, isAdmin: true };
+        currentUser = { code: "ADMIN-PENA", name: "Administrateur Peña", points: 0, isAdmin: true };
       } else {
         const found = window.MEMBERS.find(m => String(m.code || "").trim().toUpperCase() === raw);
         if (!found) {
@@ -585,7 +654,7 @@
       try {
         await loadRemoteData();
       } catch (e) {
-        console.warn("Connexion poursuivie sans base distante :", e);
+        console.warn("Connexion sans base distante :", e);
       }
 
       document.getElementById("sec-login").classList.add("hidden");
@@ -601,11 +670,10 @@
         : `Code : ${currentUser.code}`;
       document.getElementById("aupa-stats").textContent = currentUser.isAdmin
         ? `${window.MEMBERS.length} joueurs`
-        : `${currentUser.points} ${ptsLabel(currentUser.points)}`;
+        : `${currentUser.points} ${ptsWord(currentUser.points)}`;
 
       populateMatchSelect();
       window.showMatch(currentMatchId);
-      renderLeaderboard();
       renderPalm();
     };
 
@@ -627,7 +695,7 @@
       window.MATCHES.forEach(m => {
         const opt = document.createElement("option");
         opt.value = m.id;
-        opt.textContent = `Pronostic ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
+        opt.textContent = `Journée ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
         sel.appendChild(opt);
       });
       sel.value = currentMatchId;
@@ -635,9 +703,11 @@
 
     window.showMatch = function(matchId) {
       currentMatchId = matchId;
-      const m = window.MATCHES.find(x => x.id === matchId) || window.MATCHES[window.MATCHES.length - 1];
+      const m = window.MATCHES.find(x => x.id === matchId) || window.MATCHES[0];
       document.getElementById("match-select").value = m.id;
-      document.getElementById("th-prono").textContent = `PRONO N° ${m.num}`;
+      document.getElementById("th-prono").textContent = `PRONO N°${m.num}`;
+      document.getElementById("standings-title").textContent = `CLASSEMENT À L'ISSUE DE LA JOURNÉE ${m.num}`;
+      document.getElementById("cumul-sub").textContent = `Classement cumulé à la fin de la Journée ${m.num} (${m.dayName} ${m.date})`;
       document.getElementById("pred-ok").textContent = "";
 
       const titleEl = document.getElementById("match-title");
@@ -646,7 +716,7 @@
 
       if (m.finished) {
         titleEl.textContent = `${m.home} ${m.fh}-${m.fa} ${m.away}`;
-        metaEl.textContent = `Pronostic ${m.num} - ${m.comp} - ${m.dayName} ${m.date} - ${m.time} - ${m.stadium} -`;
+        metaEl.textContent = `Journée ${m.num} - ${m.comp} - ${m.dayName} ${m.date} - ${m.time} - ${m.stadium}`;
         predBox.classList.add("hidden");
       } else {
         titleEl.textContent = `Journée ${m.num} - ${m.dayName} ${m.date} ${m.time} - ${m.stadium}`;
@@ -662,7 +732,7 @@
         document.getElementById("pred-a").value = existing ? existing.a : "";
       }
 
-      renderLeaderboard();
+      renderLeaderboard(m);
     };
 
     window.savePred = async function() {
@@ -690,46 +760,71 @@
 
       await saveRemoteData();
       okEl.textContent = "Prono enregistré !";
-      renderLeaderboard();
+      const m = window.MATCHES.find(x => x.id === currentMatchId) || window.MATCHES[0];
+      renderLeaderboard(m);
     };
 
-    function renderLeaderboard() {
+    function renderLeaderboard(matchObj) {
       const tbody = document.getElementById("lb-body");
-      const partInfo = document.getElementById("part-info");
+      const banner = document.getElementById("participation-banner");
       tbody.innerHTML = "";
 
-      const sorted = [...window.MEMBERS].sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points;
-        return a.name.localeCompare(b.name, "fr", { sensitivity: "base" });
+      const totalMembers = window.MEMBERS.length;
+      const matchPreds = (remoteData.preds && remoteData.preds[currentMatchId]) || {};
+
+      let submitted = 0;
+      window.MEMBERS.forEach(m => {
+        const p = matchPreds[m.code];
+        const hasRemote = p && p.h !== undefined && p.a !== undefined && p.h !== "" && p.a !== "";
+        const hasStatic = (matchObj && matchObj.num === 13 && m.prono13 && m.prono13 !== "-");
+        if (hasRemote || hasStatic) submitted++;
       });
 
-      const matchPreds = (remoteData.preds && remoteData.preds[currentMatchId]) || {};
-      const submittedCount = Object.keys(matchPreds).length;
-      partInfo.textContent = `${submittedCount} / ${sorted.length} pronos enregistrés`;
+      const pct = totalMembers > 0 ? Math.round((submitted / totalMembers) * 100) : 0;
+      banner.textContent = `Taux de Participation pour la journée ${matchObj ? matchObj.num : 13} : ${pct}% (${submitted}/${totalMembers} participants)`;
 
-      sorted.forEach((m, idx) => {
-        const prev = idx > 0 ? sorted[idx - 1] : null;
-        const showRank = (idx === 0) || (m.points !== prev.points);
-        const rankLabel = showRank ? `${idx + 1}` : "";
-
+      window.MEMBERS.forEach(m => {
         const p = matchPreds[m.code];
-        const pronoText = (p && p.h !== undefined && p.a !== undefined) ? `${p.h}-${p.a}` : "—";
+        let pronoStr = "-";
+        let gain = 0;
+
+        if (p && p.h !== undefined && p.a !== undefined && p.h !== "" && p.a !== "") {
+          pronoStr = `${p.h} - ${p.a}`;
+          if (matchObj && matchObj.finished && matchObj.fh !== null && matchObj.fa !== null) {
+            const predDiff = Number(p.h) - Number(p.a);
+            const realDiff = Number(matchObj.fh) - Number(matchObj.fa);
+            const sameSign = (predDiff > 0 && realDiff > 0) || (predDiff < 0 && realDiff < 0) || (predDiff === 0 && realDiff === 0);
+            gain = sameSign ? 1 : 0;
+          }
+        } else if (matchObj && matchObj.num === 13 && m.prono13) {
+          pronoStr = m.prono13;
+          gain = m.gain13 || 0;
+        }
+
+        const arrowHtml = m.arrow === "up"
+          ? `<span class="arrow-up">▲</span>`
+          : (m.arrow === "down" ? `<span class="arrow-down">▼</span>` : "");
+
+        const medalHtml = m.medal ? `<span class="medal">${m.medal}</span>` : "";
+        const cupsHtml = m.cups > 0 ? `<span class="trophy-icon">${"🏆".repeat(m.cups)}</span>` : "";
+        const tenantHtml = m.isTenant ? `<span class="tenant-badge">Tenant du Titre</span>` : "";
+        const meBadge = (currentUser && !currentUser.isAdmin && currentUser.code === m.code)
+          ? `<span class="me-badge">Moi</span>`
+          : "";
+
+        const gainHtml = gain > 0
+          ? `<span class="gain-pos">(+${gain} ${ptsWord(gain)})</span>`
+          : `<span class="gain-zero">(+0 pt)</span>`;
 
         const tr = document.createElement("tr");
-        if (m.isChamp) tr.classList.add("row-champ");
+        if (m.isTenant) tr.classList.add("row-champ");
         if (currentUser && !currentUser.isAdmin && currentUser.code === m.code) tr.classList.add("row-me");
 
-        const badges = [
-          m.isChamp ? `<span class="tag tag-champ">Champion</span>` : "",
-          (currentUser && !currentUser.isAdmin && currentUser.code === m.code) ? `<span class="tag tag-me">Moi</span>` : "",
-          cupIcons(m.code)
-        ].join("");
-
         tr.innerHTML = `
-          <td>${rankLabel}</td>
-          <td>${m.name}${badges}</td>
-          <td class="prono-col">${pronoText}</td>
-          <td class="pts-col">${m.points} ${ptsLabel(m.points)}</td>
+          <td class="pos-cell">${m.pos || ""}${arrowHtml}</td>
+          <td><span class="member-name">${medalHtml}${m.name}</span>${cupsHtml}${tenantHtml}${meBadge}</td>
+          <td class="prono-cell">${pronoStr} ${gainHtml}</td>
+          <td class="total-cell">${m.points} ${ptsWord(m.points)}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -744,18 +839,16 @@
         const card = document.createElement("div");
         card.className = "palm-card" + (isHolder ? " is-holder" : "");
 
-        const rowsHtml = bloc.rows.map((r, i) => `
-          <div class="palm-row ${i === 0 ? "p1" : ""}">
-            <span class="palm-rank">${r.rank}</span>
-            <span>${r.name}</span>
+        const rowsHtml = bloc.rows.map(r => `
+          <div class="palm-row">
+            <span>${r.rank}</span>
+            <span><strong>${r.name}</strong></span>
             <span class="muted" style="margin-left:auto;">${r.detail}</span>
           </div>
         `).join("");
 
         card.innerHTML = `
-          <div class="palm-head">
-            <span>${bloc.title}</span>
-          </div>
+          <div class="palm-head">${bloc.title}</div>
           <div class="palm-rows">${rowsHtml}</div>
         `;
         grid.appendChild(card);
