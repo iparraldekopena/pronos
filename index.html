@@ -329,7 +329,6 @@
       padding: 10px 14px;
     }
 
-    /* Ligne résultat réduite et équilibrée */
     .match-title {
       font-size: clamp(1.35rem, 2.8vw, 2rem);
       font-weight: 800;
@@ -374,7 +373,6 @@
       min-width: 160px;
     }
 
-    /* Sélecteur de buts défilant pour chaque équipe */
     .score-select {
       width: 92px;
       height: 54px;
@@ -406,7 +404,7 @@
       min-height: 1.2em;
     }
 
-    /* Carte Classement style capture */
+    /* Carte Classement */
     .standings-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -602,7 +600,7 @@
       font-weight: 800;
     }
 
-    /* Palmarès : fond avec liseré doré pour les 1ers, sans couleur derrière le nom */
+    /* Palmarès */
     .palm-section-title {
       margin: 0 0 14px;
       font-size: 1.2rem;
@@ -695,18 +693,94 @@
       font-weight: 400;
     }
 
-    /* Blog de la Peña */
-    .blog-list {
+    /* Blog de la Peña — Design moderne Rouge, Noir et Blanc */
+    .blog-hero {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 55%, #090b0f 100%);
+      border: 1.5px solid #ef4444;
+      border-radius: 18px;
+      padding: 24px 26px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 30px rgba(220, 38, 38, 0.22);
+    }
+
+    .blog-hero-kicker {
+      display: inline-block;
+      background: #ffffff;
+      color: #991b1b;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .blog-hero-title {
+      margin: 0 0 6px;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.01em;
+    }
+
+    .blog-hero-sub {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.98rem;
+      max-width: 720px;
+    }
+
+    .blog-filters {
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .blog-filter-btn {
+      background: #0b0d11;
+      color: #ffffff;
+      border: 1px solid #2d3442;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .blog-filter-btn:hover {
+      border-color: #ef4444;
+      background: #171b24;
+    }
+
+    .blog-filter-btn.is-selected {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #ffffff;
+      box-shadow: 0 0 0 1px #dc2626;
+    }
+
+    .blog-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
     }
 
     .blog-post {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px 22px;
+      position: relative;
+      background: #0b0d11;
+      border: 1px solid #262c38;
+      border-left: 5px solid #ef4444;
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+
+    .blog-post:hover {
+      transform: translateY(-2px);
+      border-color: #ef4444;
     }
 
     .blog-meta-top {
@@ -714,52 +788,69 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
     .blog-tag {
       display: inline-block;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(225, 29, 72, 0.18);
-      border: 1px solid rgba(244, 63, 94, 0.45);
-      color: #fda4af;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.03em;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: #dc2626;
+      border: 1px solid #f87171;
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .blog-date {
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 600;
+      color: #e5e7eb;
+      background: #161a23;
+      border: 1px solid #2b3242;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
     }
 
     .blog-title {
-      margin: 0 0 10px;
-      font-size: 1.3rem;
-      font-weight: 800;
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+      font-weight: 900;
       color: #ffffff;
+      letter-spacing: 0.01em;
     }
 
     .blog-body {
       margin: 0;
-      color: var(--text);
-      font-size: 0.98rem;
-      line-height: 1.55;
+      color: #e5e7eb;
+      font-size: 0.99rem;
+      line-height: 1.62;
     }
 
     .blog-highlight {
-      margin-top: 12px;
-      padding: 10px 14px;
-      border-left: 3px solid var(--gold);
-      background: var(--surface-2);
-      border-radius: 6px;
-      font-size: 0.92rem;
-      color: #fde68a;
-      font-weight: 600;
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-left: 4px solid #ffffff;
+      background: linear-gradient(90deg, rgba(220, 38, 38, 0.24) 0%, #131720 100%);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-left-width: 4px;
+      border-left-color: #ffffff;
+      border-radius: 10px;
+      font-size: 0.93rem;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .blog-highlight-label {
+      color: #fca5a5;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      letter-spacing: 0.06em;
+      margin-right: 6px;
+      font-weight: 900;
     }
   </style>
 </head>
@@ -929,7 +1020,13 @@
     </section>
 
     <section id="view-blog" class="hidden">
-      <h2 class="palm-section-title">Le Blog de la Peña — Analyses Fun</h2>
+      <div class="blog-hero">
+        <span class="blog-hero-kicker">Édition Rouge • Noir • Blanc</span>
+        <h2 class="blog-hero-title">Le Blog de la Peña</h2>
+        <p class="blog-hero-sub">Analyses piquantes, flops de la journée, regard du supporter parfait et chambrage officiel entre les 27 membres.</p>
+      </div>
+
+      <div id="blog-filters" class="blog-filters" aria-label="Filtrer les chroniques du blog"></div>
       <div id="blog-list" class="blog-list"></div>
     </section>
   </div>
@@ -1444,6 +1541,7 @@
 
     let currentUser = null;
     let currentMatchId = "m13";
+    let currentBlogFilter = "ALL";
     let remoteData = { preds: {} };
 
     const logoEl = document.getElementById("pena-logo");
@@ -2055,16 +2153,51 @@
       });
     }
 
+    window.setBlogFilter = function(tag) {
+      currentBlogFilter = tag || "ALL";
+      renderBlog();
+    };
+
+    function renderBlogFilters() {
+      const filtersEl = document.getElementById("blog-filters");
+      if (!filtersEl) return;
+
+      const uniqueTags = ["ALL"];
+      window.BLOG_POSTS.forEach(p => {
+        if (p.tag && !uniqueTags.includes(p.tag)) {
+          uniqueTags.push(p.tag);
+        }
+      });
+
+      filtersEl.innerHTML = uniqueTags.map(tag => {
+        const isSelected = currentBlogFilter === tag;
+        const label = tag === "ALL" ? "Toutes les chroniques" : tag;
+        const safeArg = String(tag).replace(/'/g, "\\'");
+        return `
+          <button
+            type="button"
+            class="blog-filter-btn ${isSelected ? "is-selected" : ""}"
+            onclick="window.setBlogFilter('${safeArg}')"
+          >${label}</button>
+        `;
+      }).join("");
+    }
+
     function renderBlog() {
+      renderBlogFilters();
       const list = document.getElementById("blog-list");
       list.innerHTML = "";
 
-      window.BLOG_POSTS.forEach(post => {
+      const visiblePosts = currentBlogFilter === "ALL"
+        ? window.BLOG_POSTS
+        : window.BLOG_POSTS.filter(p => p.tag === currentBlogFilter);
+
+      visiblePosts.forEach(post => {
         const article = document.createElement("article");
         article.className = "blog-post";
 
         const highlightHtml = post.highlight
-          ? `<div class="blog-highlight">${post.highlight}</div>`
+          ? `<div class="blog-highlight"><span class="blog-highlight-label">À retenir :</span>${post.highlight}</div>`
           : "";
 
         article.innerHTML = `
