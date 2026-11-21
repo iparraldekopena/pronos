@@ -19,31 +19,42 @@
     }
     header {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
       gap: 12px;
       border: 1px solid #e2e6ec;
       border-radius: 12px;
-      padding: 16px 20px;
+      padding: 18px 20px;
       margin-bottom: 18px;
       background: #ffffff;
+      text-align: center;
+    }
+    .logo-banner {
+      background: #cf222e;
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(207, 34, 46, 0.22);
     }
     .title {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.45rem;
       font-weight: 900;
+      letter-spacing: 0.8px;
+      color: #ffffff;
     }
     .sub {
       font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.6px;
       text-transform: uppercase;
-      color: #57606a;
+      color: #ffe5e7;
+      margin-top: 2px;
     }
     .club {
-      font-size: 1rem;
+      font-size: 0.92rem;
       font-weight: 900;
+      letter-spacing: 0.8px;
       color: #cf222e;
       text-transform: uppercase;
     }
@@ -165,12 +176,12 @@
 <body>
   <div class="wrap">
     <header>
-      <div>
+      <div class="logo-banner">
         <h1 class="title">IPARRALDEKO PEÑA</h1>
         <div class="sub">EUSKAL HERRIA</div>
       </div>
       <div class="club">ATHLETIC CLUB</div>
-      <div id="nav" class="hidden" style="display:flex; gap:8px; flex-wrap:wrap;">
+      <div id="nav" class="hidden" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
         <button id="tab-pronos" class="active" type="button">Pronos & Classement</button>
         <button id="tab-palm" type="button">Palmarès</button>
         <button id="btn-logout" type="button">Déconnexion</button>
@@ -289,219 +300,4 @@
         }
       ];
       var PALM = [
-        { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
-        { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
-        { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
-        { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
-        { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
-        { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
-        { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
-        { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
-        { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
-        { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
-      ];
-
-      var state = { user: null, currentId: "m13" };
-
-      function byId(id) { return document.getElementById(id); }
-      function setText(id, txt) { var n = byId(id); if (n) n.textContent = txt; }
-      function getSign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
-      function getMatchById(id) {
-        for (var i = 0; i < MATCHES.length; i++) {
-          if (MATCHES[i].id === id) return MATCHES[i];
-        }
-        return MATCHES[0];
-      }
-
-      function renderPalmares() {
-        var grid = byId("palm-grid");
-        grid.innerHTML = "";
-        for (var i = 0; i < PALM.length; i++) {
-          var s = PALM[i];
-          var card = document.createElement("div");
-          card.className = "palm-card";
-
-          var head = document.createElement("div");
-          head.className = "palm-head";
-          head.textContent = "Saison " + s.y;
-          if (i === 0) {
-            var em = document.createElement("em");
-            em.className = "champ-tag";
-            em.textContent = "(tenant du titre)";
-            head.appendChild(em);
-          }
-
-          var rows = document.createElement("div");
-          rows.className = "palm-rows";
-          var lines = [
-            { cls: "palm-row p1", rank: "1er", name: s.p1 },
-            { cls: "palm-row", rank: "2e", name: s.p2 },
-            { cls: "palm-row", rank: "3e", name: s.p3 }
-          ];
-          for (var j = 0; j < lines.length; j++) {
-            var row = document.createElement("div");
-            row.className = lines[j].cls;
-            var rk = document.createElement("span");
-            rk.className = "palm-rank";
-            rk.textContent = lines[j].rank;
-            var nm = document.createElement("span");
-            nm.textContent = lines[j].name;
-            row.appendChild(rk);
-            row.appendChild(nm);
-            rows.appendChild(row);
-          }
-          card.appendChild(head);
-          card.appendChild(rows);
-          grid.appendChild(card);
-        }
-      }
-
-      function renderLeaderboard(m) {
-        var n = parseInt(m.pronoNum, 10) || 1;
-        setText("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
-        var cnt = 0;
-        for (var k in m.preds) { if (m.preds.hasOwnProperty(k)) cnt++; }
-        setText("part-info", "Participation : " + cnt + "/" + MEMBERS.length);
-
-        var sorted = MEMBERS.slice().sort(function (a, b) {
-          return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
-        });
-        var tb = byId("lb-body");
-        tb.innerHTML = "";
-        for (var i = 0; i < sorted.length; i++) {
-          var mem = sorted[i];
-          var pr = m.preds[mem.code];
-          var txt = pr ? (pr.h + " - " + pr.a) : "-";
-          if (m.finished) {
-            if (!pr) txt += " (+0 pt)";
-            else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
-            else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) txt += " (+3 pts)";
-            else txt += " (+1 pt)";
-          }
-          var tr = document.createElement("tr");
-          var td1 = document.createElement("td"); td1.textContent = String(i + 1);
-          var td2 = document.createElement("td");
-          td2.appendChild(document.createTextNode(mem.name));
-          if (mem.isChamp) {
-            var em = document.createElement("em");
-            em.className = "champ-tag";
-            em.textContent = "(tenant du titre)";
-            td2.appendChild(em);
-          }
-          var td3 = document.createElement("td"); td3.className = "prono-col"; td3.textContent = txt;
-          var td4 = document.createElement("td"); td4.className = "pts-col"; td4.textContent = mem.points + " pts";
-          tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
-          tb.appendChild(tr);
-        }
-      }
-
-      function showMatch(id) {
-        state.currentId = id;
-        var m = getMatchById(id);
-        byId("match-select").value = m.id;
-        setText("match-title", m.home + " vs " + m.away);
-        setText("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score : " + m.fh + " - " + m.fa) : " • Ouvert"));
-        setText("lbl-home", m.home);
-        setText("lbl-away", m.away);
-        setText("pred-ok", "");
-
-        if (!m.finished && state.user && !state.user.isAdmin) {
-          byId("pred-box").classList.remove("hidden");
-          var pr = m.preds[state.user.code];
-          byId("pred-h").value = pr ? pr.h : "";
-          byId("pred-a").value = pr ? pr.a : "";
-        } else {
-          byId("pred-box").classList.add("hidden");
-        }
-        renderLeaderboard(m);
-      }
-
-      function fillMatchSelect() {
-        var sel = byId("match-select");
-        sel.innerHTML = "";
-        for (var i = 0; i < MATCHES.length; i++) {
-          var opt = document.createElement("option");
-          opt.value = MATCHES[i].id;
-          opt.textContent = MATCHES[i].comp + " — " + MATCHES[i].home + " vs " + MATCHES[i].away;
-          sel.appendChild(opt);
-        }
-      }
-
-      function setTab(name) {
-        if (!state.user) return;
-        var isPalm = name === "palm";
-        byId("view-pronos").classList.toggle("hidden", isPalm);
-        byId("view-palm").classList.toggle("hidden", !isPalm);
-        byId("tab-pronos").classList.toggle("active", !isPalm);
-        byId("tab-palm").classList.toggle("active", isPalm);
-        if (isPalm) renderPalmares();
-      }
-
-      function startSession(u) {
-        state.user = u;
-        byId("sec-login").classList.add("hidden");
-        byId("nav").classList.remove("hidden");
-        byId("sec-user").classList.remove("hidden");
-        setText("user-label", u.name);
-        setText("user-pts", u.isAdmin ? "Mode administrateur" : ("Total : " + u.points + " pts"));
-        fillMatchSelect();
-        showMatch(state.currentId);
-        setTab("pronos");
-      }
-
-      function doLogin() {
-        var raw = (byId("code-in").value || "").replace(/^\s+|\s+$/g, "").toUpperCase();
-        if (!raw) {
-          setText("login-err", "Entre un code.");
-          return;
-        }
-        if (raw === "ADMIN-PENA") {
-          setText("login-err", "");
-          startSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
-          return;
-        }
-        for (var i = 0; i < MEMBERS.length; i++) {
-          if (MEMBERS[i].code === raw) {
-            setText("login-err", "");
-            startSession({ code: MEMBERS[i].code, name: MEMBERS[i].name, points: MEMBERS[i].points, isAdmin: false });
-            return;
-          }
-        }
-        setText("login-err", "Code inconnu (" + raw + ").");
-      }
-
-      byId("btn-login").addEventListener("click", doLogin);
-      byId("code-in").addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.keyCode === 13) doLogin();
-      });
-      byId("btn-logout").addEventListener("click", function () {
-        state.user = null;
-        byId("nav").classList.add("hidden");
-        byId("sec-user").classList.add("hidden");
-        byId("view-pronos").classList.add("hidden");
-        byId("view-palm").classList.add("hidden");
-        byId("sec-login").classList.remove("hidden");
-        byId("code-in").value = "";
-      });
-      byId("tab-pronos").addEventListener("click", function () { setTab("pronos"); });
-      byId("tab-palm").addEventListener("click", function () { setTab("palm"); });
-      byId("match-select").addEventListener("change", function () { showMatch(this.value); });
-      byId("btn-save-pred").addEventListener("click", function () {
-        if (!state.user || state.user.isAdmin) return;
-        var m = getMatchById(state.currentId);
-        var h = parseInt(byId("pred-h").value, 10);
-        var a = parseInt(byId("pred-a").value, 10);
-        if (!m || m.finished || isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
-        m.preds[state.user.code] = { h: h, a: a };
-        setText("pred-ok", "Prono enregistré : " + h + " - " + a);
-        fetch(DB_URL, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ matches: MATCHES, members: MEMBERS })
-        }).catch(function () {});
-        renderLeaderboard(m);
-      });
-    })();
-  </script>
-</body>
-</html>
+        {
