@@ -425,9 +425,17 @@
     }
 
     /* Palmarès */
+    .palm-section-title {
+      margin: 0 0 14px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
     .palm-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 16px;
     }
 
@@ -438,15 +446,18 @@
       overflow: hidden;
     }
 
-    .palm-card.is-holder {
-      border-color: var(--gold);
+    .palm-card.has-me {
+      border-color: var(--me-border);
     }
 
     .palm-head {
       background: var(--surface-2);
       padding: 12px 16px;
-      font-weight: 700;
+      font-weight: 800;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .palm-rows {
@@ -455,7 +466,7 @@
 
     .palm-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       padding: 8px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -463,6 +474,17 @@
 
     .palm-row:last-child {
       border-bottom: none;
+    }
+
+    .palm-rank {
+      min-width: 34px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .palm-names {
+      font-weight: 600;
+      line-height: 1.35;
     }
   </style>
 </head>
@@ -473,7 +495,7 @@
         <img
           id="pena-logo"
           class="hero-logo-img"
-          src="LOGO IPARRALDEKO PENA (2) copie.jpg"
+          src="logo-pena.jpg"
           alt="Logo Iparraldeko Peña"
         />
       </div>
@@ -554,13 +576,14 @@
     </main>
 
     <section id="view-palm" class="hidden">
+      <h2 class="palm-section-title">Palmarès — Podiums par saison</h2>
       <div id="palm-grid" class="palm-grid"></div>
     </section>
   </div>
 
   <script>
     window.DB_URL = window.DB_URL || "";
-    window.LOGO_SRC = window.LOGO_SRC || "LOGO IPARRALDEKO PENA (2) copie.jpg";
+    window.LOGO_SRC = window.LOGO_SRC || "logo-pena.jpg";
 
     // 26 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio)
     window.MEMBERS = [
@@ -589,8 +612,7 @@
       { code: "ESCALANTE-01", name: "ESCALANTE Ange", pos: "23", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 3 },
       { code: "CROUZAT-I", name: "CROUZAT Inko", pos: "24", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 2 },
       { code: "DIAZ-DEBAT-01", name: "DIAZ-DEBAT Bertrand", pos: "25", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 1 },
-      { code: "BARRUTIA-01", name: "BARRUTIA Xabier", pos: "26", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 },
-      { code: "LEGRAS-01", name: "LEGRAS Peio", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 }
+      { code: "LEGRAS-01", name: "LEGRAS Peio", pos: "26", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 }
     ];
 
     window.MATCHES = [
@@ -598,22 +620,86 @@
       { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
     ];
 
+    // Palmarès : les 3 premiers de chaque saison (de 2025/26 à 2016/17)
     window.PALM = [
       {
-        title: "Tenant du Titre",
-        holder: "JULEN-03",
-        rows: [{ rank: "🏆", name: "LABORDE Julen", detail: "Champion en titre" }]
+        title: "SAISON 2025/26",
+        podium: [
+          { rank: "1er", names: ["Julen LABORDE"] },
+          { rank: "2e", names: ["Pierre CURUTCHARRY"] },
+          { rank: "3e", names: ["Luken CROUZAT"] }
+        ]
       },
       {
-        title: "Coupes de la Peña",
-        holder: "LOREA-01",
-        rows: [
-          { rank: "🏆", name: "LABORDE Lorea", detail: "2 trophées" },
-          { rank: "🏆", name: "URREIZTIETA Andoni", detail: "1 trophée" },
-          { rank: "🏆", name: "LABORDE Julen", detail: "1 trophée" },
-          { rank: "🏆", name: "CORDEIRO Jonathan", detail: "1 trophée" },
-          { rank: "🏆", name: "ROCHE Pierrick", detail: "1 trophée" },
-          { rank: "🏆", name: "FERNANDEZ Adrian", detail: "1 trophée" }
+        title: "SAISON 2024/25",
+        podium: [
+          { rank: "1er", names: ["Vivian MORA"] },
+          { rank: "2e", names: ["Richard GASTON", "Iñaki MENDIOLA"] },
+          { rank: "3e", names: ["Lorea LABORDE"] }
+        ]
+      },
+      {
+        title: "SAISON 2023/24",
+        podium: [
+          { rank: "1er", names: ["Adrian FERNANDEZ"] },
+          { rank: "2e", names: ["Sébastien LAMBERT"] },
+          { rank: "3e", names: ["Lucas FERNANDEZ", "Iban LARROCHE"] }
+        ]
+      },
+      {
+        title: "SAISON 2022/23",
+        podium: [
+          { rank: "1er", names: ["Jonathan CORDEIRO"] },
+          { rank: "2e", names: ["Alain LABORDE"] },
+          { rank: "3e", names: ["Miguel ROMERO"] }
+        ]
+      },
+      {
+        title: "SAISON 2021/22",
+        podium: [
+          { rank: "1er", names: ["Lorea LABORDE"] },
+          { rank: "2e", names: ["Julen LABORDE"] },
+          { rank: "3e", names: ["Aritz CAZENAVE"] }
+        ]
+      },
+      {
+        title: "SAISON 2020/21",
+        podium: [
+          { rank: "1er", names: ["Oihan CAZENAVE"] },
+          { rank: "2e", names: ["Sébastien LAMBERT", "Peio LEGRAS"] },
+          { rank: "3e", names: ["Jonathan CORDEIRO", "Olivier GOBBI", "Lorea LABORDE"] }
+        ]
+      },
+      {
+        title: "SAISON 2019/20",
+        podium: [
+          { rank: "1er", names: ["Pierrick ROCHE"] },
+          { rank: "2e", names: ["Théo LEGRAS", "Andoni URREIZTIETA"] },
+          { rank: "3e", names: ["Gorka BRINGAS"] }
+        ]
+      },
+      {
+        title: "SAISON 2018/19",
+        podium: [
+          { rank: "1er", names: ["Lorea LABORDE"] },
+          { rank: "2e", names: ["Thierry GRENIER"] },
+          { rank: "3e", names: ["Peio LEGRAS", "Pierrick ROCHE"] }
+        ]
+      },
+      {
+        title: "SAISON 2017/18",
+        podium: [
+          { rank: "1er", names: ["Marc BELINGOU"] },
+          { rank: "2e", names: ["Vivian MORA"] },
+          { rank: "3e", names: ["Aritz CAZENAVE"] }
+        ]
+      },
+      {
+        title: "SAISON 2016/17",
+        podium: [
+          { rank: "1er", names: ["Franck CELLAN", "Vivian MORA"] },
+          { rank: "2e", names: ["Sébastien LARROCHE"] },
+          { rank: "3e", names: ["Patxi BELLY"] }
         ]
       }
     ];
@@ -879,21 +965,30 @@
       const grid = document.getElementById("palm-grid");
       grid.innerHTML = "";
 
-      window.PALM.forEach(bloc => {
-        const isHolder = currentUser && !currentUser.isAdmin && currentUser.code === bloc.holder;
-        const card = document.createElement("div");
-        card.className = "palm-card" + (isHolder ? " is-holder" : "");
+      const userLastName = (currentUser && !currentUser.isAdmin)
+        ? getFirstName(currentUser.name).toUpperCase()
+        : "";
 
-        const rowsHtml = bloc.rows.map(r => `
+      window.PALM.forEach(saison => {
+        const allNames = saison.podium.flatMap(step => step.names);
+        const isUserOnPodium = Boolean(
+          userLastName && allNames.some(n => n.toUpperCase().includes(userLastName))
+        );
+
+        const card = document.createElement("div");
+        card.className = "palm-card" + (isUserOnPodium ? " has-me" : "");
+
+        const rowsHtml = saison.podium.map(step => `
           <div class="palm-row">
-            <span>${r.rank}</span>
-            <span><strong>${r.name}</strong></span>
-            <span class="muted" style="margin-left:auto;">${r.detail}</span>
+            <span class="palm-rank">${step.rank}</span>
+            <span class="palm-names">${step.names.join(" • ")}</span>
           </div>
         `).join("");
 
         card.innerHTML = `
-          <div class="palm-head">${bloc.title}</div>
+          <div class="palm-head">
+            <span>${saison.title}</span>
+          </div>
           <div class="palm-rows">${rowsHtml}</div>
         `;
         grid.appendChild(card);
