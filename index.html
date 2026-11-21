@@ -748,4 +748,242 @@
           if (s.isHolder) {
             var spanH = document.createElement("span");
             spanH.className = "tag tag-champ";
-            spanH.textContent = "Tenant
+            spanH.textContent = "Tenant du titre";
+            head.appendChild(spanH);
+          }
+
+          var rows = document.createElement("div");
+          rows.className = "palm-rows";
+          var lines = [
+            { cls: "palm-row p1", rank: "1er", name: "🏆 " + s.p1, extra: getCupTextForWinner(s.p1, cupData.counts) },
+            { cls: "palm-row", rank: "2e", name: s.p2, extra: "" },
+            { cls: "palm-row", rank: "3e", name: s.p3, extra: "" }
+          ];
+
+          for (var j = 0; j < lines.length; j++) {
+            var row = document.createElement("div");
+            row.className = lines[j].cls;
+
+            var rk = document.createElement("span");
+            rk.className = "palm-rank";
+            rk.textContent = lines[j].rank;
+
+            var box = document.createElement("div");
+            var nm = document.createElement("div");
+            nm.textContent = lines[j].name;
+            box.appendChild(nm);
+
+            if (lines[j].extra) {
+              var ex = document.createElement("div");
+              ex.className = "muted";
+              ex.style.fontSize = "0.78rem";
+              ex.style.fontWeight = "600";
+              ex.textContent = "Palmarès : " + lines[j].extra;
+              box.appendChild(ex);
+            }
+
+            row.appendChild(rk);
+            row.appendChild(box);
+            rows.appendChild(row);
+          }
+
+          card.appendChild(head);
+          card.appendChild(rows);
+          grid.appendChild(card);
+        }
+      }
+
+      function renderLeaderboard(m) {
+        var n = parseInt(m.pronoNum, 10) || 1;
+        setText("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
+
+        var cnt = 0;
+        for (var k in m.preds) {
+          if (m.preds.hasOwnProperty(k)) cnt++;
+        }
+        setText("part-info", "Participation : " + cnt + " / " + MEMBERS.length + " joueurs");
+
+        var sorted = MEMBERS.slice().sort(function (a, b) {
+          return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
+        });
+
+        var tb = byId("lb-body");
+        tb.innerHTML = "";
+
+        for (var i = 0; i < sorted.length; i++) {
+          var mem = sorted[i];
+          var pr = m.preds[mem.code];
+          var txt = pr ? (pr.h + " - " + pr.a) : "-";
+
+          if (m.finished) {
+            if (!pr) txt += " (+0 pt)";
+            else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
+            else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) txt += " (+3 pts)";
+            else txt += " (+1 pt)";
+          }
+
+          var isMe = Boolean(state.user && !state.user.isAdmin && state.user.code === mem.code);
+          var tr = document.createElement("tr");
+          if (isMe) tr.className = "row-me";
+          else if (mem.isChamp) tr.className = "row-champ";
+
+          var td1 = document.createElement("td");
+          td1.textContent = String(i + 1);
+
+          var td2 = document.createElement("td");
+          td2.style.fontWeight = (isMe || mem.isChamp) ? "800" : "600";
+          td2.appendChild(document.createTextNode(mem.name));
+
+          if (mem.isChamp) {
+            var emC = document.createElement("span");
+            emC.className = "tag tag-champ";
+            emC.textContent = "Tenant du titre";
+            td2.appendChild(emC);
+          }
+
+          if (isMe) {
+            var emM = document.createElement("span");
+            emM.className = "tag tag-me";
+            emM.textContent = "Toi";
+            td2.appendChild(emM);
+          }
+
+          var td3 = document.createElement("td");
+          td3.className = "prono-col";
+          td3.textContent = txt;
+
+          var td4 = document.createElement("td");
+          td4.className = "pts-col";
+          td4.textContent = mem.points + " pts";
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tr.appendChild(td4);
+          tb.appendChild(tr);
+        }
+      }
+
+      function showMatch(id) {
+        state.currentId = id;
+        var m = getMatchById(id);
+        byId("match-select").value = m.id;
+        setText("match-title", m.home + " vs " + m.away);
+        setText("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score final : " + m.fh + " - " + m.fa) : " • Pronostics ouverts"));
+        setText("lbl-home", m.home);
+        setText("lbl-away", m.away);
+        setText("pred-ok", "");
+
+        if (!m.finished && state.user && !state.user.isAdmin) {
+          byId("pred-box").classList.remove("hidden");
+          var pr = m.preds[state.user.code];
+          byId("pred-h").value = pr ? pr.h : "";
+          byId("pred-a").value = pr ? pr.a : "";
+        } else {
+          byId("pred-box").classList.add("hidden");
+        }
+
+        renderLeaderboard(m);
+      }
+
+      function fillMatchSelect() {
+        var sel = byId("match-select");
+        sel.innerHTML = "";
+        for (var i = 0; i < MATCHES.length; i++) {
+          var opt = document.createElement("option");
+          opt.value = MATCHES[i].id;
+          opt.textContent = MATCHES[i].comp + " — " + MATCHES[i].home + " vs " + MATCHES[i].away;
+          sel.appendChild(opt);
+        }
+      }
+
+      function setTab(name) {
+        if (!state.user) return;
+        var isPalm = name === "palm";
+        byId("view-pronos").classList.toggle("hidden", isPalm);
+        byId("view-palm").classList.toggle("hidden", !isPalm);
+        byId("tab-pronos").classList.toggle("active", !isPalm);
+        byId("tab-palm").classList.toggle("active", isPalm);
+        if (isPalm) renderPalmares();
+      }
+
+      function startSession(u) {
+        state.user = u;
+        byId("sec-login").classList.add("hidden");
+        byId("nav").classList.remove("hidden");
+        byId("aupa-banner").classList.remove("hidden");
+
+        var greeting = u.isAdmin ? "AUPA ADMIN" : ("AUPA " + getFirstName(u.name));
+        setText("aupa-heading", greeting + " !");
+        setText("aupa-sub", "Bienvenue dans l'espace des pronostics • " + u.name);
+        setText("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + " pts"));
+
+        fillMatchSelect();
+        showMatch(state.currentId);
+        setTab("pronos");
+      }
+
+      function doLogin() {
+        var raw = (byId("code-in").value || "").replace(/^\s+|\s+$/g, "").toUpperCase();
+        if (!raw) {
+          setText("login-err", "Merci d'entrer un code d'accès.");
+          return;
+        }
+        if (raw === "ADMIN-PENA") {
+          setText("login-err", "");
+          startSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
+          return;
+        }
+        for (var i = 0; i < MEMBERS.length; i++) {
+          if (MEMBERS[i].code === raw) {
+            setText("login-err", "");
+            startSession({
+              code: MEMBERS[i].code,
+              name: MEMBERS[i].name,
+              points: MEMBERS[i].points,
+              isAdmin: false
+            });
+            return;
+          }
+        }
+        setText("login-err", "Code inconnu (" + raw + ").");
+      }
+
+      byId("btn-login").addEventListener("click", doLogin);
+      byId("code-in").addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.keyCode === 13) doLogin();
+      });
+
+      byId("btn-logout").addEventListener("click", function () {
+        state.user = null;
+        byId("nav").classList.add("hidden");
+        byId("aupa-banner").classList.add("hidden");
+        byId("view-pronos").classList.add("hidden");
+        byId("view-palm").classList.add("hidden");
+        byId("sec-login").classList.remove("hidden");
+        byId("code-in").value = "";
+      });
+
+      byId("tab-pronos").addEventListener("click", function () { setTab("pronos"); });
+      byId("tab-palm").addEventListener("click", function () { setTab("palm"); });
+      byId("match-select").addEventListener("change", function () { showMatch(this.value); });
+
+      byId("btn-save-pred").addEventListener("click", function () {
+        if (!state.user || state.user.isAdmin) return;
+        var m = getMatchById(state.currentId);
+        var h = parseInt(byId("pred-h").value, 10);
+        var a = parseInt(byId("pred-a").value, 10);
+        if (!m || m.finished || isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
+        m.preds[state.user.code] = { h: h, a: a };
+        setText("pred-ok", "Prono enregistré : " + h + " - " + a);
+        fetch(DB_URL, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ matches: MATCHES, members: MEMBERS })
+        }).catch(function () {});
+        renderLeaderboard(m);
+      });
+    })();
+  </script>
+</body>
+</html>
