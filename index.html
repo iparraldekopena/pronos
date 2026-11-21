@@ -10,6 +10,7 @@
       --surface: #141820;
       --surface-2: #1b202b;
       --focus-bg: #000000;
+      --selector-bg: #11151d;
       --border: #2a3140;
       --text: #f3f5f8;
       --muted: #9aa3b2;
@@ -191,15 +192,14 @@
       color: var(--gold);
     }
 
-    /* Bloc Pronostic agrandi */
+    /* Bloc Pronostic */
     .match-focus {
       background: var(--focus-bg);
       border: 1.5px solid #374151;
       border-radius: 18px;
-      padding: 34px 28px;
+      padding: 28px 24px;
       margin-bottom: 24px;
       text-align: center;
-      min-height: 220px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -208,22 +208,32 @@
     .match-selector-bar {
       display: flex;
       justify-content: center;
-      margin-bottom: 18px;
+      align-items: center;
+      background: var(--selector-bg);
+      border: 1px solid #2b3446;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin: 0 auto 18px;
+      width: fit-content;
+      max-width: 100%;
     }
 
     .match-selector-bar select {
-      min-width: min(100%, 420px);
-      font-size: 1.05rem;
-      padding: 12px 16px;
+      min-width: min(100%, 400px);
+      background: #171d29;
+      border-color: #364156;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 10px 14px;
     }
 
-    /* Ligne résultat agrandie */
+    /* Ligne résultat réduite et équilibrée */
     .match-title {
-      font-size: clamp(1.9rem, 4.5vw, 3rem);
-      font-weight: 900;
+      font-size: clamp(1.35rem, 2.8vw, 2rem);
+      font-weight: 800;
       letter-spacing: 0.02em;
-      line-height: 1.2;
-      margin: 6px 0 14px;
+      line-height: 1.25;
+      margin: 4px 0 12px;
       padding: 10px 16px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
@@ -231,13 +241,13 @@
 
     .match-meta {
       color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 16px;
+      font-size: 0.96rem;
+      margin-bottom: 10px;
     }
 
     .pred-box {
-      margin-top: 18px;
-      padding-top: 22px;
+      margin-top: 16px;
+      padding-top: 20px;
       border-top: 1px solid #262d3d;
     }
 
@@ -251,21 +261,21 @@
     }
 
     .team-big {
-      font-size: 1.45rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      min-width: 170px;
+      min-width: 160px;
     }
 
     .score-input {
-      width: 82px;
-      height: 54px;
+      width: 78px;
+      height: 50px;
       text-align: center;
-      font-size: 1.45rem;
+      font-size: 1.35rem;
       font-weight: 800;
     }
 
     .score-sep {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
     }
 
