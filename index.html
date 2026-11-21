@@ -5,30 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iparraldeko Peña — Pronostics</title>
   <style>
-    :root {
-      --bg: #ffffff;
-      --card: #ffffff;
-      --border: #e2e6ec;
-      --text: #161b22;
-      --muted: #57606a;
-      --accent: #cf222e;
-      --accent-2: #1a7f37;
-      --gold: #9a6700;
-      --gold-bg: #fff8c5;
-      --champ-bg: #e8f7ee;
-      --palm-red-bg: #fde8ea;
-      --palm-red-border: #f3b4ba;
-    }
-    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background: #ffffff;
+      color: #161b22;
       line-height: 1.5;
     }
     .wrap {
-      max-width: 1080px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 20px 16px 60px;
     }
@@ -37,141 +22,125 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
+      gap: 12px;
+      border: 1px solid #e2e6ec;
       border-radius: 12px;
       padding: 16px 20px;
       margin-bottom: 18px;
+      background: #ffffff;
     }
-    .logo-title {
+    .title {
       margin: 0;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 900;
-      color: var(--text);
     }
-    .logo-sub {
+    .sub {
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 1.2px;
       text-transform: uppercase;
-      color: var(--muted);
+      color: #57606a;
     }
-    .logo-right {
+    .club {
       font-size: 1rem;
       font-weight: 900;
-      letter-spacing: 0.6px;
-      color: var(--accent);
+      color: #cf222e;
       text-transform: uppercase;
     }
-    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .sync-pill {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    button, select, input {
-      font-family: inherit;
-      color: var(--text);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 9px 12px;
-      font-size: 0.92rem;
-    }
-    button { cursor: pointer; font-weight: 600; }
-    button.primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #ffffff;
-    }
-    .nav { display: flex; gap: 8px; flex-wrap: wrap; }
-    .nav button.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #ffffff;
-    }
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      border: 1px solid #e2e6ec;
       border-radius: 12px;
       padding: 18px;
       margin-bottom: 16px;
+      background: #ffffff;
     }
-    .match-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 8px;
+    .hidden {
+      display: none !important;
     }
-    .match-title { font-size: 1.2rem; font-weight: 800; }
-    .pill {
-      background: var(--gold-bg);
-      border: 1px solid #d4a72c;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      color: var(--gold);
+    input, select, button {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid #cfd7de;
+      background: #ffffff;
+      color: #161b22;
+    }
+    button {
+      cursor: pointer;
       font-weight: 700;
     }
-    .muted { color: var(--muted); font-size: 0.88rem; }
-    .err { color: #cf222e; font-size: 0.88rem; margin-top: 8px; font-weight: 600; }
-    .ok { color: var(--accent-2); font-size: 0.88rem; margin-top: 8px; font-weight: 600; }
-    .hidden { display: none !important; }
-    .score-inputs { display: flex; align-items: center; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
-    .score-inputs input { width: 72px; text-align: center; font-weight: 700; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td {
-      text-align: left;
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--border);
+    button.primary {
+      background: #cf222e;
+      border-color: #cf222e;
+      color: #ffffff;
+    }
+    button.active {
+      background: #cf222e;
+      border-color: #cf222e;
+      color: #ffffff;
+    }
+    .err {
+      color: #cf222e;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .ok {
+      color: #1a7f37;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .muted {
+      color: #57606a;
       font-size: 0.9rem;
     }
-    th { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #e2e6ec;
+      text-align: left;
+    }
+    th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #57606a;
+    }
     th.prono-col, td.prono-col {
       background: #111111;
       color: #ffffff;
       font-weight: 700;
       text-align: center;
     }
-    td.pts-col { font-weight: 700; }
-    tr.champ td { background: var(--champ-bg); }
-    tr.champ td.prono-col { background: #111111; color: #ffffff; }
-    tr.me-row td { background: #fff5f5; }
-    tr.me-row td.prono-col { background: #111111; color: #ffffff; }
-    .champ-tag { font-style: italic; color: var(--accent-2); margin-left: 6px; }
-
-    .palmares-grid {
+    td.pts-col {
+      font-weight: 700;
+    }
+    .champ-tag {
+      font-style: italic;
+      color: #1a7f37;
+      margin-left: 6px;
+    }
+    .palm-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 14px;
     }
     .palm-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
+      border: 1px solid #e2e6ec;
       border-radius: 10px;
       overflow: hidden;
-    }
-    .palm-season {
       background: #ffffff;
-      border-bottom: 1px solid var(--border);
+    }
+    .palm-head {
       padding: 10px 14px;
+      border-bottom: 1px solid #e2e6ec;
       font-weight: 800;
-      font-size: 0.95rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .palm-season span {
-      font-size: 0.75rem;
-      font-style: italic;
-      color: var(--accent-2);
-      font-weight: 700;
     }
     .palm-rows {
       padding: 10px 14px;
@@ -180,168 +149,135 @@
     }
     .palm-row {
       display: flex;
-      align-items: baseline;
       gap: 8px;
-      font-size: 0.88rem;
+      align-items: baseline;
       padding: 7px 10px;
       border-radius: 7px;
       border: 1px solid #eef1f4;
-      background: #ffffff;
+      font-size: 0.9rem;
     }
     .palm-row.p1 {
-      background: var(--palm-red-bg);
-      border-color: var(--palm-red-border);
+      background: #fde8ea;
+      border-color: #f3b4ba;
       font-weight: 700;
-      color: var(--text);
     }
     .palm-rank {
-      flex: 0 0 auto;
       font-weight: 800;
       min-width: 34px;
     }
-    .palm-name { flex: 1 1 auto; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div>
-        <h1 class="logo-title">IPARRALDEKO PEÑA</h1>
-        <div class="logo-sub">EUSKAL HERRIA</div>
+        <h1 class="title">IPARRALDEKO PEÑA</h1>
+        <div class="sub">EUSKAL HERRIA</div>
       </div>
-      <div class="logo-right">ATHLETIC CLUB</div>
-      <div class="top-actions">
-        <span id="sync" class="sync-pill">Prêt</span>
-        <div id="nav" class="nav hidden">
-          <button id="t-pronos" class="active" type="button">Pronos & Classement</button>
-          <button id="t-palm" type="button">Palmarès</button>
-          <button id="logout-btn" type="button">Déconnexion</button>
-        </div>
+      <div class="club">ATHLETIC CLUB</div>
+      <div id="nav" class="hidden" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button id="tab-pronos" class="active" type="button">Pronos & Classement</button>
+        <button id="tab-palm" type="button">Palmarès</button>
+        <button id="btn-logout" type="button">Déconnexion</button>
       </div>
     </header>
 
-    <section id="login-sec" class="card">
-      <h2 style="margin-top:0;">Connexion membre ou administrateur</h2>
+    <section id="sec-login" class="card">
+      <h2 style="margin-top:0;">Connexion</h2>
       <p class="muted">Entre ton code membre (ex. ALAIN-08) ou ADMIN-PENA.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
         <input id="code-in" type="text" placeholder="Code d'accès" />
-        <button id="login-btn" class="primary" type="button">Se connecter</button>
+        <button id="btn-login" class="primary" type="button">Se connecter</button>
       </div>
-      <div id="err" class="err"></div>
+      <div id="login-err" class="err"></div>
     </section>
 
-    <section id="mem-sec" class="card hidden">
-      <strong>Connecté :</strong> <span id="m-name"></span>
-      <div id="m-summary" class="muted" style="margin-top:4px;"></div>
+    <section id="sec-user" class="card hidden">
+      <div><strong>Connecté :</strong> <span id="user-label"></span></div>
+      <div id="user-pts" class="muted" style="margin-top:4px;"></div>
     </section>
 
-    <section id="adm-sec" class="card hidden">
-      <h2 style="margin-top:0;">Administration Peña</h2>
-      <select id="a-sel" style="width:100%; margin-bottom:10px;"></select>
-      <div class="score-inputs">
-        <span id="al-h">DOM</span>
-        <input id="fh" type="number" min="0" placeholder="0" />
-        <span>-</span>
-        <input id="fa" type="number" min="0" placeholder="0" />
-        <span id="al-a">EXT</span>
-        <button id="calc-btn" class="primary" type="button">Valider score</button>
-      </div>
-      <div id="adm-msg" class="ok"></div>
-    </section>
-
-    <main id="v-pronos" class="hidden">
+    <main id="view-pronos" class="hidden">
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-          <label for="m-sel" class="muted">Match sélectionné :</label>
-          <select id="m-sel" style="flex:1; min-width:240px;"></select>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+          <label for="match-select" class="muted">Match :</label>
+          <select id="match-select"></select>
         </div>
-        <div class="match-head">
-          <div>
-            <div id="p-title" class="match-title"></div>
-            <div id="p-meta" class="muted"></div>
-          </div>
-          <span id="p-stat" class="pill"></span>
+        <h3 id="match-title" style="margin:0 0 4px;"></h3>
+        <div id="match-meta" class="muted"></div>
+
+        <div id="pred-box" class="hidden" style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <span id="lbl-home"></span>
+          <input id="pred-h" type="number" min="0" style="width:70px; text-align:center;" />
+          <span>-</span>
+          <input id="pred-a" type="number" min="0" style="width:70px; text-align:center;" />
+          <span id="lbl-away"></span>
+          <button id="btn-save-pred" class="primary" type="button">Valider prono</button>
         </div>
-        <div id="pred-form-area" class="hidden">
-          <div class="score-inputs">
-            <span id="t-home">DOM</span>
-            <input id="in-h" type="number" min="0" placeholder="0" />
-            <span>-</span>
-            <input id="in-a" type="number" min="0" placeholder="0" />
-            <span id="t-away">EXT</span>
-            <button id="save-pred-btn" class="primary" type="button">Valider mon prono</button>
-          </div>
-          <div id="fb-msg" class="ok"></div>
-        </div>
-        <div id="pred-closed-area" class="muted" style="margin-top:8px;"></div>
+        <div id="pred-ok" class="ok"></div>
       </div>
 
       <div class="card">
         <h2 style="margin-top:0;">Classement général</h2>
-        <div id="participation-display" class="muted"></div>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Joueur</th>
-                <th id="th-prono" class="prono-col">PRONO N° 13</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody id="lb"></tbody>
-          </table>
-        </div>
+        <div id="part-info" class="muted"></div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Joueur</th>
+              <th id="th-prono" class="prono-col">PRONO N° 13</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="lb-body"></tbody>
+        </table>
       </div>
     </main>
 
-    <section id="v-palm" class="hidden">
+    <section id="view-palm" class="hidden">
       <div class="card">
-        <div class="match-head">
-          <h2 style="margin:0;">Palmarès de la Peña</h2>
-          <span class="muted">1er, 2e et 3e par saison</span>
-        </div>
-        <div id="palm-list" class="palmares-grid"></div>
+        <h2 style="margin-top:0;">Palmarès de la Peña</h2>
+        <div id="palm-grid" class="palm-grid"></div>
       </div>
     </section>
   </div>
 
   <script>
     (function () {
-      var DB = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+      var DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
       var MEMBERS = [
-        { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false, cups: 2 },
-        { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false, cups: 0 },
-        { code: "JULEN-03", name: "LABORDE Julen", points: 29, isChamp: true, cups: 1 },
-        { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 28, isChamp: false, cups: 0 },
-        { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 27, isChamp: false, cups: 1 },
-        { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 26, isChamp: false, cups: 0 },
-        { code: "XINA-07", name: "DULONG Xina", points: 25, isChamp: false, cups: 0 },
-        { code: "ALAIN-08", name: "LABORDE Alain", points: 23, isChamp: false, cups: 0 },
-        { code: "LANDER-09", name: "MENDIOLA Lander", points: 23, isChamp: false, cups: 0 },
-        { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 22, isChamp: false, cups: 0 },
-        { code: "YANNICK-11", name: "QUEYROU Yannick", points: 22, isChamp: false, cups: 0 },
-        { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false, cups: 0 },
-        { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false, cups: 0 },
-        { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 20, isChamp: false, cups: 0 },
-        { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 20, isChamp: false, cups: 0 },
-        { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false, cups: 1 },
-        { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 19, isChamp: false, cups: 0 },
-        { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false, cups: 0 },
-        { code: "LUKEN-19", name: "CROUZAT Luken", points: 15, isChamp: false, cups: 0 },
-        { code: "OLIVIER-20", name: "GOBBI Olivier", points: 14, isChamp: false, cups: 0 },
-        { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 12, isChamp: false, cups: 0 },
-        { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false, cups: 1 },
-        { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false, cups: 0 },
-        { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false, cups: 0 },
-        { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false, cups: 0 },
-        { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false, cups: 0 },
-        { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false, cups: 0 }
+        { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false },
+        { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false },
+        { code: "JULEN-03", name: "LABORDE Julen", points: 29, isChamp: true },
+        { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 28, isChamp: false },
+        { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 27, isChamp: false },
+        { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 26, isChamp: false },
+        { code: "XINA-07", name: "DULONG Xina", points: 25, isChamp: false },
+        { code: "ALAIN-08", name: "LABORDE Alain", points: 23, isChamp: false },
+        { code: "LANDER-09", name: "MENDIOLA Lander", points: 23, isChamp: false },
+        { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 22, isChamp: false },
+        { code: "YANNICK-11", name: "QUEYROU Yannick", points: 22, isChamp: false },
+        { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false },
+        { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false },
+        { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 20, isChamp: false },
+        { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 20, isChamp: false },
+        { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false },
+        { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 19, isChamp: false },
+        { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false },
+        { code: "LUKEN-19", name: "CROUZAT Luken", points: 15, isChamp: false },
+        { code: "OLIVIER-20", name: "GOBBI Olivier", points: 14, isChamp: false },
+        { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 12, isChamp: false },
+        { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false },
+        { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false },
+        { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false },
+        { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false },
+        { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
+        { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false }
       ];
       var MATCHES = [
         {
           id: "m13", pronoNum: 13, comp: "Journée 13 • Domicile (D)", home: "ATHLETIC CLUB", away: "RCD ESPANYOL",
-          kickoff: "2026-11-20 21:00", finished: true, ptsApplied: true, fh: 0, fa: 1,
+          kickoff: "2026-11-20 21:00", finished: true, fh: 0, fa: 1,
           preds: {
             "LOREA-01": { h: 2, a: 0 }, "ANDONI-02": { h: 2, a: 1 }, "JULEN-03": { h: 1, a: 0 },
             "XABIER-04": { h: 3, a: 1 }, "JONATHAN-05": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 2, a: 1 },
@@ -354,7 +290,7 @@
         },
         {
           id: "m14", pronoNum: 14, comp: "Journée 14 • Extérieur (E)", home: "MALAGA CF", away: "ATHLETIC CLUB",
-          kickoff: "2026-11-28 16:15", finished: false, ptsApplied: false, fh: null, fa: null, preds: {}
+          kickoff: "2026-11-28 16:15", finished: false, fh: null, fa: null, preds: {}
         }
       ];
       var PALM = [
@@ -363,4 +299,13 @@
         { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
         { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
         { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
-        { y: "2020/21", p1: "CAZENAVE OIHAN", p
+        { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
+        { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
+        { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
+        { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
+        { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
+      ];
+
+      var state = { user: null, currentId: "m13" };
+
+      function byId(id) { return document.getElementById(id); }
