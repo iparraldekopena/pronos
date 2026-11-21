@@ -296,7 +296,7 @@
         <span class="badge-club">Iparraldeko Peña • Athletic Club</span>
       </div>
 
-      <div class="logo-banner">
+      <div id="member-logo" class="logo-banner hidden">
         <h1 class="logo-title">IPARRALDEKO PEÑA</h1>
         <div class="logo-sub">EUSKAL HERRIA • ATHLETIC CLUB</div>
       </div>
@@ -381,4 +381,395 @@
       var DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
 
       var MEMBERS = [
-        { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points:
+        { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false },
+        { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
+        { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false },
+        { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 27, isChamp: false },
+        { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 19, isChamp: false },
+        { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false },
+        { code: "LUKEN-19", name: "CROUZAT Luken", points: 15, isChamp: false },
+        { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 22, isChamp: false },
+        { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false },
+        { code: "XINA-07", name: "DULONG Xina", points: 25, isChamp: false },
+        { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false },
+        { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false },
+        { code: "OLIVIER-20", name: "GOBBI Olivier", points: 14, isChamp: false },
+        { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 12, isChamp: false },
+        { code: "ALAIN-08", name: "LABORDE Alain", points: 23, isChamp: false },
+        { code: "JULEN-03", name: "LABORDE Julen", points: 29, isChamp: true },
+        { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false },
+        { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 20, isChamp: false },
+        { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 20, isChamp: false },
+        { code: "LANDER-09", name: "MENDIOLA Lander", points: 23, isChamp: false },
+        { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 28, isChamp: false },
+        { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 26, isChamp: false },
+        { code: "YANNICK-11", name: "QUEYROU Yannick", points: 22, isChamp: false },
+        { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false },
+        { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false },
+        { code: "JEAN-28", name: "SEDEILLAN Jean", points: 0, isChamp: false },
+        { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false }
+      ];
+
+      var MATCHES = [
+        {
+          id: "m01", pronoNum: 1, comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC",
+          kickoff: "2026-08-15 19:00", finished: true, fh: 1, fa: 3,
+          preds: {
+            "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 2, a: 0 }, "PIERRE-10": { h: 0, a: 1 },
+            "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 2, a: 0 }, "ALAIN-08": { h: 1, a: 1 },
+            "JULEN-03": { h: 2, a: 1 }, "LOREA-01": { h: 2, a: 1 }, "CHRISTOPHE-14": { h: 2, a: 1 },
+            "LANDER-09": { h: 2, a: 1 }, "XABIER-04": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 3, a: 1 },
+            "GORKA-12": { h: 2, a: 0 }, "JEAN-28": { h: 1, a: 1 }, "ANDONI-02": { h: 2, a: 1 }
+          }
+        },
+        {
+          id: "m02", pronoNum: 2, comp: "Journée 2 • Extérieur (E)", home: "BARCELONA", away: "ATHLETIC CLUB",
+          kickoff: "2026-08-22 21:00", finished: true, fh: 2, fa: 0,
+          preds: {
+            "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
+            "PIERRE-10": { h: 3, a: 0 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 3, a: 1 },
+            "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 5, a: 0 }, "JULEN-03": { h: 3, a: 1 },
+            "LOREA-01": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 3 }, "LANDER-09": { h: 3, a: 0 },
+            "XABIER-04": { h: 3, a: 1 }, "JEANLOUIS-06": { h: 4, a: 2 }, "GORKA-12": { h: 2, a: 1 },
+            "JEAN-28": { h: 3, a: 1 }, "ANDONI-02": { h: 2, a: 1 }
+          }
+        },
+        {
+          id: "m03", pronoNum: 3, comp: "Journée 3 • Extérieur (E)", home: "CELTA VIGO", away: "ATHLETIC CLUB",
+          kickoff: "2026-08-29 18:30", finished: true, fh: 0, fa: 2,
+          preds: {
+            "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 3, a: 1 }, "JONATHAN-05": { h: 1, a: 1 },
+            "PIERRE-10": { h: 1, a: 1 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 1, a: 0 },
+            "OLIVIER-20": { h: 1, a: 1 }, "ALAIN-08": { h: 3, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+            "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+            "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 1, a: 1 }, "GORKA-12": { h: 0, a: 1 },
+            "JEAN-28": { h: 2, a: 1 }, "ANDONI-02": { h: 1, a: 2 }
+          }
+        },
+        {
+          id: "m04", pronoNum: 4, comp: "Journée 4 • Domicile (D)", home: "ATHLETIC CLUB", away: "ATLETICO MADRID",
+          kickoff: "2026-09-12 21:00", finished: true, fh: 3, fa: 0,
+          preds: {
+            "JORGE-13": { h: 2, a: 1 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 1 },
+            "PIERRE-10": { h: 2, a: 1 }, "XINA-07": { h: 1, a: 0 }, "ADRIAN-22": { h: 1, a: 1 },
+            "PIERRE-21": { h: 1, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 1, a: 2 },
+            "LOREA-01": { h: 1, a: 0 }, "CHRISTOPHE-14": { h: 0, a: 0 }, "INAKI-15": { h: 2, a: 1 },
+            "LANDER-09": { h: 1, a: 1 }, "XABIER-04": { h: 2, a: 2 }, "JEANLOUIS-06": { h: 1, a: 0 },
+            "GORKA-12": { h: 2, a: 2 }, "ANDONI-02": { h: 1, a: 0 }
+          }
+        },
+        {
+          id: "m05", pronoNum: 5, comp: "Journée 5 • Domicile (D)", home: "ATHLETIC CLUB", away: "ELCHE",
+          kickoff: "2026-09-19 18:30", finished: true, fh: 1, fa: 1,
+          preds: {
+            "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 4, a: 1 }, "JONATHAN-05": { h: 3, a: 0 },
+            "FREDERIC-17": { h: 3, a: 0 }, "INKO-24": { h: 2, a: 0 }, "LUKEN-19": { h: 3, a: 0 },
+            "PIERRE-10": { h: 2, a: 0 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 3, a: 0 },
+            "OLIVIER-20": { h: 2, a: 1 }, "PIERRE-21": { h: 2, a: 0 }, "ALAIN-08": { h: 3, a: 1 },
+            "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 }, "CHRISTOPHE-14": { h: 3, a: 0 },
+            "INAKI-15": { h: 3, a: 1 }, "LANDER-09": { h: 3, a: 0 }, "XABIER-04": { h: 2, a: 0 },
+            "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 1 }, "PIERRICK-16": { h: 3, a: 2 },
+            "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 2, a: 0 }
+          }
+        },
+        {
+          id: "m06", pronoNum: 6, comp: "Journée 6 • Domicile (D)", home: "ATHLETIC CLUB", away: "ALAVES",
+          kickoff: "2026-09-26 21:00", finished: true, fh: 0, fa: 0,
+          preds: {
+            "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 }, "FREDERIC-17": { h: 1, a: 1 },
+            "INKO-24": { h: 1, a: 0 }, "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 0 },
+            "XINA-07": { h: 2, a: 0 }, "OLIVIER-20": { h: 2, a: 0 }, "PIERRE-21": { h: 1, a: 0 },
+            "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 }, "LOREA-01": { h: 2, a: 0 },
+            "CHRISTOPHE-14": { h: 2, a: 1 }, "INAKI-15": { h: 3, a: 1 }, "XABIER-04": { h: 2, a: 2 },
+            "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 0 }, "PIERRICK-16": { h: 1, a: 0 },
+            "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 1, a: 0 }
+          }
+        },
+        {
+          id: "m07", pronoNum: 7, comp: "Journée 7 • Extérieur (E)", home: "VALENCIA", away: "ATHLETIC CLUB",
+          kickoff: "2026-10-03 16:15", finished: true, fh: 0, fa: 0,
+          preds: {
+            "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 1 },
+            "FREDERIC-17": { h: 1, a: 1 }, "LUKEN-19": { h: 0, a: 1 }, "XINA-07": { h: 1, a: 2 },
+            "OLIVIER-20": { h: 1, a: 2 }, "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 2, a: 2 },
+            "JULEN-03": { h: 1, a: 2 }, "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 0, a: 0 },
+            "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
+            "JEANLOUIS-06": { h: 1, a: 2 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
+            "ANDONI-02": { h: 1, a: 1 }
+          }
+        },
+        {
+          id: "m08", pronoNum: 8, comp: "Journée 8 • Extérieur (E)", home: "LEVANTE", away: "ATHLETIC CLUB",
+          kickoff: "2026-10-17 18:30", finished: true, fh: 3, fa: 1,
+          preds: {
+            "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 }, "FREDERIC-17": { h: 3, a: 3 },
+            "LUKEN-19": { h: 0, a: 2 }, "PIERRE-10": { h: 2, a: 1 }, "OLIVIER-20": { h: 0, a: 1 },
+            "ALAIN-08": { h: 2, a: 2 }, "JULEN-03": { h: 0, a: 1 }, "LOREA-01": { h: 1, a: 1 },
+            "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
+            "JEANLOUIS-06": { h: 0, a: 1 }, "YANNICK-11": { h: 2, a: 2 }, "PIERRICK-16": { h: 1, a: 2 },
+            "GORKA-12": { h: 1, a: 1 }, "ANDONI-02": { h: 0, a: 1 }
+          }
+        },
+        {
+          id: "m09", pronoNum: 9, comp: "Journée 9 • Domicile (D)", home: "ATHLETIC CLUB", away: "GETAFE",
+          kickoff: "2026-10-24 21:00", finished: true, fh: 4, fa: 0,
+          preds: {
+            "JORGE-13": { h: 0, a: 0 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 },
+            "FREDERIC-17": { h: 0, a: 0 }, "LUKEN-19": { h: 2, a: 1 }, "PIERRE-10": { h: 0, a: 1 },
+            "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 1, a: 2 }, "PIERRE-21": { h: 2, a: 0 },
+            "ALAIN-08": { h: 2, a: 1 }, "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 },
+            "CHRISTOPHE-14": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 3, a: 1 },
+            "XABIER-04": { h: 1, a: 0 }, "JEANLOUIS-06": { h: 2, a: 0 }, "YANNICK-11": { h: 2, a: 1 },
+            "PIERRICK-16": { h: 3, a: 1 }, "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 1, a: 0 }
+          }
+        },
+        {
+          id: "m10", pronoNum: 10, comp: "Journée 10 • Extérieur (E)", home: "PRAT", away: "ATHLETIC CLUB",
+          kickoff: "2026-10-31 16:15", finished: true, fh: 1, fa: 6,
+          preds: {
+            "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 0, a: 4 }, "JONATHAN-05": { h: 0, a: 3 },
+            "FREDERIC-17": { h: 0, a: 3 }, "LUKEN-19": { h: 0, a: 4 }, "PIERRE-10": { h: 0, a: 3 },
+            "XINA-07": { h: 0, a: 3 }, "OLIVIER-20": { h: 1, a: 3 }, "PIERRE-21": { h: 0, a: 3 },
+            "ALAIN-08": { h: 1, a: 5 }, "JULEN-03": { h: 1, a: 3 }, "LOREA-01": { h: 0, a: 3 },
+            "LANDER-09": { h: 1, a: 3 }, "XABIER-04": { h: 1, a: 3 }, "JEANLOUIS-06": { h: 1, a: 5 },
+            "YANNICK-11": { h: 1, a: 4 }, "PIERRICK-16": { h: 1, a: 4 }, "GORKA-12": { h: 0, a: 3 },
+            "ANDONI-02": { h: 0, a: 2 }
+          }
+        },
+        {
+          id: "m11", pronoNum: 11, comp: "Journée 11 • Domicile (D)", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD",
+          kickoff: "2026-11-04 21:00", finished: true, fh: 2, fa: 1,
+          preds: {
+            "JORGE-13": { h: 3, a: 2 }, "JONATHAN-05": { h: 2, a: 1 }, "FREDERIC-17": { h: 3, a: 1 },
+            "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 2 }, "ANGE-23": { h: 2, a: 0 },
+            "XINA-07": { h: 1, a: 0 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
+            "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+            "XABIER-04": { h: 0, a: 1 }, "JEANLOUIS-06": { h: 2, a: 1 }, "YANNICK-11": { h: 2, a: 1 },
+            "PIERRICK-16": { h: 2, a: 2 }, "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 2, a: 1 }
+          }
+        },
+        {
+          id: "m12", pronoNum: 12, comp: "Journée 12 • Extérieur (E)", home: "OSASUNA", away: "ATHLETIC CLUB",
+          kickoff: "2026-11-14 21:00", finished: true, fh: 1, fa: 1,
+          preds: {
+            "JORGE-13": { h: 1, a: 3 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 },
+            "FREDERIC-17": { h: 2, a: 2 }, "LUKEN-19": { h: 0, a: 1 }, "PIERRE-10": { h: 2, a: 1 },
+            "BERTRAND-25": { h: 1, a: 2 }, "XINA-07": { h: 1, a: 3 }, "OLIVIER-20": { h: 1, a: 2 },
+            "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 1, a: 2 }, "JULEN-03": { h: 1, a: 1 },
+            "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 1, a: 1 }, "INAKI-15": { h: 0, a: 2 },
+            "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 0, a: 2 },
+            "YANNICK-11": { h: 1, a: 1 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
+            "ANDONI-02": { h: 1, a: 1 }
+          }
+        },
+        {
+          id: "m13", pronoNum: 13, comp: "Journée 13 • Domicile (D)", home: "ATHLETIC CLUB", away: "ESPANYOL",
+          kickoff: "2026-11-20 21:00", finished: true, fh: 0, fa: 1,
+          preds: {
+            "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 2, a: 1 }, "JONATHAN-05": { h: 2, a: 0 },
+            "FREDERIC-17": { h: 4, a: 1 }, "LUKEN-19": { h: 2, a: 0 }, "PIERRE-10": { h: 1, a: 1 },
+            "XINA-07": { h: 3, a: 1 }, "OLIVIER-20": { h: 1, a: 0 }, "PIERRE-21": { h: 2, a: 0 },
+            "ALAIN-08": { h: 3, a: 1 }, "JULEN-03": { h: 1, a: 0 }, "LOREA-01": { h: 2, a: 0 },
+            "CHRISTOPHE-14": { h: 3, a: 0 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+            "XABIER-04": { h: 3, a: 1 }, "JEANLOUIS-06": { h: 2, a: 1 }, "YANNICK-11": { h: 1, a: 0 },
+            "GORKA-12": { h: 2, a: 0 }, "ANDONI-02": { h: 2, a: 1 }
+          }
+        },
+        {
+          id: "m14", pronoNum: 14, comp: "Journée 14 • Extérieur (E)", home: "MALAGA CF", away: "ATHLETIC CLUB",
+          kickoff: "2026-11-28 16:15", finished: false, fh: null, fa: null, preds: {}
+        }
+      ];
+
+      var PALM = [
+        { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken", isHolder: true },
+        { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea", isHolder: false },
+        { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban", isHolder: false },
+        { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel", isHolder: false },
+        { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz", isHolder: false },
+        { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea", isHolder: false },
+        { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka", isHolder: false },
+        { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick", isHolder: false },
+        { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz", isHolder: false },
+        { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi", isHolder: false }
+      ];
+
+      var state = { user: null, currentId: "m13" };
+
+      function byId(id) { return document.getElementById(id); }
+      function setText(id, txt) { var n = byId(id); if (n) n.textContent = txt; }
+      function getSign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
+
+      function getFirstName(fullName) {
+        if (!fullName) return "MEMBRE";
+        var parts = fullName.trim().split(/\s+/);
+        return (parts[parts.length - 1] || fullName).toUpperCase();
+      }
+
+      function normalizeKey(label) {
+        return (label || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+      }
+
+      function computeCupCounts() {
+        var counts = {};
+        var order = [];
+        for (var i = 0; i < PALM.length; i++) {
+          var rawWinners = PALM[i].p1.split(/\s+ET\s+/i);
+          for (var j = 0; j < rawWinners.length; j++) {
+            var clean = rawWinners[j].trim();
+            if (!clean) continue;
+            var key = normalizeKey(clean);
+            if (!counts[key]) {
+              counts[key] = { label: clean, count: 0 };
+              order.push(key);
+            }
+            counts[key].count += 1;
+          }
+        }
+        return { counts: counts, order: order };
+      }
+
+      function getMatchById(id) {
+        for (var i = 0; i < MATCHES.length; i++) {
+          if (MATCHES[i].id === id) return MATCHES[i];
+        }
+        return MATCHES[MATCHES.length - 1];
+      }
+
+      function renderPalmares() {
+        var grid = byId("palm-grid");
+        var summary = byId("palm-summary");
+        grid.innerHTML = "";
+        summary.innerHTML = "";
+
+        var cupData = computeCupCounts();
+        for (var k = 0; k < cupData.order.length; k++) {
+          var item = cupData.counts[cupData.order[k]];
+          var pill = document.createElement("div");
+          pill.className = "cup-pill";
+          pill.textContent = "🏆 " + item.label + " : " + item.count + (item.count > 1 ? " coupes" : " coupe");
+          summary.appendChild(pill);
+        }
+
+        for (var i = 0; i < PALM.length; i++) {
+          var s = PALM[i];
+          var card = document.createElement("div");
+          card.className = "palm-card" + (s.isHolder ? " is-holder" : "");
+
+          var head = document.createElement("div");
+          head.className = "palm-head";
+          head.textContent = "Saison " + s.y;
+          if (s.isHolder) {
+            var spanH = document.createElement("span");
+            spanH.className = "tag tag-champ";
+            spanH.textContent = "Tenant du titre";
+            head.appendChild(spanH);
+          }
+
+          var rows = document.createElement("div");
+          rows.className = "palm-rows";
+          var lines = [
+            { cls: "palm-row p1", rank: "1er", name: "🏆 " + s.p1 },
+            { cls: "palm-row", rank: "2e", name: s.p2 },
+            { cls: "palm-row", rank: "3e", name: s.p3 }
+          ];
+
+          for (var j = 0; j < lines.length; j++) {
+            var row = document.createElement("div");
+            row.className = lines[j].cls;
+
+            var rk = document.createElement("span");
+            rk.className = "palm-rank";
+            rk.textContent = lines[j].rank;
+
+            var nm = document.createElement("span");
+            nm.textContent = lines[j].name;
+
+            row.appendChild(rk);
+            row.appendChild(nm);
+            rows.appendChild(row);
+          }
+
+          card.appendChild(head);
+          card.appendChild(rows);
+          grid.appendChild(card);
+        }
+      }
+
+      function renderLeaderboard(m) {
+        var n = parseInt(m.pronoNum, 10) || 1;
+        setText("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
+
+        var cnt = 0;
+        for (var k in m.preds) {
+          if (m.preds.hasOwnProperty(k)) cnt++;
+        }
+        setText("part-info", "Participation : " + cnt + " / " + MEMBERS.length + " joueurs");
+
+        var sorted = MEMBERS.slice().sort(function (a, b) {
+          return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
+        });
+
+        var tb = byId("lb-body");
+        tb.innerHTML = "";
+
+        for (var i = 0; i < sorted.length; i++) {
+          var mem = sorted[i];
+          var pr = m.preds[mem.code];
+          var txt = pr ? (pr.h + " - " + pr.a) : "-";
+
+          if (m.finished) {
+            if (!pr) txt += " (+0 pt)";
+            else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
+            else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) txt += " (+3 pts)";
+            else txt += " (+1 pt)";
+          }
+
+          var isMe = Boolean(state.user && !state.user.isAdmin && state.user.code === mem.code);
+          var tr = document.createElement("tr");
+          if (isMe) tr.className = "row-me";
+          else if (mem.isChamp) tr.className = "row-champ";
+
+          var td1 = document.createElement("td");
+          td1.textContent = String(i + 1);
+
+          var td2 = document.createElement("td");
+          td2.style.fontWeight = (isMe || mem.isChamp) ? "800" : "600";
+          td2.appendChild(document.createTextNode(mem.name));
+
+          if (mem.isChamp) {
+            var emC = document.createElement("span");
+            emC.className = "tag tag-champ";
+            emC.textContent = "Tenant du titre";
+            td2.appendChild(emC);
+          }
+
+          if (isMe) {
+            var emM = document.createElement("span");
+            emM.className = "tag tag-me";
+            emM.textContent = "Toi";
+            td2.appendChild(emM);
+          }
+
+          var td3 = document.createElement("td");
+          td3.className = "prono-col";
+          td3.textContent = txt;
+
+          var td4 = document.createElement("td");
+          td4.className = "pts-col";
+          td4.textContent = mem.points + " pts";
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tr.appendChild(td4);
+          tb.appendChild(tr);
+        }
+      }
+
+      function showMatch(id) {
+        state.currentId = id;
+        var m = getMatchById(id);
+        byId("match-select").value = m.id;
+        setText("match-title", m.home + " vs " + m.away);
+        set
