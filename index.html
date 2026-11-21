@@ -10,7 +10,7 @@
       --surface: #141820;
       --surface-2: #1b202b;
       --focus-bg: #000000;
-      --selector-bg: #11151d;
+      --selector-bg: #1e2430;
       --border: #2a3140;
       --text: #f3f5f8;
       --muted: #9aa3b2;
@@ -312,7 +312,7 @@
       justify-content: center;
       align-items: center;
       background: var(--selector-bg);
-      border: 1px solid #2b3446;
+      border: 1px solid #3b4456;
       border-radius: 12px;
       padding: 10px 14px;
       margin: 0 auto 18px;
@@ -322,27 +322,42 @@
 
     .match-selector-bar select {
       min-width: min(100%, 440px);
-      background: #171d29;
-      border-color: #364156;
+      background: #232a38;
+      color: #f8fafc;
+      border-color: #475569;
       font-size: 1rem;
       font-weight: 600;
       padding: 10px 14px;
     }
 
     .match-title {
-      font-size: clamp(1.35rem, 2.8vw, 2rem);
+      font-size: clamp(1.3rem, 2.7vw, 1.9rem);
       font-weight: 800;
       letter-spacing: 0.02em;
       line-height: 1.25;
-      margin: 4px 0 12px;
+      margin: 4px 0 10px;
       padding: 10px 16px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
     }
 
+    .match-when {
+      color: #f8fafc;
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .match-venue {
+      color: #cbd5e1;
+      font-size: 1.02rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
     .match-meta {
       color: var(--muted);
-      font-size: 0.96rem;
+      font-size: 0.94rem;
       margin-bottom: 8px;
     }
 
@@ -693,7 +708,7 @@
       font-weight: 400;
     }
 
-    /* Blog de la Peña — Grille 2 colonnes, palette rouge, jaune/ambre, vert émeraude, bleu & noir/blanc */
+    /* Blog de la Peña */
     .blog-hero {
       background: linear-gradient(125deg, #0f172a 0%, #261016 55%, #0c1917 100%);
       border: 1px solid #283349;
@@ -978,7 +993,7 @@
 
         <div class="field-group">
           <label for="adm-date">Date du match</label>
-          <input id="adm-date" type="text" placeholder="samedi 5 décembre 2026" />
+          <input id="adm-date" type="text" placeholder="5 Décembre 2026" />
         </div>
 
         <div class="field-group">
@@ -987,8 +1002,8 @@
         </div>
 
         <div class="field-group">
-          <label for="adm-stadium">Lieu du match</label>
-          <input id="adm-stadium" type="text" placeholder="San Mamés" />
+          <label for="adm-stadium">Stade - Ville</label>
+          <input id="adm-stadium" type="text" placeholder="San Mamés - Bilbao" />
         </div>
 
         <div class="field-group">
@@ -1025,6 +1040,8 @@
           <select id="match-select" onchange="window.showMatch(this.value)"></select>
         </div>
         <h2 id="match-title" class="match-title"></h2>
+        <div id="match-when" class="match-when hidden"></div>
+        <div id="match-venue" class="match-venue hidden"></div>
         <div id="match-meta" class="match-meta"></div>
         <div id="match-user-pred" class="match-user-pred"></div>
 
@@ -1453,20 +1470,20 @@
 
     // Matchs 1 à 12 + Match 13 + Match 14
     window.MATCHES = [
-      { id: "m1", num: 1, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, started: true, fh: 1, fa: 3 },
+      { id: "m1", num: 1, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, started: true, fh: 1, fa: 3 },
       { id: "m2", num: 2, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "BARCELONA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 2, fa: 0 },
       { id: "m3", num: 3, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "CELTA VIGO", away: "ATHLETIC CLUB", finished: true, started: true, fh: 0, fa: 2 },
-      { id: "m4", num: 4, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", finished: true, started: true, fh: 3, fa: 0 },
-      { id: "m5", num: 5, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ELCHE", finished: true, started: true, fh: 1, fa: 1 },
-      { id: "m6", num: 6, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ALAVES", finished: true, started: true, fh: 0, fa: 0 },
+      { id: "m4", num: 4, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", finished: true, started: true, fh: 3, fa: 0 },
+      { id: "m5", num: 5, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "ELCHE", finished: true, started: true, fh: 1, fa: 1 },
+      { id: "m6", num: 6, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "ALAVES", finished: true, started: true, fh: 0, fa: 0 },
       { id: "m7", num: 7, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "VALENCIA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 0, fa: 0 },
       { id: "m8", num: 8, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "LEVANTE", away: "ATHLETIC CLUB", finished: true, started: true, fh: 3, fa: 1 },
-      { id: "m9", num: 9, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "GETAFE", finished: true, started: true, fh: 4, fa: 0 },
+      { id: "m9", num: 9, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "GETAFE", finished: true, started: true, fh: 4, fa: 0 },
       { id: "m10", num: 10, comp: "Kopa", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "PRAT", away: "ATHLETIC CLUB", finished: true, started: true, fh: 1, fa: 6 },
-      { id: "m11", num: 11, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, started: true, fh: 2, fa: 1 },
+      { id: "m11", num: 11, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, started: true, fh: 2, fa: 1 },
       { id: "m12", num: 12, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "OSASUNA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 1, fa: 1 },
-      { id: "m13", num: 13, comp: "Liga", dayName: "vendredi", date: "20 novembre 2026", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, started: true, fh: 0, fa: 1 },
-      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, started: false, kickoffIso: "2026-11-28T16:15:00+01:00", fh: null, fa: null }
+      { id: "m13", num: 13, comp: "Liga", dayName: "Vendredi", date: "20 Novembre 2026", time: "21:00", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, started: true, fh: 0, fa: 1 },
+      { id: "m14", num: 14, comp: "Liga", dayName: "Samedi", date: "28 Novembre 2026", time: "16:15", stadium: "La Rosaleda - Malaga", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, started: false, kickoffIso: "2026-11-28T16:15:00+01:00", fh: null, fa: null }
     ];
 
     // Palmarès : les 3 premiers de chaque saison (de 2025/26 à 2016/17)
@@ -1664,7 +1681,7 @@
       if (m.finished && m.fh !== null && m.fa !== null) {
         return `Pronostic n° ${m.num} — ${compPrefix}${m.home} ${m.fh}-${m.fa} ${m.away}`;
       }
-      const whenLabel = [m.date, m.time].filter(Boolean).join(" à ");
+      const whenLabel = [m.date, m.time].filter(Boolean).join(" - ");
       return `Pronostic n° ${m.num} — ${compPrefix}${m.home} vs ${m.away}${whenLabel ? ` (${whenLabel})` : ""}`;
     }
 
@@ -1693,7 +1710,7 @@
       if (awayEl) awayEl.value = "";
       if (dateEl) dateEl.value = "";
       if (timeEl) timeEl.value = "";
-      if (stadiumEl && !stadiumEl.value) stadiumEl.value = "San Mamés";
+      if (stadiumEl && !stadiumEl.value) stadiumEl.value = "San Mamés - Bilbao";
       if (compEl && !compEl.value) compEl.value = "Liga";
     }
 
@@ -1763,7 +1780,7 @@
         return;
       }
       if (!stadiumRaw) {
-        if (msgEl) msgEl.textContent = "Merci d'indiquer le lieu du match.";
+        if (msgEl) msgEl.textContent = "Merci d'indiquer le stade et la ville.";
         return;
       }
 
@@ -1798,7 +1815,7 @@
       document.getElementById("adm-time").value = "";
 
       if (msgEl) {
-        msgEl.textContent = `Pronostic n° ${num} ajouté (${compRaw} — ${homeRaw} vs ${awayRaw}, ${dateRaw} à ${timeRaw}, ${stadiumRaw}).`;
+        msgEl.textContent = `Pronostic n° ${num} ajouté (${compRaw} — ${homeRaw} vs ${awayRaw}, ${dateRaw} - ${timeRaw}, ${stadiumRaw}).`;
       }
     };
 
@@ -2051,24 +2068,44 @@
       document.getElementById("pred-ok").textContent = "";
 
       const titleEl = document.getElementById("match-title");
+      const whenEl = document.getElementById("match-when");
+      const venueEl = document.getElementById("match-venue");
       const metaEl = document.getElementById("match-meta");
       const userPredEl = document.getElementById("match-user-pred");
       const predBox = document.getElementById("pred-box");
 
       if (m.finished) {
         titleEl.textContent = `${m.home} ${m.fh}-${m.fa} ${m.away}`;
+        whenEl.classList.add("hidden");
+        venueEl.classList.add("hidden");
         const infoParts = [`Pronostic n° ${m.num}`, m.comp, datePart, m.time, m.stadium].filter(Boolean);
         metaEl.textContent = infoParts.join(" - ");
         predBox.classList.add("hidden");
       } else if (started) {
-        titleEl.textContent = `${m.home} vs ${m.away} — Match commencé`;
-        const infoParts = [`Pronostic n° ${m.num}`, m.comp, datePart, m.time, m.stadium].filter(Boolean);
+        titleEl.textContent = `Pronostic n° ${m.num} - ${m.home} vs ${m.away}`;
+        whenEl.classList.add("hidden");
+        venueEl.classList.add("hidden");
+        const infoParts = [m.comp, datePart, m.time, m.stadium].filter(Boolean);
         metaEl.textContent = infoParts.join(" - ");
         predBox.classList.add("hidden");
       } else {
-        const whenStr = [datePart, m.time].filter(Boolean).join(" ");
-        const headerParts = [`Pronostic n° ${m.num}`, whenStr, m.stadium].filter(Boolean);
-        titleEl.textContent = headerParts.join(" - ");
+        titleEl.textContent = `Pronostic n° ${m.num} - ${m.home} vs ${m.away}`;
+
+        const whenLine = [datePart, m.time].filter(Boolean).join(" - ");
+        if (whenLine) {
+          whenEl.textContent = whenLine;
+          whenEl.classList.remove("hidden");
+        } else {
+          whenEl.classList.add("hidden");
+        }
+
+        if (m.stadium) {
+          venueEl.textContent = m.stadium;
+          venueEl.classList.remove("hidden");
+        } else {
+          venueEl.classList.add("hidden");
+        }
+
         metaEl.textContent = `${m.comp || "Match"} — Pronostic ouvert`;
         predBox.classList.remove("hidden");
         document.getElementById("lbl-home").textContent = m.home;
