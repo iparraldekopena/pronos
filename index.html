@@ -1177,12 +1177,12 @@
     }
 
     function formatUserPronoScore(pronoStr) {
-      if (!pronoStr || pronoStr === "-") return "(-)-(-)";
+      if (!pronoStr || pronoStr === "-") return "-";
       const parts = pronoStr.split("-").map(s => s.trim());
       if (parts.length === 2 && parts[0] !== "" && parts[1] !== "") {
-        return `(${parts[0]})-(${parts[1]})`;
+        return `${parts[0]}-${parts[1]}`;
       }
-      return "(-)-(-)";
+      return "-";
     }
 
     async function loadRemoteData() {
@@ -1346,7 +1346,7 @@
       if (!currentUser) {
         userPredEl.textContent = "";
       } else if (currentUser.isAdmin) {
-        userPredEl.textContent = `Ton Pronostic : ${m.home} (-)-(-) ${m.away}`;
+        userPredEl.textContent = `Ton Pronostic : ${m.home} - ${m.away}`;
       } else {
         const memberObj = window.MEMBERS.find(x => x.code === currentUser.code) || currentUser;
         const entry = getMemberMatchEntry(memberObj, m, matchPreds);
