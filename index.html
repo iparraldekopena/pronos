@@ -134,6 +134,13 @@
       background: var(--accent-hover);
     }
 
+    button.btn-subtle {
+      background: transparent;
+      border-color: #3b465c;
+      font-size: 0.88rem;
+      padding: 7px 12px;
+    }
+
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -193,6 +200,98 @@
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--gold);
+    }
+
+    /* Panneau Admin ajout de match */
+    .admin-card {
+      background: #121722;
+      border: 1.5px solid rgba(245, 158, 11, 0.45);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 22px;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .admin-title {
+      margin: 0;
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-group label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .field-group input,
+    .field-group select {
+      width: 100%;
+      font-size: 0.95rem;
+      padding: 9px 11px;
+    }
+
+    .admin-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .admin-msg {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #4ade80;
+      min-height: 1.2em;
+    }
+
+    .admin-export-box {
+      margin-top: 14px;
+      background: #0b0e14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .admin-export-box textarea {
+      width: 100%;
+      min-height: 140px;
+      background: transparent;
+      color: #e2e8f0;
+      border: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      resize: vertical;
+    }
+
+    .admin-export-box textarea:focus {
+      outline: none;
     }
 
     /* Bloc Pronostic */
@@ -705,6 +804,66 @@
         <div id="aupa-sub" class="muted"></div>
       </div>
       <div id="aupa-stats" class="aupa-stats"></div>
+    </section>
+
+    <section id="admin-match-panel" class="admin-card hidden">
+      <div class="admin-header">
+        <h2 class="admin-title">Administration — Ajouter un match / pronostic</h2>
+        <button type="button" class="btn-subtle" onclick="window.toggleAdminExport()">Code `window.MATCHES` à copier</button>
+      </div>
+
+      <div class="admin-grid">
+        <div class="field-group">
+          <label for="adm-num">N° du pronostic</label>
+          <input id="adm-num" type="number" min="1" step="1" placeholder="15" />
+        </div>
+
+        <div class="field-group">
+          <label for="adm-home">Équipe domicile</label>
+          <input id="adm-home" type="text" placeholder="ATHLETIC CLUB" />
+        </div>
+
+        <div class="field-group">
+          <label for="adm-away">Équipe extérieure</label>
+          <input id="adm-away" type="text" placeholder="MALAGA CF" />
+        </div>
+
+        <div class="field-group">
+          <label for="adm-date">Date du match</label>
+          <input id="adm-date" type="text" placeholder="samedi 5 décembre 2026" />
+        </div>
+
+        <div class="field-group">
+          <label for="adm-stadium">Lieu du match</label>
+          <input id="adm-stadium" type="text" placeholder="San Mamés" />
+        </div>
+
+        <div class="field-group">
+          <label for="adm-comp">Compétition</label>
+          <input id="adm-comp" type="text" list="comp-suggestions" placeholder="Liga, Kopa, Amical..." />
+          <datalist id="comp-suggestions">
+            <option value="Liga"></option>
+            <option value="Kopa"></option>
+            <option value="Amical"></option>
+            <option value="Copa del Rey"></option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="admin-actions">
+        <button type="button" class="btn-red" onclick="window.addAdminMatch()">Ajouter ce pronostic</button>
+        <span class="muted">Le match s'ajoute immédiatement à la liste et ouvre les pronostics des joueurs.</span>
+      </div>
+
+      <div id="admin-msg" class="admin-msg"></div>
+
+      <div id="admin-export-wrap" class="admin-export-box hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+          <span class="muted">Copie ce bloc dans ton fichier <code>index.html</code> pour conserver l'ajout après rechargement :</span>
+          <button type="button" class="btn-subtle" onclick="window.copyAdminMatchesCode()">Copier le code</button>
+        </div>
+        <textarea id="admin-export-area" readonly></textarea>
+      </div>
     </section>
 
     <main id="view-pronos" class="hidden">
@@ -1229,6 +1388,22 @@
     // Articles du Blog de la Peña
     window.BLOG_POSTS = [
       {
+        id: "post-6",
+        tag: "L'Œil du supporter parfait",
+        date: "Chronique du banc de touche • Saison 2026/27",
+        title: "Celui qui a toujours la bonne excuse (et parfois le bon coup)",
+        body: "Le supporter parfait de la Peña, c'est celui qui connaît la compo probable avant l'entraîneur, qui a déjà refait le match trois fois dans sa tête à la 20e minute et qui regarde le classement comme un tableau d'échecs. Il ne s'affole jamais sur un coup d'arrêt, garde le sourire quand les favoris trébuchent et sait mieux que personne qu'une saison se gagne sur la durée, jamais sur un seul soir.",
+        highlight: "La devise de l'Œil parfait : voir rouge et blanc même quand le tableau d'affichage fait des siennes."
+      },
+      {
+        id: "post-5",
+        tag: "Le Flop de la journée",
+        date: "Pronostic n° 13 • San Mamés",
+        title: "Quand le scénario parfait part en fumée dès le coup d'envoi",
+        body: "Difficile de faire plus cruel sur ce Pronostic n° 13 : presque tout le monde voyait l'Athletic prendre les commandes à San Mamés, avec des scores allant du 1-0 prudent jusqu'au 4-1 très offensif… et c'est finalement l'Espanyol qui a raflé la mise (0-1). Résultat : une pluie de petits +1 pt pour ceux qui avaient joué, et une belle leçon d'humilité collective pour les experts autoproclamés de la Liga !",
+        highlight: "Le gag de la soirée : avoir misé sur la grosse attaque et voir le compteur bloqué à zéro côté Athletic."
+      },
+      {
         id: "post-4",
         tag: "Cap sur Málaga",
         date: "Pronostic n° 14 • La Rosaleda",
@@ -1304,10 +1479,11 @@
     }
 
     function formatMatchOptionLabel(m) {
+      const compPrefix = m.comp ? `[${m.comp}] ` : "";
       if (m.finished && m.fh !== null && m.fa !== null) {
-        return `Pronostic n° ${m.num} — ${m.home} ${m.fh}-${m.fa} ${m.away}`;
+        return `Pronostic n° ${m.num} — ${compPrefix}${m.home} ${m.fh}-${m.fa} ${m.away}`;
       }
-      return `Pronostic n° ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
+      return `Pronostic n° ${m.num} — ${compPrefix}${m.home} vs ${m.away} (${m.date})`;
     }
 
     function formatUserPronoScore(pronoStr) {
@@ -1315,6 +1491,126 @@
       if (!parsed) return "-";
       return `${parsed.h}-${parsed.a}`;
     }
+
+    function getNextMatchNumber() {
+      const maxNum = window.MATCHES.reduce((acc, m) => Math.max(acc, Number(m.num) || 0), 0);
+      return maxNum + 1;
+    }
+
+    function prepareAdminFormDefaults() {
+      const numEl = document.getElementById("adm-num");
+      const homeEl = document.getElementById("adm-home");
+      const awayEl = document.getElementById("adm-away");
+      const dateEl = document.getElementById("adm-date");
+      const stadiumEl = document.getElementById("adm-stadium");
+      const compEl = document.getElementById("adm-comp");
+
+      if (numEl) numEl.value = String(getNextMatchNumber());
+      if (homeEl && !homeEl.value) homeEl.value = "ATHLETIC CLUB";
+      if (awayEl) awayEl.value = "";
+      if (dateEl) dateEl.value = "";
+      if (stadiumEl && !stadiumEl.value) stadiumEl.value = "San Mamés";
+      if (compEl && !compEl.value) compEl.value = "Liga";
+    }
+
+    function refreshAdminExportArea() {
+      const area = document.getElementById("admin-export-area");
+      if (!area) return;
+      const serialized = window.MATCHES.map(m => "      " + JSON.stringify(m)).join(",\n");
+      area.value = `window.MATCHES = [\n${serialized}\n    ];`;
+    }
+
+    window.toggleAdminExport = function() {
+      const wrap = document.getElementById("admin-export-wrap");
+      if (!wrap) return;
+      wrap.classList.toggle("hidden");
+      if (!wrap.classList.contains("hidden")) {
+        refreshAdminExportArea();
+      }
+    };
+
+    window.copyAdminMatchesCode = async function() {
+      const area = document.getElementById("admin-export-area");
+      const msgEl = document.getElementById("admin-msg");
+      if (!area) return;
+      refreshAdminExportArea();
+      try {
+        await navigator.clipboard.writeText(area.value);
+        if (msgEl) msgEl.textContent = "Bloc window.MATCHES copié dans le presse-papiers.";
+      } catch (e) {
+        area.select();
+        document.execCommand("copy");
+        if (msgEl) msgEl.textContent = "Bloc window.MATCHES sélectionné / copié.";
+      }
+    };
+
+    window.addAdminMatch = async function() {
+      const msgEl = document.getElementById("admin-msg");
+      if (msgEl) msgEl.textContent = "";
+
+      if (!currentUser || !currentUser.isAdmin) {
+        if (msgEl) msgEl.textContent = "Action réservée à ADMIN-PENA.";
+        return;
+      }
+
+      const numRaw = document.getElementById("adm-num").value;
+      const homeRaw = document.getElementById("adm-home").value.trim().toUpperCase();
+      const awayRaw = document.getElementById("adm-away").value.trim().toUpperCase();
+      const dateRaw = document.getElementById("adm-date").value.trim();
+      const stadiumRaw = document.getElementById("adm-stadium").value.trim();
+      const compRaw = document.getElementById("adm-comp").value.trim() || "Liga";
+
+      const num = Number(numRaw);
+      if (!num || Number.isNaN(num) || num < 1) {
+        if (msgEl) msgEl.textContent = "Merci d'indiquer un numéro de pronostic valide.";
+        return;
+      }
+      if (!homeRaw || !awayRaw) {
+        if (msgEl) msgEl.textContent = "Merci de renseigner les deux équipes.";
+        return;
+      }
+      if (!dateRaw) {
+        if (msgEl) msgEl.textContent = "Merci d'indiquer la date du match.";
+        return;
+      }
+      if (!stadiumRaw) {
+        if (msgEl) msgEl.textContent = "Merci d'indiquer le lieu du match.";
+        return;
+      }
+
+      const newId = `m${num}-${Date.now().toString(36)}`;
+      const newMatch = {
+        id: newId,
+        num: num,
+        comp: compRaw,
+        dayName: "",
+        date: dateRaw,
+        time: "",
+        stadium: stadiumRaw,
+        home: homeRaw,
+        away: awayRaw,
+        finished: false,
+        started: false,
+        fh: null,
+        fa: null
+      };
+
+      window.MATCHES.push(newMatch);
+      window.MATCHES.sort((a, b) => a.num - b.num);
+
+      currentMatchId = newId;
+      populateMatchSelect();
+      window.showMatch(newId);
+      refreshAdminExportArea();
+
+      document.getElementById("adm-num").value = String(getNextMatchNumber());
+      document.getElementById("adm-away").value = "";
+      document.getElementById("adm-date").value = "";
+
+      if (msgEl) {
+        msgEl.textContent = `Pronostic n° ${num} ajouté (${compRaw} — ${homeRaw} vs ${awayRaw}, ${dateRaw}, ${stadiumRaw}).`;
+      }
+    };
 
     function getMemberMatchEntry(member, matchObj) {
       const num = matchObj ? matchObj.num : 13;
@@ -1438,6 +1734,11 @@
       document.getElementById("view-palm").classList.toggle("hidden", !isPalm);
       document.getElementById("view-blog").classList.toggle("hidden", !isBlog);
 
+      const adminPanel = document.getElementById("admin-match-panel");
+      if (adminPanel) {
+        adminPanel.classList.toggle("hidden", !(isPronos && currentUser && currentUser.isAdmin));
+      }
+
       document.getElementById("tab-pronos").classList.toggle("active", isPronos);
       document.getElementById("tab-palm").classList.toggle("active", isPalm);
       document.getElementById("tab-blog").classList.toggle("active", isBlog);
@@ -1480,6 +1781,15 @@
       document.getElementById("nav").classList.remove("hidden");
       document.getElementById("view-pronos").classList.remove("hidden");
 
+      const adminPanel = document.getElementById("admin-match-panel");
+      if (adminPanel) {
+        adminPanel.classList.toggle("hidden", !currentUser.isAdmin);
+      }
+      if (currentUser.isAdmin) {
+        prepareAdminFormDefaults();
+        refreshAdminExportArea();
+      }
+
       const firstName = currentUser.isAdmin ? "ADMIN" : getFirstName(currentUser.name).toUpperCase();
       document.getElementById("aupa-heading").textContent = `AUPA ${firstName} !`;
       document.getElementById("aupa-sub").textContent = currentUser.isAdmin
@@ -1507,6 +1817,7 @@
       document.getElementById("sec-login").classList.remove("hidden");
       document.getElementById("member-logo").classList.add("hidden");
       document.getElementById("aupa-banner").classList.add("hidden");
+      document.getElementById("admin-match-panel").classList.add("hidden");
       document.getElementById("nav").classList.add("hidden");
       document.getElementById("view-pronos").classList.add("hidden");
       document.getElementById("view-palm").classList.add("hidden");
@@ -1565,8 +1876,10 @@
         metaEl.textContent = infoParts.join(" - ");
         predBox.classList.add("hidden");
       } else {
-        titleEl.textContent = `Pronostic n° ${m.num} - ${datePart} ${m.time} - ${m.stadium}`;
-        metaEl.textContent = `${m.comp} — Pronostic ouvert`;
+        const whenStr = [datePart, m.time].filter(Boolean).join(" ");
+        const headerParts = [`Pronostic n° ${m.num}`, whenStr, m.stadium].filter(Boolean);
+        titleEl.textContent = headerParts.join(" - ");
+        metaEl.textContent = `${m.comp || "Match"} — Pronostic ouvert`;
         predBox.classList.remove("hidden");
         document.getElementById("lbl-home").textContent = m.home;
         document.getElementById("lbl-away").textContent = m.away;
