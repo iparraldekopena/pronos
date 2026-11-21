@@ -983,35 +983,36 @@
       "12-ANDONI-02": { prono: "1 - 1", gain: 1 }
     };
 
-    // 27 joueurs
+    // 27 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio et BARRUTIA Xabier 26e ex æquo)
+    // basePoints12 = points cumulés à la fin du Pronostic n° 12 (avant le 13e prono)
     window.MEMBERS = [
-      { code: "LOREA-01", name: "LABORDE Lorea", pos: "1", arrow: "", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1, points: 36 },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", pos: "2", arrow: "", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 35 },
-      { code: "JULEN-03", name: "LABORDE Julen", pos: "3", arrow: "", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0", gain13: 1, points: 29 },
-      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", pos: "4", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, points: 28 },
-      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", pos: "5", arrow: "", medal: "", cups: 1, isTenant: false, prono13: "2 - 0", gain13: 1, points: 27 },
-      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", pos: "6", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 26 },
-      { code: "XINA-07", name: "DULONG Xina", pos: "7", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, points: 25 },
-      { code: "ALAIN-08", name: "LABORDE Alain", pos: "8", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, points: 23 },
-      { code: "LANDER-09", name: "MENDIOLA Lander", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 23 },
-      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", pos: "11", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 1", gain13: 1, points: 22 },
-      { code: "YANNICK-11", name: "QUEYROU Yannick", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, points: 22 },
-      { code: "GORKA-12", name: "SANCHEZ Gorka", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 23 },
-      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", pos: "13", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 20 },
-      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1, points: 20 },
-      { code: "INAKI-15", name: "MENDIOLA Iñaki", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 20 },
-      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", pos: "16", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 19 },
-      { code: "FREDERIC-17", name: "CROUZAT Frédéric", pos: "", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1, points: 19 },
-      { code: "PIERRICK-16", name: "ROCHE Pierrick", pos: "", arrow: "down", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, points: 19 },
-      { code: "LUKEN-19", name: "CROUZAT Luken", pos: "19", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 15 },
-      { code: "OLIVIER-20", name: "GOBBI Olivier", pos: "20", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, points: 14 },
-      { code: "PIERRE-21", name: "GOYENEIX Pierre", pos: "21", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 12 },
-      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", pos: "22", arrow: "", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, points: 8 },
-      { code: "ANGE-23", name: "ESCALANTE Ange", pos: "23", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 3 },
-      { code: "INKO-24", name: "CROUZAT Inko", pos: "24", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 2 },
-      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", pos: "25", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 1 },
-      { code: "XABIER-26", name: "BARRUTIA Xabier", pos: "26", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 },
-      { code: "PIERRE-27", name: "LEGRAS Peio", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 }
+      { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 35, points: 36 },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 34, points: 35 },
+      { code: "JULEN-03", name: "LABORDE Julen", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0", gain13: 1, basePoints12: 28, points: 29 },
+      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, basePoints12: 27, points: 28 },
+      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", medal: "", cups: 1, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 26, points: 27 },
+      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 25, points: 26 },
+      { code: "XINA-07", name: "DULONG Xina", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, basePoints12: 24, points: 25 },
+      { code: "ALAIN-08", name: "LABORDE Alain", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, basePoints12: 22, points: 23 },
+      { code: "LANDER-09", name: "MENDIOLA Lander", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 22, points: 23 },
+      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", medal: "", cups: 0, isTenant: false, prono13: "1 - 1", gain13: 1, basePoints12: 21, points: 22 },
+      { code: "YANNICK-11", name: "QUEYROU Yannick", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, basePoints12: 21, points: 22 },
+      { code: "GORKA-12", name: "SANCHEZ Gorka", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 20, points: 23 },
+      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 19, points: 20 },
+      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1, basePoints12: 19, points: 20 },
+      { code: "INAKI-15", name: "MENDIOLA Iñaki", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 19, points: 20 },
+      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 18, points: 19 },
+      { code: "FREDERIC-17", name: "CROUZAT Frédéric", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1, basePoints12: 18, points: 19 },
+      { code: "PIERRICK-16", name: "ROCHE Pierrick", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, basePoints12: 19, points: 19 },
+      { code: "LUKEN-19", name: "CROUZAT Luken", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 14, points: 15 },
+      { code: "OLIVIER-20", name: "GOBBI Olivier", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, basePoints12: 13, points: 14 },
+      { code: "PIERRE-21", name: "GOYENEIX Pierre", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 11, points: 12 },
+      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, basePoints12: 8, points: 8 },
+      { code: "ANGE-23", name: "ESCALANTE Ange", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 3, points: 3 },
+      { code: "INKO-24", name: "CROUZAT Inko", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 2, points: 2 },
+      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 1, points: 1 },
+      { code: "XABIER-26", name: "BARRUTIA Xabier", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 0, points: 0 },
+      { code: "PIERRE-27", name: "LEGRAS Peio", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 0, points: 0 }
     ];
 
     // Matchs 1 à 12 + Match 13 + Match 14
@@ -1185,6 +1186,101 @@
       return "-";
     }
 
+    function getMemberMatchEntry(member, matchObj) {
+      const num = matchObj ? matchObj.num : 13;
+      const matchPreds = (remoteData.preds && remoteData.preds[matchObj.id]) || {};
+      const p = matchPreds[member.code];
+
+      if (p && p.h !== undefined && p.a !== undefined && p.h !== "" && p.a !== "") {
+        const pronoStr = `${p.h} - ${p.a}`;
+        let gain = 0;
+        if (matchObj && matchObj.finished && matchObj.fh !== null && matchObj.fa !== null) {
+          const predDiff = Number(p.h) - Number(p.a);
+          const realDiff = Number(matchObj.fh) - Number(matchObj.fa);
+          const sameSign = (predDiff > 0 && realDiff > 0) || (predDiff < 0 && realDiff < 0) || (predDiff === 0 && realDiff === 0);
+          gain = sameSign ? 1 : 0;
+        }
+        return { pronoStr, gain, hasPred: true };
+      }
+
+      if (num === 13 && member.prono13) {
+        return {
+          pronoStr: member.prono13,
+          gain: member.gain13 || 0,
+          hasPred: member.prono13 !== "-"
+        };
+      }
+
+      if (num >= 1 && num <= 12) {
+        const hist = window.HISTORY_PREDS[`${num}-${member.code}`];
+        if (hist && hist.prono) {
+          return {
+            pronoStr: hist.prono,
+            gain: hist.gain || 0,
+            hasPred: true
+          };
+        }
+      }
+
+      return { pronoStr: "-", gain: 0, hasPred: false };
+    }
+
+    function computeStandingsUpTo(targetNum) {
+      const orderedMatches = window.MATCHES
+        .filter(m => m.num <= targetNum)
+        .sort((a, b) => a.num - b.num);
+
+      const hasExplicit1to12 = orderedMatches.some(m => m.num >= 1 && m.num <= 12);
+
+      const rows = window.MEMBERS.map(m => {
+        let totalPts = hasExplicit1to12 ? 0 : (m.basePoints12 || 0);
+        let currentEntry = { pronoStr: "-", gain: 0, hasPred: false };
+
+        orderedMatches.forEach(mObj => {
+          const entry = getMemberMatchEntry(m, mObj);
+          if (mObj.num <= 12 && hasExplicit1to12) {
+            totalPts += entry.gain;
+          } else if (mObj.num === 13) {
+            totalPts += entry.gain;
+          } else if (mObj.num > 13) {
+            totalPts += entry.gain;
+          }
+
+          if (mObj.num === targetNum) {
+            currentEntry = entry;
+          }
+        });
+
+        return {
+          ...m,
+          pronoStr: currentEntry.pronoStr,
+          gain: currentEntry.gain,
+          hasPred: currentEntry.hasPred,
+          calcPoints: totalPts
+        };
+      });
+
+      rows.sort((a, b) => {
+        if (b.calcPoints !== a.calcPoints) return b.calcPoints - a.calcPoints;
+        return a.name.localeCompare(b.name, "fr", { sensitivity: "base" });
+      });
+
+      let rankMap = {};
+      let lastPts = null;
+      let currentRank = 0;
+
+      rows.forEach((r, idx) => {
+        if (r.calcPoints !== lastPts) {
+          currentRank = idx + 1;
+          lastPts = r.calcPoints;
+        }
+        r.calcPos = currentRank;
+        rankMap[r.code] = currentRank;
+      });
+
+      return { rows, rankMap };
+    }
+
     async function loadRemoteData() {
       if (!window.DB_URL) return;
       try {
@@ -1269,9 +1365,14 @@
       document.getElementById("aupa-sub").textContent = currentUser.isAdmin
         ? "Mode administrateur actif"
         : `Code : ${currentUser.code}`;
+
+      const latestStanding = computeStandingsUpTo(13);
+      const userRow = latestStanding.rows.find(r => r.code === currentUser.code);
+      const displayPts = userRow ? userRow.calcPoints : currentUser.points;
+
       document.getElementById("aupa-stats").textContent = currentUser.isAdmin
         ? `${window.MEMBERS.length} joueurs`
-        : `${currentUser.points} ${ptsWord(currentUser.points)}`;
+        : `${displayPts} ${ptsWord(displayPts)}`;
 
       populateMatchSelect();
       window.showMatch(currentMatchId);
@@ -1342,14 +1443,13 @@
         document.getElementById("pred-a").value = (existing && existing.a !== undefined && existing.a !== "") ? String(existing.a) : "";
       }
 
-      const matchPreds = (remoteData.preds && remoteData.preds[m.id]) || {};
       if (!currentUser) {
         userPredEl.textContent = "";
       } else if (currentUser.isAdmin) {
         userPredEl.textContent = `Ton Pronostic : ${m.home} - ${m.away}`;
       } else {
         const memberObj = window.MEMBERS.find(x => x.code === currentUser.code) || currentUser;
-        const entry = getMemberMatchEntry(memberObj, m, matchPreds);
+        const entry = getMemberMatchEntry(memberObj, m);
         const formattedScore = formatUserPronoScore(entry.pronoStr);
         userPredEl.textContent = `Ton Pronostic : ${m.home} ${formattedScore} ${m.away}`;
       }
@@ -1386,67 +1486,30 @@
       window.showMatch(m.id);
     };
 
-    function getMemberMatchEntry(member, matchObj, matchPreds) {
-      const p = matchPreds[member.code];
-      if (p && p.h !== undefined && p.a !== undefined && p.h !== "" && p.a !== "") {
-        const pronoStr = `${p.h} - ${p.a}`;
-        let gain = 0;
-        if (matchObj && matchObj.finished && matchObj.fh !== null && matchObj.fa !== null) {
-          const predDiff = Number(p.h) - Number(p.a);
-          const realDiff = Number(matchObj.fh) - Number(matchObj.fa);
-          const sameSign = (predDiff > 0 && realDiff > 0) || (predDiff < 0 && realDiff < 0) || (predDiff === 0 && realDiff === 0);
-          gain = sameSign ? 1 : 0;
-        }
-        return { pronoStr, gain, hasPred: true };
-      }
-
-      if (matchObj && matchObj.num === 13 && member.prono13) {
-        return {
-          pronoStr: member.prono13,
-          gain: member.gain13 || 0,
-          hasPred: member.prono13 !== "-"
-        };
-      }
-
-      if (matchObj && matchObj.num >= 1 && matchObj.num <= 12) {
-        const hist = window.HISTORY_PREDS[`${matchObj.num}-${member.code}`];
-        if (hist && hist.prono) {
-          return {
-            pronoStr: hist.prono,
-            gain: hist.gain || 0,
-            hasPred: true
-          };
-        }
-      }
-
-      return { pronoStr: "-", gain: 0, hasPred: false };
-    }
-
     function renderLeaderboard(matchObj) {
       const tbody = document.getElementById("lb-body");
       const banner = document.getElementById("participation-banner");
       tbody.innerHTML = "";
 
-      const totalMembers = window.MEMBERS.length;
-      const matchPreds = (remoteData.preds && remoteData.preds[currentMatchId]) || {};
+      const matchNum = matchObj ? matchObj.num : 13;
+      const { rows } = computeStandingsUpTo(matchNum);
+      const prevRankMap = matchNum > 1 ? computeStandingsUpTo(matchNum - 1).rankMap : {};
 
-      let submitted = 0;
-      window.MEMBERS.forEach(m => {
-        const entry = getMemberMatchEntry(m, matchObj, matchPreds);
-        if (entry.hasPred) submitted++;
-      });
-
+      const totalMembers = rows.length;
+      const submitted = rows.filter(r => r.hasPred).length;
       const pct = totalMembers > 0 ? Math.round((submitted / totalMembers) * 100) : 0;
-      banner.textContent = `Taux de Participation pour le pronostic n° ${matchObj ? matchObj.num : 13} : ${pct}% (${submitted}/${totalMembers} participants)`;
+      banner.textContent = `Taux de Participation pour le pronostic n° ${matchNum} : ${pct}% (${submitted}/${totalMembers} participants)`;
 
-      window.MEMBERS.forEach(m => {
-        const entry = getMemberMatchEntry(m, matchObj, matchPreds);
-        const pronoStr = entry.pronoStr;
-        const gain = entry.gain;
-
-        const arrowHtml = m.arrow === "up"
-          ? `<span class="arrow-up" title="En hausse">▲</span>`
-          : (m.arrow === "down" ? `<span class="arrow-down" title="En baisse">▼</span>` : "");
+      rows.forEach(m => {
+        let arrowHtml = "";
+        if (matchNum > 1 && prevRankMap[m.code] !== undefined) {
+          const prevPos = prevRankMap[m.code];
+          if (m.calcPos < prevPos) {
+            arrowHtml = `<span class="arrow-up" title="En hausse">▲</span>`;
+          } else if (m.calcPos > prevPos) {
+            arrowHtml = `<span class="arrow-down" title="En baisse">▼</span>`;
+          }
+        }
 
         const medalHtml = m.medal ? `<span class="medal">${m.medal}</span>` : "";
         const cupsHtml = m.cups > 0 ? `<span class="trophy-icon">${"🏆".repeat(m.cups)}</span>` : "";
@@ -1455,6 +1518,7 @@
           ? `<span class="me-badge">Moi</span>`
           : "";
 
+        const gain = m.gain || 0;
         const gainHtml = gain > 0
           ? `<span class="gain-pos">(+${gain} ${ptsWord(gain)})</span>`
           : `<span class="gain-zero">(+0 pt)</span>`;
@@ -1464,10 +1528,10 @@
         if (currentUser && !currentUser.isAdmin && currentUser.code === m.code) tr.classList.add("row-me");
 
         tr.innerHTML = `
-          <td class="pos-cell">${m.pos || ""}${arrowHtml}</td>
+          <td class="pos-cell">${m.calcPos}${arrowHtml}</td>
           <td><span class="member-name">${medalHtml}${m.name}</span>${cupsHtml}${tenantHtml}${meBadge}</td>
-          <td class="prono-cell">${pronoStr} ${gainHtml}</td>
-          <td class="total-cell">${m.points} ${ptsWord(m.points)}</td>
+          <td class="prono-cell">${m.pronoStr} ${gainHtml}</td>
+          <td class="total-cell">${m.calcPoints} ${ptsWord(m.calcPoints)}</td>
         `;
         tbody.appendChild(tr);
       });
