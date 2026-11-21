@@ -213,7 +213,7 @@
 
     .tag-champ { background: #fbd2d7; color: #8f131b; }
     .tag-me { background: #c7ebd4; color: var(--green-text); }
-    .tag-cup { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .tag-cup { background: #fff8eb; color: #7c2d12; border: 1px solid #f5d08a; letter-spacing: 1px; }
 
     .palm-cups-bar {
       display: flex;
@@ -228,7 +228,7 @@
       color: #7c2d12;
       border-radius: 999px;
       padding: 6px 12px;
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       font-weight: 800;
     }
 
@@ -611,6 +611,12 @@
       return (s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
     }
 
+    function cupIcons(n) {
+      var out = "";
+      for (var i = 0; i < n; i++) out += "🏆";
+      return out;
+    }
+
     function getCupTallies() {
       var byKey = {};
       var order = [];
@@ -667,7 +673,7 @@
         var item = tallies.list[c];
         var badge = document.createElement("div");
         badge.className = "palm-cup-badge";
-        badge.textContent = "🏆 " + item.label + " : " + item.count + (item.count > 1 ? " coupes" : " coupe");
+        badge.textContent = item.label + " " + cupIcons(item.count);
         cupsBar.appendChild(badge);
       }
 
@@ -689,9 +695,9 @@
         var rows = document.createElement("div");
         rows.className = "palm-rows";
         var lines = [
-          { cls: "palm-row p1", rank: "1er", name: "🏆 " + s.p1 },
-          { cls: "palm-row", rank: "2e", name: s.p2 },
-          { cls: "palm-row", rank: "3e", name: s.p3 }
+          { cls: "palm-row p1", rank: "🥇", name: s.p1 },
+          { cls: "palm-row", rank: "🥈", name: s.p2 },
+          { cls: "palm-row", rank: "🥉", name: s.p3 }
         ];
 
         for (var j = 0; j < lines.length; j++) {
@@ -759,7 +765,7 @@
         if (cups > 0) {
           var emCup = document.createElement("span");
           emCup.className = "tag tag-cup";
-          emCup.textContent = "🏆 " + cups + (cups > 1 ? " coupes" : " coupe");
+          emCup.textContent = cupIcons(cups);
           td2.appendChild(emCup);
         }
 
