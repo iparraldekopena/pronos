@@ -733,7 +733,7 @@
     window.DB_URL = window.DB_URL || "";
     window.LOGO_SRC = window.LOGO_SRC || "logo-pena.jpg";
 
-    // Historique des pronostics des matchs 1 à 12
+    // Historique des pronostics des matchs 1 à 12 selon le tableau de référence
     // Clé : "num-CODE" -> { prono: "x - y", gain: 0|1 }
     window.HISTORY_PREDS = {
       // Match 1 : ATHLETIC CLUB 1-3 SEVILLA FC
@@ -752,7 +752,7 @@
       "1-GORKA-12": { prono: "2 - 0", gain: 0 },
       "1-ANDONI-02": { prono: "2 - 1", gain: 0 },
 
-      // Match 2 : BARCELONA 2-0 ATHLETIC CLUB
+      // Match 2 : BARCELONA 2-0 ATHLETIC CLUB (vert sur CORDEIRO, LOREA)
       "2-JORGE-13": { prono: "1 - 0", gain: 0 },
       "2-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "2-JONATHAN-05": { prono: "2 - 0", gain: 1 },
@@ -770,7 +770,7 @@
       "2-GORKA-12": { prono: "2 - 1", gain: 0 },
       "2-ANDONI-02": { prono: "2 - 1", gain: 0 },
 
-      // Match 3 : CELTA VIGO 0-2 ATHLETIC CLUB
+      // Match 3 : CELTA VIGO 0-2 ATHLETIC CLUB (vert sur DULONG)
       "3-JORGE-13": { prono: "1 - 0", gain: 0 },
       "3-JEANYVES-18": { prono: "3 - 1", gain: 0 },
       "3-JONATHAN-05": { prono: "1 - 1", gain: 0 },
@@ -854,7 +854,7 @@
       "6-GORKA-12": { prono: "1 - 0", gain: 0 },
       "6-ANDONI-02": { prono: "1 - 0", gain: 0 },
 
-      // Match 7 : VALENCIA 0-0 ATHLETIC CLUB
+      // Match 7 : VALENCIA 0-0 ATHLETIC CLUB (vert sur MARITORENA)
       "7-JORGE-13": { prono: "0 - 1", gain: 0 },
       "7-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "7-JONATHAN-05": { prono: "0 - 1", gain: 0 },
@@ -938,7 +938,7 @@
       "10-GORKA-12": { prono: "0 - 3", gain: 0 },
       "10-ANDONI-02": { prono: "0 - 2", gain: 0 },
 
-      // Match 11 : ATHLETIC CLUB 2-1 REAL SOCIEDAD
+      // Match 11 : ATHLETIC CLUB 2-1 REAL SOCIEDAD (vert sur JONATHAN, JULEN, LOREA, INAKI, LANDER, JEANLOUIS, YANNICK, ANDONI)
       "11-JORGE-13": { prono: "3 - 2", gain: 0 },
       "11-JONATHAN-05": { prono: "2 - 1", gain: 1 },
       "11-FREDERIC-17": { prono: "3 - 1", gain: 0 },
@@ -958,7 +958,7 @@
       "11-GORKA-12": { prono: "1 - 0", gain: 0 },
       "11-ANDONI-02": { prono: "2 - 1", gain: 1 },
 
-      // Match 12 : OSASUNA 1-1 ATHLETIC CLUB
+      // Match 12 : OSASUNA 1-1 ATHLETIC CLUB (vert sur JULEN, LOREA, CHRISTOPHE, XABIER, YANNICK, PIERRICK, ANDONI)
       "12-JORGE-13": { prono: "1 - 3", gain: 0 },
       "12-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "12-JONATHAN-05": { prono: "0 - 2", gain: 0 },
@@ -984,35 +984,34 @@
     };
 
     // 27 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio et BARRUTIA Xabier 26e ex æquo)
-    // basePoints12 = points cumulés à la fin du Pronostic n° 12 (avant le 13e prono)
     window.MEMBERS = [
-      { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 35, points: 36 },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 34, points: 35 },
-      { code: "JULEN-03", name: "LABORDE Julen", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0", gain13: 1, basePoints12: 28, points: 29 },
-      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, basePoints12: 27, points: 28 },
-      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", medal: "", cups: 1, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 26, points: 27 },
-      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 25, points: 26 },
-      { code: "XINA-07", name: "DULONG Xina", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, basePoints12: 24, points: 25 },
-      { code: "ALAIN-08", name: "LABORDE Alain", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1, basePoints12: 22, points: 23 },
-      { code: "LANDER-09", name: "MENDIOLA Lander", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 22, points: 23 },
-      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", medal: "", cups: 0, isTenant: false, prono13: "1 - 1", gain13: 1, basePoints12: 21, points: 22 },
-      { code: "YANNICK-11", name: "QUEYROU Yannick", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, basePoints12: 21, points: 22 },
-      { code: "GORKA-12", name: "SANCHEZ Gorka", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 20, points: 23 },
-      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 19, points: 20 },
-      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1, basePoints12: 19, points: 20 },
-      { code: "INAKI-15", name: "MENDIOLA Iñaki", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 19, points: 20 },
-      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, basePoints12: 18, points: 19 },
-      { code: "FREDERIC-17", name: "CROUZAT Frédéric", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1, basePoints12: 18, points: 19 },
-      { code: "PIERRICK-16", name: "ROCHE Pierrick", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, basePoints12: 19, points: 19 },
-      { code: "LUKEN-19", name: "CROUZAT Luken", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 14, points: 15 },
-      { code: "OLIVIER-20", name: "GOBBI Olivier", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, basePoints12: 13, points: 14 },
-      { code: "PIERRE-21", name: "GOYENEIX Pierre", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, basePoints12: 11, points: 12 },
-      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, basePoints12: 8, points: 8 },
-      { code: "ANGE-23", name: "ESCALANTE Ange", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 3, points: 3 },
-      { code: "INKO-24", name: "CROUZAT Inko", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 2, points: 2 },
-      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 1, points: 1 },
-      { code: "XABIER-26", name: "BARRUTIA Xabier", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 0, points: 0 },
-      { code: "PIERRE-27", name: "LEGRAS Peio", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, basePoints12: 0, points: 0 }
+      { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1 },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
+      { code: "JULEN-03", name: "LABORDE Julen", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0", gain13: 1 },
+      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1 },
+      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", medal: "", cups: 1, isTenant: false, prono13: "2 - 0", gain13: 1 },
+      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
+      { code: "XINA-07", name: "DULONG Xina", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1 },
+      { code: "ALAIN-08", name: "LABORDE Alain", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1 },
+      { code: "LANDER-09", name: "MENDIOLA Lander", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
+      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", medal: "", cups: 0, isTenant: false, prono13: "1 - 1", gain13: 1 },
+      { code: "YANNICK-11", name: "QUEYROU Yannick", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1 },
+      { code: "GORKA-12", name: "SANCHEZ Gorka", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
+      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
+      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1 },
+      { code: "INAKI-15", name: "MENDIOLA Iñaki", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
+      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
+      { code: "FREDERIC-17", name: "CROUZAT Frédéric", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1 },
+      { code: "PIERRICK-16", name: "ROCHE Pierrick", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0 },
+      { code: "LUKEN-19", name: "CROUZAT Luken", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
+      { code: "OLIVIER-20", name: "GOBBI Olivier", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1 },
+      { code: "PIERRE-21", name: "GOYENEIX Pierre", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
+      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0 },
+      { code: "ANGE-23", name: "ESCALANTE Ange", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
+      { code: "INKO-24", name: "CROUZAT Inko", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
+      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
+      { code: "XABIER-26", name: "BARRUTIA Xabier", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
+      { code: "PIERRE-27", name: "LEGRAS Peio", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 }
     ];
 
     // Matchs 1 à 12 + Match 13 + Match 14
@@ -1194,11 +1193,11 @@
       if (p && p.h !== undefined && p.a !== undefined && p.h !== "" && p.a !== "") {
         const pronoStr = `${p.h} - ${p.a}`;
         let gain = 0;
-        if (matchObj && matchObj.finished && matchObj.fh !== null && matchObj.fa !== null) {
-          const predDiff = Number(p.h) - Number(p.a);
-          const realDiff = Number(matchObj.fh) - Number(matchObj.fa);
-          const sameSign = (predDiff > 0 && realDiff > 0) || (predDiff < 0 && realDiff < 0) || (predDiff === 0 && realDiff === 0);
-          gain = sameSign ? 1 : 0;
+        if (num >= 1 && num <= 12) {
+          const hist = window.HISTORY_PREDS[`${num}-${member.code}`];
+          gain = hist ? (hist.gain || 0) : 0;
+        } else if (num === 13) {
+          gain = member.gain13 || 0;
         }
         return { pronoStr, gain, hasPred: true };
       }
@@ -1230,22 +1229,13 @@
         .filter(m => m.num <= targetNum)
         .sort((a, b) => a.num - b.num);
 
-      const hasExplicit1to12 = orderedMatches.some(m => m.num >= 1 && m.num <= 12);
-
       const rows = window.MEMBERS.map(m => {
-        let totalPts = hasExplicit1to12 ? 0 : (m.basePoints12 || 0);
+        let totalPts = 0;
         let currentEntry = { pronoStr: "-", gain: 0, hasPred: false };
 
         orderedMatches.forEach(mObj => {
           const entry = getMemberMatchEntry(m, mObj);
-          if (mObj.num <= 12 && hasExplicit1to12) {
-            totalPts += entry.gain;
-          } else if (mObj.num === 13) {
-            totalPts += entry.gain;
-          } else if (mObj.num > 13) {
-            totalPts += entry.gain;
-          }
-
+          totalPts += (entry.gain || 0);
           if (mObj.num === targetNum) {
             currentEntry = entry;
           }
@@ -1368,7 +1358,7 @@
 
       const latestStanding = computeStandingsUpTo(13);
       const userRow = latestStanding.rows.find(r => r.code === currentUser.code);
-      const displayPts = userRow ? userRow.calcPoints : currentUser.points;
+      const displayPts = userRow ? userRow.calcPoints : 0;
 
       document.getElementById("aupa-stats").textContent = currentUser.isAdmin
         ? `${window.MEMBERS.length} joueurs`
