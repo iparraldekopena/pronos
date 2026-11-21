@@ -138,23 +138,23 @@
       background: #111317;
       color: #ffffff;
       border-radius: 14px;
-      padding: 20px 18px;
+      padding: 22px 18px;
       margin-top: 8px;
       text-align: center;
     }
 
     .match-focus-title {
       margin: 0 0 8px;
-      font-size: 1.85rem;
+      font-size: 1.75rem;
       font-weight: 900;
       color: #ffffff;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.4px;
       text-align: center;
     }
 
     .match-focus-meta {
       color: #e5e7eb;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       text-align: center;
     }
@@ -166,18 +166,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .pred-inputs-row {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
       color: #ffffff;
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
     }
 
     .btn-valider-rouge {
@@ -391,12 +392,12 @@
           <div id="pred-box" class="pred-box-dark hidden">
             <div class="pred-inputs-row">
               <span id="lbl-home"></span>
-              <input id="pred-h" type="number" min="0" style="width:72px; text-align:center;" />
+              <input id="pred-h" type="number" min="0" style="width:76px; text-align:center; font-size:1.2rem; font-weight:800;" />
               <span>-</span>
-              <input id="pred-a" type="number" min="0" style="width:72px; text-align:center;" />
+              <input id="pred-a" type="number" min="0" style="width:76px; text-align:center; font-size:1.2rem; font-weight:800;" />
               <span id="lbl-away"></span>
             </div>
-            <button id="btn-save-pred" class="btn-valider-rouge" type="button" onclick="window.savePred()">valider prono</button>
+            <button id="btn-save-pred" class="btn-valider-rouge" type="button" onclick="window.savePred()">Valider Prono</button>
           </div>
         </div>
         <div id="pred-ok" class="ok"></div>
