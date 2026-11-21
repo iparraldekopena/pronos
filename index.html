@@ -145,23 +145,23 @@
 
     .match-focus-title {
       margin: 0 0 8px;
-      font-size: 1.75rem;
+      font-size: 1.95rem;
       font-weight: 900;
       color: #ffffff;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       text-align: center;
     }
 
     .match-focus-meta {
       color: #e5e7eb;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
       text-align: center;
     }
 
     .pred-box-dark {
-      margin-top: 16px;
-      padding-top: 14px;
+      margin-top: 18px;
+      padding-top: 16px;
       border-top: 1px solid #2a2f3a;
       display: flex;
       flex-direction: column;
@@ -178,7 +178,6 @@
       color: #ffffff;
       font-size: 1.55rem;
       font-weight: 900;
-      letter-spacing: 0.4px;
     }
 
     .btn-valider-rouge {
@@ -392,9 +391,9 @@
           <div id="pred-box" class="pred-box-dark hidden">
             <div class="pred-inputs-row">
               <span id="lbl-home"></span>
-              <input id="pred-h" type="number" min="0" style="width:76px; text-align:center; font-size:1.2rem; font-weight:800;" />
+              <input id="pred-h" type="number" min="0" style="width:78px; text-align:center;" />
               <span>-</span>
-              <input id="pred-a" type="number" min="0" style="width:76px; text-align:center; font-size:1.2rem; font-weight:800;" />
+              <input id="pred-a" type="number" min="0" style="width:78px; text-align:center;" />
               <span id="lbl-away"></span>
             </div>
             <button id="btn-save-pred" class="btn-valider-rouge" type="button" onclick="window.savePred()">Valider Prono</button>
@@ -464,507 +463,268 @@
       { code: "JEAN-28", name: "SEDEILLAN Jean", points: 0, isChamp: false },
       { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false }
     ];
-    window.MATCHES = [
-      {
-        id: "m01", pronoNum: 1, comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC",
-        kickoff: "2026-08-15 19:00", finished: true, fh: 1, fa: 3,
-        preds: {
-          "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 2, a: 0 }, "PIERRE-10": { h: 0, a: 1 },
-          "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 2, a: 0 }, "ALAIN-08": { h: 1, a: 1 },
-          "JULEN-03": { h: 2, a: 1 }, "LOREA-01": { h: 2, a: 1 }, "CHRISTOPHE-14": { h: 2, a: 1 },
-          "LANDER-09": { h: 2, a: 1 }, "XABIER-04": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 3, a: 1 },
-          "GORKA-12": { h: 2, a: 0 }, "JEAN-28": { h: 1, a: 1 }, "ANDONI-02": { h: 2, a: 1 }
-        }
-      },
-      {
-        id: "m02", pronoNum: 2, comp: "Journée 2 • Extérieur (E)", home: "BARCELONA", away: "ATHLETIC CLUB",
-        kickoff: "2026-08-22 21:00", finished: true, fh: 2, fa: 0,
-        preds: {
-          "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 2, a: 0 },
-          "PIERRE-10": { h: 3, a: 0 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 3, a: 1 },
-          "OLIVIER-20": { h: 3, a: 1 }, "ALAIN-08": { h: 5, a: 0 }, "JULEN-03": { h: 3, a: 1 },
-          "LOREA-01": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 3 }, "LANDER-09": { h: 3, a: 0 },
-          "XABIER-04": { h: 3, a: 1 }, "JEANLOUIS-06": { h: 4, a: 2 }, "GORKA-12": { h: 2, a: 1 },
-          "JEAN-28": { h: 3, a: 1 }, "ANDONI-02": { h: 2, a: 1 }
-        }
-      },
-      {
-        id: "m03", pronoNum: 3, comp: "Journée 3 • Extérieur (E)", home: "CELTA VIGO", away: "ATHLETIC CLUB",
-        kickoff: "2026-08-29 18:30", finished: true, fh: 0, fa: 2,
-        preds: {
-          "JORGE-13": { h: 1, a: 0 }, "JEANYVES-18": { h: 3, a: 1 }, "JONATHAN-05": { h: 1, a: 1 },
-          "PIERRE-10": { h: 1, a: 1 }, "XINA-07": { h: 0, a: 2 }, "ADRIAN-22": { h: 1, a: 0 },
-          "OLIVIER-20": { h: 1, a: 1 }, "ALAIN-08": { h: 3, a: 1 }, "JULEN-03": { h: 2, a: 1 },
-          "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
-          "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 1, a: 1 }, "GORKA-12": { h: 0, a: 1 },
-          "JEAN-28": { h: 2, a: 1 }, "ANDONI-02": { h: 1, a: 2 }
-        }
-      },
-      {
-        id: "m04", pronoNum: 4, comp: "Journée 4 • Domicile (D)", home: "ATHLETIC CLUB", away: "ATLETICO MADRID",
-        kickoff: "2026-09-12 21:00", finished: true, fh: 3, fa: 0,
-        preds: {
-          "JORGE-13": { h: 2, a: 1 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 1 },
-          "PIERRE-10": { h: 2, a: 1 }, "XINA-07": { h: 1, a: 0 }, "ADRIAN-22": { h: 1, a: 1 },
-          "PIERRE-21": { h: 1, a: 1 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 1, a: 2 },
-          "LOREA-01": { h: 1, a: 0 }, "CHRISTOPHE-14": { h: 0, a: 0 }, "INAKI-15": { h: 2, a: 1 },
-          "LANDER-09": { h: 1, a: 1 }, "XABIER-04": { h: 2, a: 2 }, "JEANLOUIS-06": { h: 1, a: 0 },
-          "GORKA-12": { h: 2, a: 2 }, "ANDONI-02": { h: 1, a: 0 }
-        }
-      },
-      {
-        id: "m05", pronoNum: 5, comp: "Journée 5 • Domicile (D)", home: "ATHLETIC CLUB", away: "ELCHE",
-        kickoff: "2026-09-19 18:30", finished: true, fh: 1, fa: 1,
-        preds: {
-          "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 4, a: 1 }, "JONATHAN-05": { h: 3, a: 0 },
-          "FREDERIC-17": { h: 3, a: 0 }, "INKO-24": { h: 2, a: 0 }, "LUKEN-19": { h: 3, a: 0 },
-          "PIERRE-10": { h: 2, a: 0 }, "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 3, a: 0 },
-          "OLIVIER-20": { h: 2, a: 1 }, "PIERRE-21": { h: 2, a: 0 }, "ALAIN-08": { h: 3, a: 1 },
-          "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 }, "CHRISTOPHE-14": { h: 3, a: 0 },
-          "INAKI-15": { h: 3, a: 1 }, "LANDER-09": { h: 3, a: 0 }, "XABIER-04": { h: 2, a: 0 },
-          "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 1 }, "PIERRICK-16": { h: 3, a: 2 },
-          "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 2, a: 0 }
-        }
-      },
-      {
-        id: "m06", pronoNum: 6, comp: "Journée 6 • Domicile (D)", home: "ATHLETIC CLUB", away: "ALAVES",
-        kickoff: "2026-09-26 21:00", finished: true, fh: 0, fa: 0,
-        preds: {
-          "JORGE-13": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 }, "FREDERIC-17": { h: 1, a: 1 },
-          "INKO-24": { h: 1, a: 0 }, "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 0 },
-          "XINA-07": { h: 2, a: 0 }, "OLIVIER-20": { h: 2, a: 0 }, "PIERRE-21": { h: 1, a: 0 },
-          "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 }, "LOREA-01": { h: 2, a: 0 },
-          "CHRISTOPHE-14": { h: 2, a: 1 }, "INAKI-15": { h: 3, a: 1 }, "XABIER-04": { h: 2, a: 2 },
-          "JEANLOUIS-06": { h: 3, a: 1 }, "YANNICK-11": { h: 2, a: 0 }, "PIERRICK-16": { h: 1, a: 0 },
-          "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 1, a: 0 }
-        }
-      },
-      {
-        id: "m07", pronoNum: 7, comp: "Journée 7 • Extérieur (E)", home: "VALENCIA", away: "ATHLETIC CLUB",
-        kickoff: "2026-10-03 16:15", finished: true, fh: 0, fa: 0,
-        preds: {
-          "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 1 },
-          "FREDERIC-17": { h: 1, a: 1 }, "LUKEN-19": { h: 0, a: 1 }, "XINA-07": { h: 1, a: 2 },
-          "OLIVIER-20": { h: 1, a: 2 }, "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 2, a: 2 },
-          "JULEN-03": { h: 1, a: 2 }, "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 0, a: 0 },
-          "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
-          "JEANLOUIS-06": { h: 1, a: 2 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
-          "ANDONI-02": { h: 1, a: 1 }
-        }
-      },
-      {
-        id: "m08", pronoNum: 8, comp: "Journée 8 • Extérieur (E)", home: "LEVANTE", away: "ATHLETIC CLUB",
-        kickoff: "2026-10-17 18:30", finished: true, fh: 3, fa: 1,
-        preds: {
-          "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 }, "FREDERIC-17": { h: 3, a: 3 },
-          "LUKEN-19": { h: 0, a: 2 }, "PIERRE-10": { h: 2, a: 1 }, "OLIVIER-20": { h: 0, a: 1 },
-          "ALAIN-08": { h: 2, a: 2 }, "JULEN-03": { h: 0, a: 1 }, "LOREA-01": { h: 1, a: 1 },
-          "INAKI-15": { h: 1, a: 2 }, "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 },
-          "JEANLOUIS-06": { h: 0, a: 1 }, "YANNICK-11": { h: 2, a: 2 }, "PIERRICK-16": { h: 1, a: 2 },
-          "GORKA-12": { h: 1, a: 1 }, "ANDONI-02": { h: 0, a: 1 }
-        }
-      },
-      {
-        id: "m09", pronoNum: 9, comp: "Journée 9 • Domicile (D)", home: "ATHLETIC CLUB", away: "GETAFE",
-        kickoff: "2026-10-24 21:00", finished: true, fh: 4, fa: 0,
-        preds: {
-          "JORGE-13": { h: 0, a: 0 }, "JEANYVES-18": { h: 2, a: 0 }, "JONATHAN-05": { h: 1, a: 0 },
-          "FREDERIC-17": { h: 0, a: 0 }, "LUKEN-19": { h: 2, a: 1 }, "PIERRE-10": { h: 0, a: 1 },
-          "XINA-07": { h: 2, a: 0 }, "ADRIAN-22": { h: 1, a: 2 }, "PIERRE-21": { h: 2, a: 0 },
-          "ALAIN-08": { h: 2, a: 1 }, "JULEN-03": { h: 2, a: 0 }, "LOREA-01": { h: 2, a: 0 },
-          "CHRISTOPHE-14": { h: 2, a: 0 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 3, a: 1 },
-          "XABIER-04": { h: 1, a: 0 }, "JEANLOUIS-06": { h: 2, a: 0 }, "YANNICK-11": { h: 2, a: 1 },
-          "PIERRICK-16": { h: 3, a: 1 }, "GORKA-12": { h: 3, a: 1 }, "ANDONI-02": { h: 1, a: 0 }
-        }
-      },
-      {
-        id: "m10", pronoNum: 10, comp: "Journée 10 • Extérieur (E)", home: "PRAT", away: "ATHLETIC CLUB",
-        kickoff: "2026-10-31 16:15", finished: true, fh: 1, fa: 6,
-        preds: {
-          "JORGE-13": { h: 0, a: 1 }, "JEANYVES-18": { h: 0, a: 4 }, "JONATHAN-05": { h: 0, a: 3 },
-          "FREDERIC-17": { h: 0, a: 3 }, "LUKEN-19": { h: 0, a: 4 }, "PIERRE-10": { h: 0, a: 3 },
-          "XINA-07": { h: 0, a: 3 }, "OLIVIER-20": { h: 1, a: 3 }, "PIERRE-21": { h: 0, a: 3 },
-          "ALAIN-08": { h: 1, a: 5 }, "JULEN-03": { h: 1, a: 3 }, "LOREA-01": { h: 0, a: 3 },
-          "LANDER-09": { h: 1, a: 3 }, "XABIER-04": { h: 1, a: 3 }, "JEANLOUIS-06": { h: 1, a: 5 },
-          "YANNICK-11": { h: 1, a: 4 }, "PIERRICK-16": { h: 1, a: 4 }, "GORKA-12": { h: 0, a: 3 },
-          "ANDONI-02": { h: 0, a: 2 }
-        }
-      },
-      {
-        id: "m11", pronoNum: 11, comp: "Journée 11 • Domicile (D)", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD",
-        kickoff: "2026-11-04 21:00", finished: true, fh: 2, fa: 1,
-        preds: {
-          "JORGE-13": { h: 3, a: 2 }, "JONATHAN-05": { h: 2, a: 1 }, "FREDERIC-17": { h: 3, a: 1 },
-          "LUKEN-19": { h: 1, a: 1 }, "PIERRE-10": { h: 1, a: 2 }, "ANGE-23": { h: 2, a: 0 },
-          "XINA-07": { h: 1, a: 0 }, "ALAIN-08": { h: 1, a: 1 }, "JULEN-03": { h: 2, a: 1 },
-          "LOREA-01": { h: 2, a: 1 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
-          "XABIER-04": { h: 0, a: 1 }, "JEANLOUIS-06": { h: 2, a: 1 }, "YANNICK-11": { h: 2, a: 1 },
-          "PIERRICK-16": { h: 2, a: 2 }, "GORKA-12": { h: 1, a: 0 }, "ANDONI-02": { h: 2, a: 1 }
-        }
-      },
-      {
-        id: "m12", pronoNum: 12, comp: "Journée 12 • Extérieur (E)", home: "OSASUNA", away: "ATHLETIC CLUB",
-        kickoff: "2026-11-14 21:00", finished: true, fh: 1, fa: 1,
-        preds: {
-          "JORGE-13": { h: 1, a: 3 }, "JEANYVES-18": { h: 1, a: 2 }, "JONATHAN-05": { h: 0, a: 2 },
-          "FREDERIC-17": { h: 2, a: 2 }, "LUKEN-19": { h: 0, a: 1 }, "PIERRE-10": { h: 2, a: 1 },
-          "BERTRAND-25": { h: 1, a: 2 }, "XINA-07": { h: 1, a: 3 }, "OLIVIER-20": { h: 1, a: 2 },
-          "PIERRE-21": { h: 1, a: 2 }, "ALAIN-08": { h: 1, a: 2 }, "JULEN-03": { h: 1, a: 1 },
-          "LOREA-01": { h: 1, a: 1 }, "CHRISTOPHE-14": { h: 1, a: 1 }, "INAKI-15": { h: 0, a: 2 },
-          "LANDER-09": { h: 1, a: 2 }, "XABIER-04": { h: 1, a: 1 }, "JEANLOUIS-06": { h: 0, a: 2 },
-          "YANNICK-11": { h: 1, a: 1 }, "PIERRICK-16": { h: 1, a: 1 }, "GORKA-12": { h: 1, a: 2 },
-          "ANDONI-02": { h: 1, a: 1 }
-        }
-      },
-      {
-        id: "m13", pronoNum: 13, comp: "Journée 13 • Domicile (D)", home: "ATHLETIC CLUB", away: "ESPANYOL",
-        kickoff: "2026-11-20 21:00", finished: true, fh: 0, fa: 1,
-        preds: {
-          "JORGE-13": { h: 2, a: 0 }, "JEANYVES-18": { h: 2, a: 1 }, "JONATHAN-05": { h: 2, a: 0 },
-          "FREDERIC-17": { h: 4, a: 1 }, "LUKEN-19": { h: 2, a: 0 }, "PIERRE-10": { h: 1, a: 1 },
-          "XINA-07": { h: 3, a: 1 }, "OLIVIER-20": { h: 1, a: 0 }, "PIERRE-21": { h: 2, a: 0 },
-          "ALAIN-08": { h: 3, a: 1 }, "JULEN-03": { h: 1, a: 0 }, "LOREA-01": { h: 2, a: 0 },
-          "CHRISTOPHE-14": { h: 3, a: 0 }, "INAKI-15": { h: 2, a: 1 }, "LANDER-09": { h: 2, a: 1 },
-          "XABIER-04": { h: 3, a: 1 }, "JEANLOUIS-06": { h: 2, a: 1 }, "YANNICK-11": { h: 1, a: 0 },
-          "GORKA-12": { h: 2, a: 0 }, "ANDONI-02": { h: 2, a: 1 }
-        }
-      },
-      {
-        id: "m14", pronoNum: 14, comp: "Journée 14 • Extérieur (E)", home: "MALAGA CF", away: "ATHLETIC CLUB",
-        kickoff: "2026-11-28 16:15", finished: false, fh: null, fa: null, preds: {}
-      }
+window.MATCHES = [
+      { id: "m13", num: 13, comp: "Liga", dayName: "Vendredi", date: "20 Novembre", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
+      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
     ];
 
     window.PALM = [
-      { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken", isHolder: true },
-      { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea", isHolder: false },
-      { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban", isHolder: false },
-      { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel", isHolder: false },
-      { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz", isHolder: false },
-      { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea", isHolder: false },
-      { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka", isHolder: false },
-      { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick", isHolder: false },
-      { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz", isHolder: false },
-      { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi", isHolder: false }
+      {
+        title: "Champion en titre",
+        holder: "JULEN-03",
+        rows: [
+          { rank: "1er", name: "LABORDE Julen", detail: "Saison 2025/26" }
+        ]
+      },
+      {
+        title: "Coupes de la Peña",
+        holder: "LOREA-01",
+        rows: [
+          { rank: "🏆", name: "LABORDE Lorea", detail: "Coupe d'Hiver" },
+          { rank: "🏆", name: "URREIZTIETA Andoni", detail: "Coupe de Printemps" }
+        ]
+      }
     ];
 
-    var appState = { user: null, currentId: "m13" };
+    let currentUser = null;
+    let currentMatchId = "m14";
+    let remoteData = { preds: {} };
 
-    function el(id) { return document.getElementById(id); }
-    function setTxt(id, txt) { var n = el(id); if (n) n.textContent = txt; }
-    function sign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
-
-    function firstName(fullName) {
-      if (!fullName) return "MEMBRE";
-      var parts = fullName.trim().split(/\s+/);
-      return (parts[parts.length - 1] || fullName).toUpperCase();
+    function ptsLabel(n) {
+      return (n === 0 || n === 1) ? "point" : "pts";
     }
 
-    function normKey(s) {
-      return (s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    function cupIcons(code) {
+      const count = (code === "LOREA-01") ? 2 : (code === "ANDONI-02" ? 1 : 0);
+      if (!count) return "";
+      return `<span class="cup-plain">${"🏆".repeat(count)}</span>`;
     }
 
-    function cupIcons(n) {
-      var out = "";
-      for (var i = 0; i < n; i++) out += "🏆";
-      return out;
-    }
-
-    function getCupTallies() {
-      var byKey = {};
-      for (var i = 0; i < window.PALM.length; i++) {
-        var winners = window.PALM[i].p1.split(/\s+ET\s+/i);
-        for (var j = 0; j < winners.length; j++) {
-          var w = winners[j].trim();
-          if (!w) continue;
-          var k = normKey(w);
-          if (!byKey[k]) byKey[k] = 0;
-          byKey[k] += 1;
+    async function loadRemoteData() {
+      try {
+        const res = await fetch(window.DB_URL + "?t=" + Date.now());
+        if (res.ok) {
+          const json = await res.json();
+          if (json && typeof json === "object") {
+            remoteData = { preds: json.preds || {} };
+          }
         }
-      }
-      return byKey;
-    }
-
-    function getMemberCups(memberName, tallies) {
-      var mKey = normKey(memberName);
-      if (!mKey) return 0;
-      for (var k in tallies) {
-        if (!Object.prototype.hasOwnProperty.call(tallies, k)) continue;
-        if (k === mKey || k.indexOf(mKey) !== -1 || mKey.indexOf(k) !== -1) {
-          return tallies[k];
-        }
-      }
-      return 0;
-    }
-
-    function findMatch(id) {
-      for (var i = 0; i < window.MATCHES.length; i++) {
-        if (window.MATCHES[i].id === id) return window.MATCHES[i];
-      }
-      return window.MATCHES[window.MATCHES.length - 1];
-    }
-
-    function renderPalmares() {
-      var grid = el("palm-grid");
-      grid.innerHTML = "";
-
-      for (var i = 0; i < window.PALM.length; i++) {
-        var s = window.PALM[i];
-        var card = document.createElement("div");
-        card.className = "palm-card" + (s.isHolder ? " is-holder" : "");
-
-        var head = document.createElement("div");
-        head.className = "palm-head";
-        head.textContent = "Saison " + s.y;
-        if (s.isHolder) {
-          var sp = document.createElement("span");
-          sp.className = "tag tag-champ";
-          sp.textContent = "Tenant du Tire";
-          head.appendChild(sp);
-        }
-
-        var rows = document.createElement("div");
-        rows.className = "palm-rows";
-        var lines = [
-          { cls: "palm-row p1", rank: "🥇", name: s.p1 },
-          { cls: "palm-row", rank: "🥈", name: s.p2 },
-          { cls: "palm-row", rank: "🥉", name: s.p3 }
-        ];
-
-        for (var j = 0; j < lines.length; j++) {
-          var row = document.createElement("div");
-          row.className = lines[j].cls;
-          var rk = document.createElement("span");
-          rk.className = "palm-rank";
-          rk.textContent = lines[j].rank;
-          var nm = document.createElement("span");
-          nm.textContent = lines[j].name;
-          row.appendChild(rk);
-          row.appendChild(nm);
-          rows.appendChild(row);
-        }
-
-        card.appendChild(head);
-        card.appendChild(rows);
-        grid.appendChild(card);
+      } catch (e) {
+        console.warn("Erreur lecture base :", e);
       }
     }
 
-    function renderLeaderboard(m) {
-      var n = parseInt(m.pronoNum, 10) || 1;
-      setTxt("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
-
-      var cnt = 0;
-      for (var k in m.preds) {
-        if (Object.prototype.hasOwnProperty.call(m.preds, k)) cnt++;
-      }
-      setTxt("part-info", "Participation : " + cnt + " / " + window.MEMBERS.length + " joueurs");
-
-      var tallies = getCupTallies();
-      var sorted = window.MEMBERS.slice().sort(function (a, b) {
-        return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name, "fr");
-      });
-
-      var tb = el("lb-body");
-      tb.innerHTML = "";
-
-      for (var i = 0; i < sorted.length; i++) {
-        var mem = sorted[i];
-        var ptsVal = mem.points || 0;
-        var prevPts = i > 0 ? (sorted[i - 1].points || 0) : null;
-        var rankLabel = (i === 0 || ptsVal !== prevPts) ? ((i + 1) + (i === 0 ? "er" : "e")) : "";
-
-        var pr = m.preds[mem.code];
-        var txt = pr ? (pr.h + " - " + pr.a) : "-";
-
-        if (m.finished) {
-          if (!pr) txt += " (+0 point)";
-          else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
-          else if (sign(pr.h, pr.a) === sign(m.fh, m.fa)) txt += " (+3 pts)";
-          else txt += " (+1 point)";
-        }
-
-        var isMe = Boolean(appState.user && !appState.user.isAdmin && appState.user.code === mem.code);
-        var tr = document.createElement("tr");
-        if (isMe) tr.className = "row-me";
-        else if (mem.isChamp) tr.className = "row-champ";
-
-        var td1 = document.createElement("td");
-        td1.textContent = rankLabel;
-
-        var td2 = document.createElement("td");
-        td2.style.fontWeight = (isMe || mem.isChamp) ? "800" : "600";
-        td2.appendChild(document.createTextNode(mem.name));
-
-        var cups = getMemberCups(mem.name, tallies);
-        if (cups > 0) {
-          var emCup = document.createElement("span");
-          emCup.className = "cup-plain";
-          emCup.textContent = cupIcons(cups);
-          td2.appendChild(emCup);
-        }
-
-        if (mem.isChamp) {
-          var emC = document.createElement("span");
-          emC.className = "tag tag-champ";
-          emC.textContent = "Tenant du Tire";
-          td2.appendChild(emC);
-        }
-
-        if (isMe) {
-          var emM = document.createElement("span");
-          emM.className = "tag tag-me";
-          emM.textContent = "Toi";
-          td2.appendChild(emM);
-        }
-
-        var td3 = document.createElement("td");
-        td3.className = "prono-col";
-        td3.textContent = txt;
-
-        var td4 = document.createElement("td");
-        td4.className = "pts-col";
-        td4.textContent = ptsVal + (ptsVal <= 1 ? " point" : " pts");
-
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        tr.appendChild(td3);
-        tr.appendChild(td4);
-        tb.appendChild(tr);
+    async function saveRemoteData() {
+      try {
+        await fetch(window.DB_URL, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(remoteData)
+        });
+      } catch (e) {
+        console.warn("Erreur sauvegarde base :", e);
       }
     }
 
-    window.showMatch = function (id) {
-      appState.currentId = id;
-      var m = findMatch(id);
-      el("match-select").value = m.id;
-      setTxt("match-title", m.home + " PRONOSTIC _ PRONOSTIC " + m.away);
-      setTxt("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score final : " + m.fh + " - " + m.fa) : " • Pronostics ouverts"));
-      setTxt("lbl-home", m.home);
-      setTxt("lbl-away", m.away);
-      setTxt("pred-ok", "");
-
-      if (!m.finished && appState.user && !appState.user.isAdmin) {
-        el("pred-box").classList.remove("hidden");
-        var pr = m.preds[appState.user.code];
-        el("pred-h").value = pr ? pr.h : "";
-        el("pred-a").value = pr ? pr.a : "";
-      } else {
-        el("pred-box").classList.add("hidden");
-      }
-
-      renderLeaderboard(m);
+    window.setTab = function(tab) {
+      const isPronos = (tab === "pronos");
+      document.getElementById("view-pronos").classList.toggle("hidden", !isPronos);
+      document.getElementById("view-palm").classList.toggle("hidden", isPronos);
+      document.getElementById("tab-pronos").classList.toggle("active", isPronos);
+      document.getElementById("tab-palm").classList.toggle("active", !isPronos);
+      if (!isPronos) renderPalm();
     };
 
-    function fillMatchSelect() {
-      var sel = el("match-select");
-      sel.innerHTML = "";
-      for (var i = 0; i < window.MATCHES.length; i++) {
-        var opt = document.createElement("option");
-        opt.value = window.MATCHES[i].id;
-        opt.textContent = window.MATCHES[i].comp + " — " + window.MATCHES[i].home + " vs " + window.MATCHES[i].away;
-        sel.appendChild(opt);
-      }
-    }
+    window.doLogin = async function() {
+      const raw = (document.getElementById("code-in").value || "").trim().toUpperCase();
+      const errEl = document.getElementById("login-err");
+      errEl.textContent = "";
 
-    window.setTab = function (name) {
-      if (!appState.user) return;
-      var isPalm = name === "palm";
-      el("view-pronos").classList.toggle("hidden", isPalm);
-      el("view-palm").classList.toggle("hidden", !isPalm);
-      el("tab-pronos").classList.toggle("active", !isPalm);
-      el("tab-palm").classList.toggle("active", isPalm);
-      if (isPalm) renderPalmares();
-    };
-
-    function openSession(u) {
-      appState.user = u;
-      el("sec-login").classList.add("hidden");
-      el("member-logo").classList.remove("hidden");
-      el("nav").classList.remove("hidden");
-      el("aupa-banner").classList.remove("hidden");
-
-      var greet = u.isAdmin ? "AUPA ADMIN" : ("AUPA " + firstName(u.name));
-      setTxt("aupa-heading", greet + " !");
-      setTxt("aupa-sub", "Bienvenue dans l'espace des pronostics • " + u.name);
-      setTxt("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + (u.points <= 1 ? " point" : " pts")));
-
-      fillMatchSelect();
-      window.showMatch(appState.currentId);
-      window.setTab("pronos");
-    }
-
-    window.doLogin = function () {
-      var inp = el("code-in");
-      var raw = (inp && inp.value ? inp.value : "").replace(/^\s+|\s+$/g, "").toUpperCase();
-      if (!raw) {
-        setTxt("login-err", "Merci d'entrer un code d'accès.");
-        return;
-      }
       if (raw === "ADMIN-PENA") {
-        setTxt("login-err", "");
-        openSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
-        return;
-      }
-      for (var i = 0; i < window.MEMBERS.length; i++) {
-        if (window.MEMBERS[i].code === raw) {
-          setTxt("login-err", "");
-          openSession({
-            code: window.MEMBERS[i].code,
-            name: window.MEMBERS[i].name,
-            points: window.MEMBERS[i].points,
-            isAdmin: false
-          });
+        currentUser = { code: "ADMIN-PENA", name: "Administrateur Peña", points: 0, isChamp: false, isAdmin: true };
+      } else {
+        const found = window.MEMBERS.find(m => m.code.toUpperCase() === raw);
+        if (!found) {
+          errEl.textContent = "Code joueur inconnu.";
           return;
         }
+        currentUser = { ...found, isAdmin: false };
       }
-      setTxt("login-err", "Code inconnu (" + raw + ").");
+
+      await loadRemoteData();
+
+      document.getElementById("sec-login").classList.add("hidden");
+      document.getElementById("member-logo").classList.remove("hidden");
+      document.getElementById("aupa-banner").classList.remove("hidden");
+      document.getElementById("nav").classList.remove("hidden");
+      document.getElementById("view-pronos").classList.remove("hidden");
+
+      document.getElementById("aupa-heading").textContent = `AUPA ${currentUser.name}`;
+      document.getElementById("aupa-sub").textContent = currentUser.isAdmin
+        ? "Mode administrateur actif"
+        : `Code : ${currentUser.code}`;
+      document.getElementById("aupa-stats").textContent = currentUser.isAdmin
+        ? `${window.MEMBERS.length} joueurs`
+        : `${currentUser.points} ${ptsLabel(currentUser.points)}`;
+
+      populateMatchSelect();
+      window.showMatch(currentMatchId);
+      renderLeaderboard();
+      renderPalm();
     };
 
-    window.doLogout = function () {
-      appState.user = null;
-      el("member-logo").classList.add("hidden");
-      el("nav").classList.add("hidden");
-      el("aupa-banner").classList.add("hidden");
-      el("view-pronos").classList.add("hidden");
-      el("view-palm").classList.add("hidden");
-      el("sec-login").classList.remove("hidden");
-      if (el("code-in")) el("code-in").value = "";
+    window.doLogout = function() {
+      currentUser = null;
+      document.getElementById("code-in").value = "";
+      document.getElementById("login-err").textContent = "";
+      document.getElementById("sec-login").classList.remove("hidden");
+      document.getElementById("member-logo").classList.add("hidden");
+      document.getElementById("aupa-banner").classList.add("hidden");
+      document.getElementById("nav").classList.add("hidden");
+      document.getElementById("view-pronos").classList.add("hidden");
+      document.getElementById("view-palm").classList.add("hidden");
     };
 
-    window.savePred = function () {
-      if (!appState.user || appState.user.isAdmin) return;
-      var m = findMatch(appState.currentId);
-      var h = parseInt(el("pred-h").value, 10);
-      var a = parseInt(el("pred-a").value, 10);
-      if (!m || m.finished || isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
-      m.preds[appState.user.code] = { h: h, a: a };
-      setTxt("pred-ok", "Prono enregistré : " + h + " - " + a);
-      fetch(window.DB_URL, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ matches: window.MATCHES, members: window.MEMBERS })
-      }).catch(function () {});
-      renderLeaderboard(m);
-    };
-
-    function bindLoginFallback() {
-      var btn = el("btn-login");
-      var inp = el("code-in");
-      if (btn) btn.onclick = window.doLogin;
-      if (inp) {
-        inp.onkeydown = function (e) {
-          e = e || window.event;
-          if (e && (e.key === "Enter" || e.keyCode === 13)) {
-            if (e.preventDefault) e.preventDefault();
-            window.doLogin();
-          }
-        };
-      }
+    function populateMatchSelect() {
+      const sel = document.getElementById("match-select");
+      sel.innerHTML = "";
+      window.MATCHES.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        opt.textContent = `Pronostic ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
+        sel.appendChild(opt);
+      });
+      sel.value = currentMatchId;
     }
 
-    bindLoginFallback();
-    document.addEventListener("DOMContentLoaded", bindLoginFallback);
+    window.showMatch = function(matchId) {
+      currentMatchId = matchId;
+      const m = window.MATCHES.find(x => x.id === matchId) || window.MATCHES[window.MATCHES.length - 1];
+      document.getElementById("match-select").value = m.id;
+      document.getElementById("th-prono").textContent = `PRONO N° ${m.num}`;
+      document.getElementById("pred-ok").textContent = "";
+
+      const titleEl = document.getElementById("match-title");
+      const metaEl = document.getElementById("match-meta");
+      const predBox = document.getElementById("pred-box");
+
+      if (m.finished) {
+        titleEl.textContent = `${m.home} ${m.fh}-${m.fa} ${m.away}`;
+        metaEl.textContent = `Pronostic ${m.num} - ${m.comp} - ${m.dayName} ${m.date} - ${m.time} - ${m.stadium} -`;
+        predBox.classList.add("hidden");
+      } else {
+        titleEl.textContent = `Journée ${m.num} - ${m.dayName} ${m.date} ${m.time} - ${m.stadium}`;
+        metaEl.textContent = `${m.comp} — Pronostic ouvert`;
+        predBox.classList.remove("hidden");
+        document.getElementById("lbl-home").textContent = m.home;
+        document.getElementById("lbl-away").textContent = m.away;
+
+        const existing = (remoteData.preds && remoteData.preds[m.id] && currentUser)
+          ? remoteData.preds[m.id][currentUser.code]
+          : null;
+        document.getElementById("pred-h").value = existing ? existing.h : "";
+        document.getElementById("pred-a").value = existing ? existing.a : "";
+      }
+
+      renderLeaderboard();
+    };
+
+    window.savePred = async function() {
+      const okEl = document.getElementById("pred-ok");
+      okEl.textContent = "";
+      if (!currentUser || currentUser.isAdmin) {
+        okEl.textContent = "Connecte-toi avec un code joueur pour valider un prono.";
+        return;
+      }
+
+      const hVal = document.getElementById("pred-h").value;
+      const aVal = document.getElementById("pred-a").value;
+      if (hVal === "" || aVal === "") {
+        okEl.textContent = "Merci de saisir les deux scores.";
+        return;
+      }
+
+      if (!remoteData.preds[currentMatchId]) {
+        remoteData.preds[currentMatchId] = {};
+      }
+      remoteData.preds[currentMatchId][currentUser.code] = {
+        h: Number(hVal),
+        a: Number(aVal)
+      };
+
+      await saveRemoteData();
+      okEl.textContent = "Prono enregistré !";
+      renderLeaderboard();
+    };
+
+    function renderLeaderboard() {
+      const tbody = document.getElementById("lb-body");
+      const partInfo = document.getElementById("part-info");
+      tbody.innerHTML = "";
+
+      const sorted = [...window.MEMBERS].sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        return a.name.localeCompare(b.name, "fr", { sensitivity: "base" });
+      });
+
+      const matchPreds = (remoteData.preds && remoteData.preds[currentMatchId]) || {};
+      const submittedCount = Object.keys(matchPreds).length;
+      partInfo.textContent = `${submittedCount} / ${sorted.length} pronos enregistrés`;
+
+      sorted.forEach((m, idx) => {
+        const prev = idx > 0 ? sorted[idx - 1] : null;
+        const showRank = (idx === 0) || (m.points !== prev.points);
+        const rankLabel = showRank ? `${idx + 1}` : "";
+
+        const p = matchPreds[m.code];
+        const pronoText = (p && p.h !== undefined && p.a !== undefined) ? `${p.h}-${p.a}` : "—";
+
+        const tr = document.createElement("tr");
+        if (m.isChamp) tr.classList.add("row-champ");
+        if (currentUser && !currentUser.isAdmin && currentUser.code === m.code) tr.classList.add("row-me");
+
+        const badges = [
+          m.isChamp ? `<span class="tag tag-champ">Champion</span>` : "",
+          (currentUser && !currentUser.isAdmin && currentUser.code === m.code) ? `<span class="tag tag-me">Moi</span>` : "",
+          cupIcons(m.code)
+        ].join("");
+
+        tr.innerHTML = `
+          <td>${rankLabel}</td>
+          <td>${m.name}${badges}</td>
+          <td class="prono-col">${pronoText}</td>
+          <td class="pts-col">${m.points} ${ptsLabel(m.points)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderPalm() {
+      const grid = document.getElementById("palm-grid");
+      grid.innerHTML = "";
+
+      window.PALM.forEach(bloc => {
+        const isHolder = currentUser && !currentUser.isAdmin && currentUser.code === bloc.holder;
+        const card = document.createElement("div");
+        card.className = "palm-card" + (isHolder ? " is-holder" : "");
+
+        const rowsHtml = bloc.rows.map((r, i) => `
+          <div class="palm-row ${i === 0 ? "p1" : ""}">
+            <span class="palm-rank">${r.rank}</span>
+            <span>${r.name}</span>
+            <span class="muted" style="margin-left:auto;">${r.detail}</span>
+          </div>
+        `).join("");
+
+        card.innerHTML = `
+          <div class="palm-head">
+            <span>${bloc.title}</span>
+          </div>
+          <div class="palm-rows">${rowsHtml}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
   </script>
 </body>
 </html>
