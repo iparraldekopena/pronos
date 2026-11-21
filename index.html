@@ -638,7 +638,7 @@
         list.push(byKey[order[m]]);
       }
       list.sort(function (a, b) {
-        return b.count - a.count || a.label.localeCompare(b.label);
+        return b.count - a.count || a.label.localeCompare(b.label, "fr");
       });
       return { byKey: byKey, list: list };
     }
@@ -731,7 +731,7 @@
 
       var tallies = getCupTallies();
       var sorted = window.MEMBERS.slice().sort(function (a, b) {
-        return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
+        return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name, "fr");
       });
 
       var tb = el("lb-body");
@@ -739,14 +739,18 @@
 
       for (var i = 0; i < sorted.length; i++) {
         var mem = sorted[i];
+        var ptsVal = mem.points || 0;
+        var prevPts = i > 0 ? (sorted[i - 1].points || 0) : null;
+        var rankLabel = (i === 0 || ptsVal !== prevPts) ? ((i + 1) + (i === 0 ? "er" : "e")) : "";
+
         var pr = m.preds[mem.code];
         var txt = pr ? (pr.h + " - " + pr.a) : "-";
 
         if (m.finished) {
-          if (!pr) txt += " (+0 pt)";
+          if (!pr) txt += " (+0 point)";
           else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
           else if (sign(pr.h, pr.a) === sign(m.fh, m.fa)) txt += " (+3 pts)";
-          else txt += " (+1 pt)";
+          else txt += " (+1 point)";
         }
 
         var isMe = Boolean(appState.user && !appState.user.isAdmin && appState.user.code === mem.code);
@@ -755,7 +759,7 @@
         else if (mem.isChamp) tr.className = "row-champ";
 
         var td1 = document.createElement("td");
-        td1.textContent = String(i + 1);
+        td1.textContent = rankLabel;
 
         var td2 = document.createElement("td");
         td2.style.fontWeight = (isMe || mem.isChamp) ? "800" : "600";
@@ -789,7 +793,7 @@
 
         var td4 = document.createElement("td");
         td4.className = "pts-col";
-        td4.textContent = mem.points + " pts";
+        td4.textContent = ptsVal + (ptsVal <= 1 ? " point" : " pts");
 
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -852,7 +856,7 @@
       var greet = u.isAdmin ? "AUPA ADMIN" : ("AUPA " + firstName(u.name));
       setTxt("aupa-heading", greet + " !");
       setTxt("aupa-sub", "Bienvenue dans l'espace des pronostics • " + u.name);
-      setTxt("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + " pts"));
+      setTxt("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + (u.points <= 1 ? " point" : " pts")));
 
       fillMatchSelect();
       window.showMatch(appState.currentId);
