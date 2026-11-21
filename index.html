@@ -733,285 +733,339 @@
     window.DB_URL = window.DB_URL || "";
     window.LOGO_SRC = window.LOGO_SRC || "logo-pena.jpg";
 
-    // Historique des pronostics des matchs 1 à 12 selon le tableau de référence
-    // Clé : "num-CODE" -> { prono: "x - y", gain: 0|1 }
+    // Règle de points :
+    // - Score exact : 6 pts
+    // - Bon résultat (1, N ou 2) : 3 pts
+    // - Rien de bon (prono joué mais mauvais 1/N/2) : 1 pt
+    // - Pas de prono ("-") : 0 pt
+    function computeMatchGain(predH, predA, realH, realA) {
+      if (
+        predH === null || predH === undefined || predH === "" ||
+        predA === null || predA === undefined || predA === "" ||
+        realH === null || realH === undefined || realH === "" ||
+        realA === null || realA === undefined || realA === ""
+      ) {
+        return 0;
+      }
+
+      const ph = Number(predH);
+      const pa = Number(predA);
+      const rh = Number(realH);
+      const ra = Number(realA);
+
+      if (Number.isNaN(ph) || Number.isNaN(pa) || Number.isNaN(rh) || Number.isNaN(ra)) {
+        return 0;
+      }
+
+      // Score exact : 6 pts
+      if (ph === rh && pa === ra) {
+        return 6;
+      }
+
+      // Bon résultat (1, N ou 2) : 3 pts
+      const predDiff = ph - pa;
+      const realDiff = rh - ra;
+      const sameOutcome =
+        (predDiff > 0 && realDiff > 0) ||
+        (predDiff < 0 && realDiff < 0) ||
+        (predDiff === 0 && realDiff === 0);
+
+      if (sameOutcome) {
+        return 3;
+      }
+
+      // Rien de bon (prono enregistré mais mauvais 1/N/2) : 1 pt
+      return 1;
+    }
+
+    function parsePronoScore(pronoStr) {
+      if (!pronoStr || pronoStr === "-") return null;
+      const parts = String(pronoStr).split("-").map(s => s.trim());
+      if (parts.length !== 2 || parts[0] === "" || parts[1] === "") return null;
+      const h = Number(parts[0]);
+      const a = Number(parts[1]);
+      if (Number.isNaN(h) || Number.isNaN(a)) return null;
+      return { h, a };
+    }
+
+    // Historique des pronostics des matchs 1 à 12
     window.HISTORY_PREDS = {
       // Match 1 : ATHLETIC CLUB 1-3 SEVILLA FC
-      "1-JORGE-13": { prono: "2 - 0", gain: 0 },
-      "1-JONATHAN-05": { prono: "2 - 0", gain: 0 },
-      "1-PIERRE-10": { prono: "0 - 1", gain: 0 },
-      "1-XINA-07": { prono: "2 - 0", gain: 0 },
-      "1-ADRIAN-22": { prono: "2 - 0", gain: 0 },
-      "1-ALAIN-08": { prono: "1 - 1", gain: 0 },
-      "1-JULEN-03": { prono: "2 - 1", gain: 0 },
-      "1-LOREA-01": { prono: "2 - 1", gain: 0 },
-      "1-CHRISTOPHE-14": { prono: "2 - 1", gain: 0 },
-      "1-LANDER-09": { prono: "2 - 1", gain: 0 },
-      "1-XABIER-04": { prono: "2 - 0", gain: 0 },
-      "1-JEANLOUIS-06": { prono: "3 - 1", gain: 0 },
-      "1-GORKA-12": { prono: "2 - 0", gain: 0 },
-      "1-ANDONI-02": { prono: "2 - 1", gain: 0 },
+      "1-JORGE-13": { prono: "2 - 0" },
+      "1-JONATHAN-05": { prono: "2 - 0" },
+      "1-PIERRE-10": { prono: "0 - 1" },
+      "1-XINA-07": { prono: "2 - 0" },
+      "1-ADRIAN-22": { prono: "2 - 0" },
+      "1-ALAIN-08": { prono: "1 - 1" },
+      "1-JULEN-03": { prono: "2 - 1" },
+      "1-LOREA-01": { prono: "2 - 1" },
+      "1-CHRISTOPHE-14": { prono: "2 - 1" },
+      "1-LANDER-09": { prono: "2 - 1" },
+      "1-XABIER-04": { prono: "2 - 0" },
+      "1-JEANLOUIS-06": { prono: "3 - 1" },
+      "1-GORKA-12": { prono: "2 - 0" },
+      "1-ANDONI-02": { prono: "2 - 1" },
 
-      // Match 2 : BARCELONA 2-0 ATHLETIC CLUB (vert sur CORDEIRO, LOREA)
-      "2-JORGE-13": { prono: "1 - 0", gain: 0 },
-      "2-JEANYVES-18": { prono: "1 - 2", gain: 0 },
-      "2-JONATHAN-05": { prono: "2 - 0", gain: 1 },
-      "2-PIERRE-10": { prono: "3 - 0", gain: 0 },
-      "2-XINA-07": { prono: "0 - 2", gain: 0 },
-      "2-ADRIAN-22": { prono: "3 - 1", gain: 0 },
-      "2-OLIVIER-20": { prono: "3 - 1", gain: 0 },
-      "2-ALAIN-08": { prono: "5 - 0", gain: 0 },
-      "2-JULEN-03": { prono: "3 - 1", gain: 0 },
-      "2-LOREA-01": { prono: "2 - 0", gain: 1 },
-      "2-INAKI-15": { prono: "2 - 3", gain: 0 },
-      "2-LANDER-09": { prono: "3 - 0", gain: 0 },
-      "2-XABIER-04": { prono: "3 - 1", gain: 0 },
-      "2-JEANLOUIS-06": { prono: "4 - 2", gain: 0 },
-      "2-GORKA-12": { prono: "2 - 1", gain: 0 },
-      "2-ANDONI-02": { prono: "2 - 1", gain: 0 },
+      // Match 2 : BARCELONA 2-0 ATHLETIC CLUB
+      "2-JORGE-13": { prono: "1 - 0" },
+      "2-JEANYVES-18": { prono: "1 - 2" },
+      "2-JONATHAN-05": { prono: "2 - 0" },
+      "2-PIERRE-10": { prono: "3 - 0" },
+      "2-XINA-07": { prono: "0 - 2" },
+      "2-ADRIAN-22": { prono: "3 - 1" },
+      "2-OLIVIER-20": { prono: "3 - 1" },
+      "2-ALAIN-08": { prono: "5 - 0" },
+      "2-JULEN-03": { prono: "3 - 1" },
+      "2-LOREA-01": { prono: "2 - 0" },
+      "2-INAKI-15": { prono: "2 - 3" },
+      "2-LANDER-09": { prono: "3 - 0" },
+      "2-XABIER-04": { prono: "3 - 1" },
+      "2-JEANLOUIS-06": { prono: "4 - 2" },
+      "2-GORKA-12": { prono: "2 - 1" },
+      "2-ANDONI-02": { prono: "2 - 1" },
 
-      // Match 3 : CELTA VIGO 0-2 ATHLETIC CLUB (vert sur DULONG)
-      "3-JORGE-13": { prono: "1 - 0", gain: 0 },
-      "3-JEANYVES-18": { prono: "3 - 1", gain: 0 },
-      "3-JONATHAN-05": { prono: "1 - 1", gain: 0 },
-      "3-PIERRE-10": { prono: "1 - 1", gain: 0 },
-      "3-XINA-07": { prono: "0 - 2", gain: 1 },
-      "3-ADRIAN-22": { prono: "1 - 0", gain: 0 },
-      "3-OLIVIER-20": { prono: "1 - 1", gain: 0 },
-      "3-ALAIN-08": { prono: "3 - 1", gain: 0 },
-      "3-JULEN-03": { prono: "2 - 1", gain: 0 },
-      "3-LOREA-01": { prono: "2 - 1", gain: 0 },
-      "3-INAKI-15": { prono: "2 - 1", gain: 0 },
-      "3-LANDER-09": { prono: "2 - 1", gain: 0 },
-      "3-XABIER-04": { prono: "1 - 1", gain: 0 },
-      "3-JEANLOUIS-06": { prono: "1 - 1", gain: 0 },
-      "3-GORKA-12": { prono: "0 - 1", gain: 0 },
-      "3-ANDONI-02": { prono: "1 - 2", gain: 0 },
+      // Match 3 : CELTA VIGO 0-2 ATHLETIC CLUB
+      "3-JORGE-13": { prono: "1 - 0" },
+      "3-JEANYVES-18": { prono: "3 - 1" },
+      "3-JONATHAN-05": { prono: "1 - 1" },
+      "3-PIERRE-10": { prono: "1 - 1" },
+      "3-XINA-07": { prono: "0 - 2" },
+      "3-ADRIAN-22": { prono: "1 - 0" },
+      "3-OLIVIER-20": { prono: "1 - 1" },
+      "3-ALAIN-08": { prono: "3 - 1" },
+      "3-JULEN-03": { prono: "2 - 1" },
+      "3-LOREA-01": { prono: "2 - 1" },
+      "3-INAKI-15": { prono: "2 - 1" },
+      "3-LANDER-09": { prono: "2 - 1" },
+      "3-XABIER-04": { prono: "1 - 1" },
+      "3-JEANLOUIS-06": { prono: "1 - 1" },
+      "3-GORKA-12": { prono: "0 - 1" },
+      "3-ANDONI-02": { prono: "1 - 2" },
 
       // Match 4 : ATHLETIC CLUB 3-0 ATLETICO MADRID
-      "4-JORGE-13": { prono: "2 - 1", gain: 0 },
-      "4-JEANYVES-18": { prono: "2 - 0", gain: 0 },
-      "4-JONATHAN-05": { prono: "1 - 1", gain: 0 },
-      "4-PIERRE-10": { prono: "2 - 1", gain: 0 },
-      "4-XINA-07": { prono: "1 - 0", gain: 0 },
-      "4-ADRIAN-22": { prono: "1 - 1", gain: 0 },
-      "4-PIERRE-21": { prono: "1 - 1", gain: 0 },
-      "4-ALAIN-08": { prono: "1 - 1", gain: 0 },
-      "4-JULEN-03": { prono: "1 - 2", gain: 0 },
-      "4-LOREA-01": { prono: "1 - 0", gain: 0 },
-      "4-CHRISTOPHE-14": { prono: "0 - 0", gain: 0 },
-      "4-INAKI-15": { prono: "2 - 1", gain: 0 },
-      "4-LANDER-09": { prono: "1 - 1", gain: 0 },
-      "4-XABIER-04": { prono: "2 - 2", gain: 0 },
-      "4-JEANLOUIS-06": { prono: "1 - 0", gain: 0 },
-      "4-GORKA-12": { prono: "2 - 2", gain: 0 },
-      "4-ANDONI-02": { prono: "1 - 0", gain: 0 },
+      "4-JORGE-13": { prono: "2 - 1" },
+      "4-JEANYVES-18": { prono: "2 - 0" },
+      "4-JONATHAN-05": { prono: "1 - 1" },
+      "4-PIERRE-10": { prono: "2 - 1" },
+      "4-XINA-07": { prono: "1 - 0" },
+      "4-ADRIAN-22": { prono: "1 - 1" },
+      "4-PIERRE-21": { prono: "1 - 1" },
+      "4-ALAIN-08": { prono: "1 - 1" },
+      "4-JULEN-03": { prono: "1 - 2" },
+      "4-LOREA-01": { prono: "1 - 0" },
+      "4-CHRISTOPHE-14": { prono: "0 - 0" },
+      "4-INAKI-15": { prono: "2 - 1" },
+      "4-LANDER-09": { prono: "1 - 1" },
+      "4-XABIER-04": { prono: "2 - 2" },
+      "4-JEANLOUIS-06": { prono: "1 - 0" },
+      "4-GORKA-12": { prono: "2 - 2" },
+      "4-ANDONI-02": { prono: "1 - 0" },
 
       // Match 5 : ATHLETIC CLUB 1-1 ELCHE
-      "5-JORGE-13": { prono: "2 - 0", gain: 0 },
-      "5-JEANYVES-18": { prono: "4 - 1", gain: 0 },
-      "5-JONATHAN-05": { prono: "3 - 0", gain: 0 },
-      "5-FREDERIC-17": { prono: "3 - 0", gain: 0 },
-      "5-INKO-24": { prono: "2 - 0", gain: 0 },
-      "5-LUKEN-19": { prono: "3 - 0", gain: 0 },
-      "5-PIERRE-10": { prono: "2 - 0", gain: 0 },
-      "5-XINA-07": { prono: "2 - 0", gain: 0 },
-      "5-ADRIAN-22": { prono: "3 - 0", gain: 0 },
-      "5-OLIVIER-20": { prono: "2 - 1", gain: 0 },
-      "5-PIERRE-21": { prono: "2 - 0", gain: 0 },
-      "5-ALAIN-08": { prono: "3 - 1", gain: 0 },
-      "5-JULEN-03": { prono: "2 - 0", gain: 0 },
-      "5-LOREA-01": { prono: "2 - 0", gain: 0 },
-      "5-CHRISTOPHE-14": { prono: "3 - 0", gain: 0 },
-      "5-INAKI-15": { prono: "3 - 1", gain: 0 },
-      "5-LANDER-09": { prono: "3 - 0", gain: 0 },
-      "5-XABIER-04": { prono: "2 - 0", gain: 0 },
-      "5-JEANLOUIS-06": { prono: "3 - 1", gain: 0 },
-      "5-YANNICK-11": { prono: "2 - 1", gain: 0 },
-      "5-PIERRICK-16": { prono: "3 - 2", gain: 0 },
-      "5-GORKA-12": { prono: "3 - 1", gain: 0 },
-      "5-ANDONI-02": { prono: "2 - 0", gain: 0 },
+      "5-JORGE-13": { prono: "2 - 0" },
+      "5-JEANYVES-18": { prono: "4 - 1" },
+      "5-JONATHAN-05": { prono: "3 - 0" },
+      "5-FREDERIC-17": { prono: "3 - 0" },
+      "5-INKO-24": { prono: "2 - 0" },
+      "5-LUKEN-19": { prono: "3 - 0" },
+      "5-PIERRE-10": { prono: "2 - 0" },
+      "5-XINA-07": { prono: "2 - 0" },
+      "5-ADRIAN-22": { prono: "3 - 0" },
+      "5-OLIVIER-20": { prono: "2 - 1" },
+      "5-PIERRE-21": { prono: "2 - 0" },
+      "5-ALAIN-08": { prono: "3 - 1" },
+      "5-JULEN-03": { prono: "2 - 0" },
+      "5-LOREA-01": { prono: "2 - 0" },
+      "5-CHRISTOPHE-14": { prono: "3 - 0" },
+      "5-INAKI-15": { prono: "3 - 1" },
+      "5-LANDER-09": { prono: "3 - 0" },
+      "5-XABIER-04": { prono: "2 - 0" },
+      "5-JEANLOUIS-06": { prono: "3 - 1" },
+      "5-YANNICK-11": { prono: "2 - 1" },
+      "5-PIERRICK-16": { prono: "3 - 2" },
+      "5-GORKA-12": { prono: "3 - 1" },
+      "5-ANDONI-02": { prono: "2 - 0" },
 
       // Match 6 : ATHLETIC CLUB 0-0 ALAVES
-      "6-JORGE-13": { prono: "2 - 0", gain: 0 },
-      "6-JONATHAN-05": { prono: "1 - 0", gain: 0 },
-      "6-FREDERIC-17": { prono: "1 - 1", gain: 0 },
-      "6-INKO-24": { prono: "1 - 0", gain: 0 },
-      "6-LUKEN-19": { prono: "1 - 1", gain: 0 },
-      "6-PIERRE-10": { prono: "1 - 0", gain: 0 },
-      "6-XINA-07": { prono: "2 - 0", gain: 0 },
-      "6-OLIVIER-20": { prono: "2 - 0", gain: 0 },
-      "6-PIERRE-21": { prono: "1 - 0", gain: 0 },
-      "6-ALAIN-08": { prono: "1 - 1", gain: 0 },
-      "6-JULEN-03": { prono: "2 - 1", gain: 0 },
-      "6-LOREA-01": { prono: "2 - 0", gain: 0 },
-      "6-CHRISTOPHE-14": { prono: "2 - 1", gain: 0 },
-      "6-INAKI-15": { prono: "3 - 1", gain: 0 },
-      "6-XABIER-04": { prono: "2 - 2", gain: 0 },
-      "6-JEANLOUIS-06": { prono: "3 - 1", gain: 0 },
-      "6-YANNICK-11": { prono: "2 - 0", gain: 0 },
-      "6-PIERRICK-16": { prono: "1 - 0", gain: 0 },
-      "6-GORKA-12": { prono: "1 - 0", gain: 0 },
-      "6-ANDONI-02": { prono: "1 - 0", gain: 0 },
+      "6-JORGE-13": { prono: "2 - 0" },
+      "6-JONATHAN-05": { prono: "1 - 0" },
+      "6-FREDERIC-17": { prono: "1 - 1" },
+      "6-INKO-24": { prono: "1 - 0" },
+      "6-LUKEN-19": { prono: "1 - 1" },
+      "6-PIERRE-10": { prono: "1 - 0" },
+      "6-XINA-07": { prono: "2 - 0" },
+      "6-OLIVIER-20": { prono: "2 - 0" },
+      "6-PIERRE-21": { prono: "1 - 0" },
+      "6-ALAIN-08": { prono: "1 - 1" },
+      "6-JULEN-03": { prono: "2 - 1" },
+      "6-LOREA-01": { prono: "2 - 0" },
+      "6-CHRISTOPHE-14": { prono: "2 - 1" },
+      "6-INAKI-15": { prono: "3 - 1" },
+      "6-XABIER-04": { prono: "2 - 2" },
+      "6-JEANLOUIS-06": { prono: "3 - 1" },
+      "6-YANNICK-11": { prono: "2 - 0" },
+      "6-PIERRICK-16": { prono: "1 - 0" },
+      "6-GORKA-12": { prono: "1 - 0" },
+      "6-ANDONI-02": { prono: "1 - 0" },
 
-      // Match 7 : VALENCIA 0-0 ATHLETIC CLUB (vert sur MARITORENA)
-      "7-JORGE-13": { prono: "0 - 1", gain: 0 },
-      "7-JEANYVES-18": { prono: "1 - 2", gain: 0 },
-      "7-JONATHAN-05": { prono: "0 - 1", gain: 0 },
-      "7-FREDERIC-17": { prono: "1 - 1", gain: 0 },
-      "7-LUKEN-19": { prono: "0 - 1", gain: 0 },
-      "7-XINA-07": { prono: "1 - 2", gain: 0 },
-      "7-OLIVIER-20": { prono: "1 - 2", gain: 0 },
-      "7-PIERRE-21": { prono: "1 - 2", gain: 0 },
-      "7-ALAIN-08": { prono: "2 - 2", gain: 0 },
-      "7-JULEN-03": { prono: "1 - 2", gain: 0 },
-      "7-LOREA-01": { prono: "1 - 1", gain: 0 },
-      "7-CHRISTOPHE-14": { prono: "0 - 0", gain: 1 },
-      "7-INAKI-15": { prono: "1 - 2", gain: 0 },
-      "7-LANDER-09": { prono: "1 - 2", gain: 0 },
-      "7-XABIER-04": { prono: "1 - 1", gain: 0 },
-      "7-JEANLOUIS-06": { prono: "1 - 2", gain: 0 },
-      "7-PIERRICK-16": { prono: "1 - 1", gain: 0 },
-      "7-GORKA-12": { prono: "1 - 2", gain: 0 },
-      "7-ANDONI-02": { prono: "1 - 1", gain: 0 },
+      // Match 7 : VALENCIA 0-0 ATHLETIC CLUB
+      "7-JORGE-13": { prono: "0 - 1" },
+      "7-JEANYVES-18": { prono: "1 - 2" },
+      "7-JONATHAN-05": { prono: "0 - 1" },
+      "7-FREDERIC-17": { prono: "1 - 1" },
+      "7-LUKEN-19": { prono: "0 - 1" },
+      "7-XINA-07": { prono: "1 - 2" },
+      "7-OLIVIER-20": { prono: "1 - 2" },
+      "7-PIERRE-21": { prono: "1 - 2" },
+      "7-ALAIN-08": { prono: "2 - 2" },
+      "7-JULEN-03": { prono: "1 - 2" },
+      "7-LOREA-01": { prono: "1 - 1" },
+      "7-CHRISTOPHE-14": { prono: "0 - 0" },
+      "7-INAKI-15": { prono: "1 - 2" },
+      "7-LANDER-09": { prono: "1 - 2" },
+      "7-XABIER-04": { prono: "1 - 1" },
+      "7-JEANLOUIS-06": { prono: "1 - 2" },
+      "7-PIERRICK-16": { prono: "1 - 1" },
+      "7-GORKA-12": { prono: "1 - 2" },
+      "7-ANDONI-02": { prono: "1 - 1" },
 
       // Match 8 : LEVANTE 3-1 ATHLETIC CLUB
-      "8-JEANYVES-18": { prono: "1 - 2", gain: 0 },
-      "8-JONATHAN-05": { prono: "0 - 2", gain: 0 },
-      "8-FREDERIC-17": { prono: "3 - 3", gain: 0 },
-      "8-LUKEN-19": { prono: "0 - 2", gain: 0 },
-      "8-PIERRE-10": { prono: "2 - 1", gain: 0 },
-      "8-ADRIAN-22": { prono: "1 - 2", gain: 0 },
-      "8-OLIVIER-20": { prono: "0 - 1", gain: 0 },
-      "8-ALAIN-08": { prono: "2 - 2", gain: 0 },
-      "8-JULEN-03": { prono: "0 - 1", gain: 0 },
-      "8-LOREA-01": { prono: "1 - 1", gain: 0 },
-      "8-INAKI-15": { prono: "1 - 2", gain: 0 },
-      "8-LANDER-09": { prono: "1 - 2", gain: 0 },
-      "8-XABIER-04": { prono: "1 - 1", gain: 0 },
-      "8-JEANLOUIS-06": { prono: "0 - 1", gain: 0 },
-      "8-YANNICK-11": { prono: "2 - 2", gain: 0 },
-      "8-PIERRICK-16": { prono: "1 - 2", gain: 0 },
-      "8-GORKA-12": { prono: "1 - 1", gain: 0 },
-      "8-ANDONI-02": { prono: "0 - 1", gain: 0 },
+      "8-JEANYVES-18": { prono: "1 - 2" },
+      "8-JONATHAN-05": { prono: "0 - 2" },
+      "8-FREDERIC-17": { prono: "3 - 3" },
+      "8-LUKEN-19": { prono: "0 - 2" },
+      "8-PIERRE-10": { prono: "2 - 1" },
+      "8-ADRIAN-22": { prono: "1 - 2" },
+      "8-OLIVIER-20": { prono: "0 - 1" },
+      "8-ALAIN-08": { prono: "2 - 2" },
+      "8-JULEN-03": { prono: "0 - 1" },
+      "8-LOREA-01": { prono: "1 - 1" },
+      "8-INAKI-15": { prono: "1 - 2" },
+      "8-LANDER-09": { prono: "1 - 2" },
+      "8-XABIER-04": { prono: "1 - 1" },
+      "8-JEANLOUIS-06": { prono: "0 - 1" },
+      "8-YANNICK-11": { prono: "2 - 2" },
+      "8-PIERRICK-16": { prono: "1 - 2" },
+      "8-GORKA-12": { prono: "1 - 1" },
+      "8-ANDONI-02": { prono: "0 - 1" },
 
       // Match 9 : ATHLETIC CLUB 4-0 GETAFE
-      "9-JORGE-13": { prono: "0 - 0", gain: 0 },
-      "9-JEANYVES-18": { prono: "2 - 0", gain: 0 },
-      "9-JONATHAN-05": { prono: "1 - 0", gain: 0 },
-      "9-FREDERIC-17": { prono: "0 - 0", gain: 0 },
-      "9-LUKEN-19": { prono: "2 - 1", gain: 0 },
-      "9-PIERRE-10": { prono: "0 - 1", gain: 0 },
-      "9-XINA-07": { prono: "2 - 0", gain: 0 },
-      "9-PIERRE-21": { prono: "2 - 0", gain: 0 },
-      "9-ALAIN-08": { prono: "2 - 1", gain: 0 },
-      "9-JULEN-03": { prono: "2 - 0", gain: 0 },
-      "9-LOREA-01": { prono: "2 - 0", gain: 0 },
-      "9-CHRISTOPHE-14": { prono: "2 - 0", gain: 0 },
-      "9-INAKI-15": { prono: "2 - 1", gain: 0 },
-      "9-LANDER-09": { prono: "3 - 1", gain: 0 },
-      "9-XABIER-04": { prono: "1 - 0", gain: 0 },
-      "9-JEANLOUIS-06": { prono: "2 - 0", gain: 0 },
-      "9-YANNICK-11": { prono: "2 - 1", gain: 0 },
-      "9-PIERRICK-16": { prono: "3 - 1", gain: 0 },
-      "9-GORKA-12": { prono: "3 - 1", gain: 0 },
-      "9-ANDONI-02": { prono: "1 - 0", gain: 0 },
+      "9-JORGE-13": { prono: "0 - 0" },
+      "9-JEANYVES-18": { prono: "2 - 0" },
+      "9-JONATHAN-05": { prono: "1 - 0" },
+      "9-FREDERIC-17": { prono: "0 - 0" },
+      "9-LUKEN-19": { prono: "2 - 1" },
+      "9-PIERRE-10": { prono: "0 - 1" },
+      "9-XINA-07": { prono: "2 - 0" },
+      "9-PIERRE-21": { prono: "2 - 0" },
+      "9-ALAIN-08": { prono: "2 - 1" },
+      "9-JULEN-03": { prono: "2 - 0" },
+      "9-LOREA-01": { prono: "2 - 0" },
+      "9-CHRISTOPHE-14": { prono: "2 - 0" },
+      "9-INAKI-15": { prono: "2 - 1" },
+      "9-LANDER-09": { prono: "3 - 1" },
+      "9-XABIER-04": { prono: "1 - 0" },
+      "9-JEANLOUIS-06": { prono: "2 - 0" },
+      "9-YANNICK-11": { prono: "2 - 1" },
+      "9-PIERRICK-16": { prono: "3 - 1" },
+      "9-GORKA-12": { prono: "3 - 1" },
+      "9-ANDONI-02": { prono: "1 - 0" },
 
       // Match 10 : PRAT 1-6 ATHLETIC CLUB
-      "10-JORGE-13": { prono: "0 - 1", gain: 0 },
-      "10-JEANYVES-18": { prono: "0 - 4", gain: 0 },
-      "10-JONATHAN-05": { prono: "0 - 3", gain: 0 },
-      "10-FREDERIC-17": { prono: "0 - 3", gain: 0 },
-      "10-LUKEN-19": { prono: "0 - 4", gain: 0 },
-      "10-PIERRE-10": { prono: "0 - 3", gain: 0 },
-      "10-XINA-07": { prono: "0 - 3", gain: 0 },
-      "10-OLIVIER-20": { prono: "1 - 3", gain: 0 },
-      "10-PIERRE-21": { prono: "0 - 3", gain: 0 },
-      "10-ALAIN-08": { prono: "1 - 5", gain: 0 },
-      "10-JULEN-03": { prono: "1 - 3", gain: 0 },
-      "10-LOREA-01": { prono: "0 - 3", gain: 0 },
-      "10-LANDER-09": { prono: "1 - 3", gain: 0 },
-      "10-XABIER-04": { prono: "1 - 3", gain: 0 },
-      "10-JEANLOUIS-06": { prono: "1 - 5", gain: 0 },
-      "10-YANNICK-11": { prono: "1 - 4", gain: 0 },
-      "10-PIERRICK-16": { prono: "1 - 4", gain: 0 },
-      "10-GORKA-12": { prono: "0 - 3", gain: 0 },
-      "10-ANDONI-02": { prono: "0 - 2", gain: 0 },
+      "10-JORGE-13": { prono: "0 - 1" },
+      "10-JEANYVES-18": { prono: "0 - 4" },
+      "10-JONATHAN-05": { prono: "0 - 3" },
+      "10-FREDERIC-17": { prono: "0 - 3" },
+      "10-LUKEN-19": { prono: "0 - 4" },
+      "10-PIERRE-10": { prono: "0 - 3" },
+      "10-XINA-07": { prono: "0 - 3" },
+      "10-OLIVIER-20": { prono: "1 - 3" },
+      "10-PIERRE-21": { prono: "0 - 3" },
+      "10-ALAIN-08": { prono: "1 - 5" },
+      "10-JULEN-03": { prono: "1 - 3" },
+      "10-LOREA-01": { prono: "0 - 3" },
+      "10-LANDER-09": { prono: "1 - 3" },
+      "10-XABIER-04": { prono: "1 - 3" },
+      "10-JEANLOUIS-06": { prono: "1 - 5" },
+      "10-YANNICK-11": { prono: "1 - 4" },
+      "10-PIERRICK-16": { prono: "1 - 4" },
+      "10-GORKA-12": { prono: "0 - 3" },
+      "10-ANDONI-02": { prono: "0 - 2" },
 
-      // Match 11 : ATHLETIC CLUB 2-1 REAL SOCIEDAD (vert sur JONATHAN, JULEN, LOREA, INAKI, LANDER, JEANLOUIS, YANNICK, ANDONI)
-      "11-JORGE-13": { prono: "3 - 2", gain: 0 },
-      "11-JONATHAN-05": { prono: "2 - 1", gain: 1 },
-      "11-FREDERIC-17": { prono: "3 - 1", gain: 0 },
-      "11-LUKEN-19": { prono: "1 - 1", gain: 0 },
-      "11-PIERRE-10": { prono: "1 - 2", gain: 0 },
-      "11-XINA-07": { prono: "1 - 0", gain: 0 },
-      "11-ANGE-23": { prono: "2 - 0", gain: 0 },
-      "11-ALAIN-08": { prono: "1 - 1", gain: 0 },
-      "11-JULEN-03": { prono: "2 - 1", gain: 1 },
-      "11-LOREA-01": { prono: "2 - 1", gain: 1 },
-      "11-INAKI-15": { prono: "2 - 1", gain: 1 },
-      "11-LANDER-09": { prono: "2 - 1", gain: 1 },
-      "11-XABIER-04": { prono: "0 - 1", gain: 0 },
-      "11-JEANLOUIS-06": { prono: "2 - 1", gain: 1 },
-      "11-YANNICK-11": { prono: "2 - 1", gain: 1 },
-      "11-PIERRICK-16": { prono: "2 - 2", gain: 0 },
-      "11-GORKA-12": { prono: "1 - 0", gain: 0 },
-      "11-ANDONI-02": { prono: "2 - 1", gain: 1 },
+      // Match 11 : ATHLETIC CLUB 2-1 REAL SOCIEDAD
+      "11-JORGE-13": { prono: "3 - 2" },
+      "11-JONATHAN-05": { prono: "2 - 1" },
+      "11-FREDERIC-17": { prono: "3 - 1" },
+      "11-LUKEN-19": { prono: "1 - 1" },
+      "11-PIERRE-10": { prono: "1 - 2" },
+      "11-XINA-07": { prono: "1 - 0" },
+      "11-ANGE-23": { prono: "2 - 0" },
+      "11-ALAIN-08": { prono: "1 - 1" },
+      "11-JULEN-03": { prono: "2 - 1" },
+      "11-LOREA-01": { prono: "2 - 1" },
+      "11-INAKI-15": { prono: "2 - 1" },
+      "11-LANDER-09": { prono: "2 - 1" },
+      "11-XABIER-04": { prono: "0 - 1" },
+      "11-JEANLOUIS-06": { prono: "2 - 1" },
+      "11-YANNICK-11": { prono: "2 - 1" },
+      "11-PIERRICK-16": { prono: "2 - 2" },
+      "11-GORKA-12": { prono: "1 - 0" },
+      "11-ANDONI-02": { prono: "2 - 1" },
 
-      // Match 12 : OSASUNA 1-1 ATHLETIC CLUB (vert sur JULEN, LOREA, CHRISTOPHE, XABIER, YANNICK, PIERRICK, ANDONI)
-      "12-JORGE-13": { prono: "1 - 3", gain: 0 },
-      "12-JEANYVES-18": { prono: "1 - 2", gain: 0 },
-      "12-JONATHAN-05": { prono: "0 - 2", gain: 0 },
-      "12-FREDERIC-17": { prono: "2 - 2", gain: 0 },
-      "12-LUKEN-19": { prono: "0 - 1", gain: 0 },
-      "12-PIERRE-10": { prono: "2 - 1", gain: 0 },
-      "12-BERTRAND-25": { prono: "1 - 2", gain: 0 },
-      "12-XINA-07": { prono: "1 - 3", gain: 0 },
-      "12-OLIVIER-20": { prono: "1 - 2", gain: 0 },
-      "12-PIERRE-21": { prono: "1 - 2", gain: 0 },
-      "12-ALAIN-08": { prono: "1 - 2", gain: 0 },
-      "12-JULEN-03": { prono: "1 - 1", gain: 1 },
-      "12-LOREA-01": { prono: "1 - 1", gain: 1 },
-      "12-CHRISTOPHE-14": { prono: "1 - 1", gain: 1 },
-      "12-INAKI-15": { prono: "0 - 2", gain: 0 },
-      "12-LANDER-09": { prono: "1 - 2", gain: 0 },
-      "12-XABIER-04": { prono: "1 - 1", gain: 1 },
-      "12-JEANLOUIS-06": { prono: "0 - 2", gain: 0 },
-      "12-YANNICK-11": { prono: "1 - 1", gain: 1 },
-      "12-PIERRICK-16": { prono: "1 - 1", gain: 1 },
-      "12-GORKA-12": { prono: "1 - 2", gain: 0 },
-      "12-ANDONI-02": { prono: "1 - 1", gain: 1 }
+      // Match 12 : OSASUNA 1-1 ATHLETIC CLUB
+      "12-JORGE-13": { prono: "1 - 3" },
+      "12-JEANYVES-18": { prono: "1 - 2" },
+      "12-JONATHAN-05": { prono: "0 - 2" },
+      "12-FREDERIC-17": { prono: "2 - 2" },
+      "12-LUKEN-19": { prono: "0 - 1" },
+      "12-PIERRE-10": { prono: "2 - 1" },
+      "12-BERTRAND-25": { prono: "1 - 2" },
+      "12-XINA-07": { prono: "1 - 3" },
+      "12-OLIVIER-20": { prono: "1 - 2" },
+      "12-PIERRE-21": { prono: "1 - 2" },
+      "12-ALAIN-08": { prono: "1 - 2" },
+      "12-JULEN-03": { prono: "1 - 1" },
+      "12-LOREA-01": { prono: "1 - 1" },
+      "12-CHRISTOPHE-14": { prono: "1 - 1" },
+      "12-INAKI-15": { prono: "0 - 2" },
+      "12-LANDER-09": { prono: "1 - 2" },
+      "12-XABIER-04": { prono: "1 - 1" },
+      "12-JEANLOUIS-06": { prono: "0 - 2" },
+      "12-YANNICK-11": { prono: "1 - 1" },
+      "12-PIERRICK-16": { prono: "1 - 1" },
+      "12-GORKA-12": { prono: "1 - 2" },
+      "12-ANDONI-02": { prono: "1 - 1" }
     };
 
     // 27 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio et BARRUTIA Xabier 26e ex æquo)
     window.MEMBERS = [
-      { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1 },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
-      { code: "JULEN-03", name: "LABORDE Julen", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0", gain13: 1 },
-      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1 },
-      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", medal: "", cups: 1, isTenant: false, prono13: "2 - 0", gain13: 1 },
-      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
-      { code: "XINA-07", name: "DULONG Xina", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1 },
-      { code: "ALAIN-08", name: "LABORDE Alain", medal: "", cups: 0, isTenant: false, prono13: "3 - 1", gain13: 1 },
-      { code: "LANDER-09", name: "MENDIOLA Lander", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
-      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", medal: "", cups: 0, isTenant: false, prono13: "1 - 1", gain13: 1 },
-      { code: "YANNICK-11", name: "QUEYROU Yannick", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1 },
-      { code: "GORKA-12", name: "SANCHEZ Gorka", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
-      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
-      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1 },
-      { code: "INAKI-15", name: "MENDIOLA Iñaki", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
-      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1 },
-      { code: "FREDERIC-17", name: "CROUZAT Frédéric", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1 },
-      { code: "PIERRICK-16", name: "ROCHE Pierrick", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0 },
-      { code: "LUKEN-19", name: "CROUZAT Luken", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
-      { code: "OLIVIER-20", name: "GOBBI Olivier", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1 },
-      { code: "PIERRE-21", name: "GOYENEIX Pierre", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1 },
-      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0 },
-      { code: "ANGE-23", name: "ESCALANTE Ange", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
-      { code: "INKO-24", name: "CROUZAT Inko", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
-      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
-      { code: "XABIER-26", name: "BARRUTIA Xabier", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 },
-      { code: "PIERRE-27", name: "LEGRAS Peio", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0 }
+      { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0" },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "JULEN-03", name: "LABORDE Julen", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0" },
+      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", medal: "", cups: 0, isTenant: false, prono13: "3 - 1" },
+      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", medal: "", cups: 1, isTenant: false, prono13: "2 - 0" },
+      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "XINA-07", name: "DULONG Xina", medal: "", cups: 0, isTenant: false, prono13: "3 - 1" },
+      { code: "ALAIN-08", name: "LABORDE Alain", medal: "", cups: 0, isTenant: false, prono13: "3 - 1" },
+      { code: "LANDER-09", name: "MENDIOLA Lander", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", medal: "", cups: 0, isTenant: false, prono13: "1 - 1" },
+      { code: "YANNICK-11", name: "QUEYROU Yannick", medal: "", cups: 0, isTenant: false, prono13: "1 - 0" },
+      { code: "GORKA-12", name: "SANCHEZ Gorka", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", medal: "", cups: 0, isTenant: false, prono13: "3 - 0" },
+      { code: "INAKI-15", name: "MENDIOLA Iñaki", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "FREDERIC-17", name: "CROUZAT Frédéric", medal: "", cups: 0, isTenant: false, prono13: "4 - 1" },
+      { code: "PIERRICK-16", name: "ROCHE Pierrick", medal: "", cups: 1, isTenant: false, prono13: "-" },
+      { code: "LUKEN-19", name: "CROUZAT Luken", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "OLIVIER-20", name: "GOBBI Olivier", medal: "", cups: 0, isTenant: false, prono13: "1 - 0" },
+      { code: "PIERRE-21", name: "GOYENEIX Pierre", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", medal: "", cups: 1, isTenant: false, prono13: "-" },
+      { code: "ANGE-23", name: "ESCALANTE Ange", medal: "", cups: 0, isTenant: false, prono13: "-" },
+      { code: "INKO-24", name: "CROUZAT Inko", medal: "", cups: 0, isTenant: false, prono13: "-" },
+      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", medal: "", cups: 0, isTenant: false, prono13: "-" },
+      { code: "XABIER-26", name: "BARRUTIA Xabier", medal: "", cups: 0, isTenant: false, prono13: "-" },
+      { code: "PIERRE-27", name: "LEGRAS Peio", medal: "", cups: 0, isTenant: false, prono13: "-" }
     ];
 
     // Matchs 1 à 12 + Match 13 + Match 14
@@ -1177,12 +1231,9 @@
     }
 
     function formatUserPronoScore(pronoStr) {
-      if (!pronoStr || pronoStr === "-") return "-";
-      const parts = pronoStr.split("-").map(s => s.trim());
-      if (parts.length === 2 && parts[0] !== "" && parts[1] !== "") {
-        return `${parts[0]}-${parts[1]}`;
-      }
-      return "-";
+      const parsed = parsePronoScore(pronoStr);
+      if (!parsed) return "-";
+      return `${parsed.h}-${parsed.a}`;
     }
 
     function getMemberMatchEntry(member, matchObj) {
@@ -1190,38 +1241,33 @@
       const matchPreds = (remoteData.preds && remoteData.preds[matchObj.id]) || {};
       const p = matchPreds[member.code];
 
+      let pronoStr = "-";
+      let parsed = null;
+      let hasPred = false;
+
       if (p && p.h !== undefined && p.a !== undefined && p.h !== "" && p.a !== "") {
-        const pronoStr = `${p.h} - ${p.a}`;
-        let gain = 0;
-        if (num >= 1 && num <= 12) {
-          const hist = window.HISTORY_PREDS[`${num}-${member.code}`];
-          gain = hist ? (hist.gain || 0) : 0;
-        } else if (num === 13) {
-          gain = member.gain13 || 0;
-        }
-        return { pronoStr, gain, hasPred: true };
-      }
-
-      if (num === 13 && member.prono13) {
-        return {
-          pronoStr: member.prono13,
-          gain: member.gain13 || 0,
-          hasPred: member.prono13 !== "-"
-        };
-      }
-
-      if (num >= 1 && num <= 12) {
+        pronoStr = `${p.h} - ${p.a}`;
+        parsed = { h: Number(p.h), a: Number(p.a) };
+        hasPred = true;
+      } else if (num === 13 && member.prono13 && member.prono13 !== "-") {
+        pronoStr = member.prono13;
+        parsed = parsePronoScore(member.prono13);
+        hasPred = true;
+      } else if (num >= 1 && num <= 12) {
         const hist = window.HISTORY_PREDS[`${num}-${member.code}`];
-        if (hist && hist.prono) {
-          return {
-            pronoStr: hist.prono,
-            gain: hist.gain || 0,
-            hasPred: true
-          };
+        if (hist && hist.prono && hist.prono !== "-") {
+          pronoStr = hist.prono;
+          parsed = parsePronoScore(hist.prono);
+          hasPred = true;
         }
       }
 
-      return { pronoStr: "-", gain: 0, hasPred: false };
+      let gain = 0;
+      if (hasPred && parsed && matchObj && matchObj.finished && matchObj.fh !== null && matchObj.fa !== null) {
+        gain = computeMatchGain(parsed.h, parsed.a, matchObj.fh, matchObj.fa);
+      }
+
+      return { pronoStr, gain, hasPred };
     }
 
     function computeStandingsUpTo(targetNum) {
