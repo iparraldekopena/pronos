@@ -310,9 +310,9 @@
       </div>
 
       <nav id="nav" class="nav-bar hidden">
-        <button id="tab-pronos" class="active" type="button" onclick="setTab('pronos')">Pronos & Classement</button>
-        <button id="tab-palm" type="button" onclick="setTab('palm')">Palmarès</button>
-        <button id="btn-logout" type="button" onclick="doLogout()">Déconnexion</button>
+        <button id="tab-pronos" class="active" type="button" onclick="window.setTab('pronos')">Pronos & Classement</button>
+        <button id="tab-palm" type="button" onclick="window.setTab('palm')">Palmarès</button>
+        <button id="btn-logout" type="button" onclick="window.doLogout()">Déconnexion</button>
       </nav>
     </header>
 
@@ -320,8 +320,8 @@
       <h2 style="margin-top:0;">Connexion à l'espace membre</h2>
       <p class="muted">Saisis ton code joueur (ex. <strong>ALAIN-08</strong>) ou <strong>ADMIN-PENA</strong>.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-        <input id="code-in" type="text" placeholder="Ex. ALAIN-08" autocomplete="off" onkeydown="if(event.key==='Enter'||event.keyCode===13) doLogin();" />
-        <button id="btn-login" class="primary" type="button" onclick="doLogin()">Se connecter</button>
+        <input id="code-in" type="text" placeholder="Ex. ALAIN-08" autocomplete="off" onkeydown="if(event.key==='Enter'||event.keyCode===13) window.doLogin();" />
+        <button id="btn-login" class="primary" type="button" onclick="window.doLogin()">Se connecter</button>
       </div>
       <div id="login-err" class="err"></div>
     </section>
@@ -330,7 +330,7 @@
       <div class="card">
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
           <label for="match-select" class="muted" style="font-weight:700;">Choisir une journée :</label>
-          <select id="match-select" onchange="showMatch(this.value)"></select>
+          <select id="match-select" onchange="window.showMatch(this.value)"></select>
         </div>
         <h3 id="match-title" style="margin:0 0 4px;"></h3>
         <div id="match-meta" class="muted"></div>
@@ -341,7 +341,7 @@
           <span>-</span>
           <input id="pred-a" type="number" min="0" style="width:72px; text-align:center;" />
           <span id="lbl-away" style="font-weight:700;"></span>
-          <button id="btn-save-pred" class="primary" type="button" onclick="savePred()">Valider prono</button>
+          <button id="btn-save-pred" class="primary" type="button" onclick="window.savePred()">Valider prono</button>
         </div>
         <div id="pred-ok" class="ok"></div>
       </div>
@@ -377,9 +377,9 @@
   </div>
 
   <script>
-    var DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+    window.DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
 
-    var MEMBERS = [
+    window.MEMBERS = [
       { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false },
       { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
       { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false },
@@ -409,7 +409,7 @@
       { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false }
     ];
 
-    var MATCHES = [
+    window.MATCHES = [
       {
         id: "m01", pronoNum: 1, comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC",
         kickoff: "2026-08-15 19:00", finished: true, fh: 1, fa: 3,
@@ -580,7 +580,7 @@
       }
     ];
 
-    var PALM = [
+    window.PALM = [
       { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken", isHolder: true },
       { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea", isHolder: false },
       { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban", isHolder: false },
@@ -593,65 +593,65 @@
       { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi", isHolder: false }
     ];
 
-    var state = { user: null, currentId: "m13" };
+    var appState = { user: null, currentId: "m13" };
 
-    function byId(id) { return document.getElementById(id); }
-    function setText(id, txt) { var n = byId(id); if (n) n.textContent = txt; }
-    function getSign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
+    function el(id) { return document.getElementById(id); }
+    function setTxt(id, txt) { var n = el(id); if (n) n.textContent = txt; }
+    function sign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
 
-    function getFirstName(fullName) {
+    function firstName(fullName) {
       if (!fullName) return "MEMBRE";
       var parts = fullName.trim().split(/\s+/);
       return (parts[parts.length - 1] || fullName).toUpperCase();
     }
 
-    function normalizeKey(label) {
-      return (label || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    function normKey(s) {
+      return (s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
     }
 
-    function computeCupCounts() {
+    function cupCounts() {
       var counts = {};
       var order = [];
-      for (var i = 0; i < PALM.length; i++) {
-        var rawWinners = PALM[i].p1.split(/\s+ET\s+/i);
-        for (var j = 0; j < rawWinners.length; j++) {
-          var clean = rawWinners[j].trim();
-          if (!clean) continue;
-          var key = normalizeKey(clean);
-          if (!counts[key]) {
-            counts[key] = { label: clean, count: 0 };
-            order.push(key);
+      for (var i = 0; i < window.PALM.length; i++) {
+        var winners = window.PALM[i].p1.split(/\s+ET\s+/i);
+        for (var j = 0; j < winners.length; j++) {
+          var w = winners[j].trim();
+          if (!w) continue;
+          var k = normKey(w);
+          if (!counts[k]) {
+            counts[k] = { label: w, count: 0 };
+            order.push(k);
           }
-          counts[key].count += 1;
+          counts[k].count += 1;
         }
       }
       return { counts: counts, order: order };
     }
 
-    function getMatchById(id) {
-      for (var i = 0; i < MATCHES.length; i++) {
-        if (MATCHES[i].id === id) return MATCHES[i];
+    function findMatch(id) {
+      for (var i = 0; i < window.MATCHES.length; i++) {
+        if (window.MATCHES[i].id === id) return window.MATCHES[i];
       }
-      return MATCHES[MATCHES.length - 1];
+      return window.MATCHES[window.MATCHES.length - 1];
     }
 
     function renderPalmares() {
-      var grid = byId("palm-grid");
-      var summary = byId("palm-summary");
+      var grid = el("palm-grid");
+      var summary = el("palm-summary");
       grid.innerHTML = "";
       summary.innerHTML = "";
 
-      var cupData = computeCupCounts();
-      for (var k = 0; k < cupData.order.length; k++) {
-        var item = cupData.counts[cupData.order[k]];
+      var cd = cupCounts();
+      for (var k = 0; k < cd.order.length; k++) {
+        var item = cd.counts[cd.order[k]];
         var pill = document.createElement("div");
         pill.className = "cup-pill";
         pill.textContent = "🏆 " + item.label + " : " + item.count + (item.count > 1 ? " coupes" : " coupe");
         summary.appendChild(pill);
       }
 
-      for (var i = 0; i < PALM.length; i++) {
-        var s = PALM[i];
+      for (var i = 0; i < window.PALM.length; i++) {
+        var s = window.PALM[i];
         var card = document.createElement("div");
         card.className = "palm-card" + (s.isHolder ? " is-holder" : "");
 
@@ -659,10 +659,10 @@
         head.className = "palm-head";
         head.textContent = "Saison " + s.y;
         if (s.isHolder) {
-          var spanH = document.createElement("span");
-          spanH.className = "tag tag-champ";
-          spanH.textContent = "Tenant du titre";
-          head.appendChild(spanH);
+          var sp = document.createElement("span");
+          sp.className = "tag tag-champ";
+          sp.textContent = "Tenant du titre";
+          head.appendChild(sp);
         }
 
         var rows = document.createElement("div");
@@ -676,14 +676,11 @@
         for (var j = 0; j < lines.length; j++) {
           var row = document.createElement("div");
           row.className = lines[j].cls;
-
           var rk = document.createElement("span");
           rk.className = "palm-rank";
           rk.textContent = lines[j].rank;
-
           var nm = document.createElement("span");
           nm.textContent = lines[j].name;
-
           row.appendChild(rk);
           row.appendChild(nm);
           rows.appendChild(row);
@@ -697,19 +694,19 @@
 
     function renderLeaderboard(m) {
       var n = parseInt(m.pronoNum, 10) || 1;
-      setText("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
+      setTxt("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
 
       var cnt = 0;
       for (var k in m.preds) {
-        if (m.preds.hasOwnProperty(k)) cnt++;
+        if (Object.prototype.hasOwnProperty.call(m.preds, k)) cnt++;
       }
-      setText("part-info", "Participation : " + cnt + " / " + MEMBERS.length + " joueurs");
+      setTxt("part-info", "Participation : " + cnt + " / " + window.MEMBERS.length + " joueurs");
 
-      var sorted = MEMBERS.slice().sort(function (a, b) {
+      var sorted = window.MEMBERS.slice().sort(function (a, b) {
         return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
       });
 
-      var tb = byId("lb-body");
+      var tb = el("lb-body");
       tb.innerHTML = "";
 
       for (var i = 0; i < sorted.length; i++) {
@@ -720,11 +717,11 @@
         if (m.finished) {
           if (!pr) txt += " (+0 pt)";
           else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
-          else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) txt += " (+3 pts)";
+          else if (sign(pr.h, pr.a) === sign(m.fh, m.fa)) txt += " (+3 pts)";
           else txt += " (+1 pt)";
         }
 
-        var isMe = Boolean(state.user && !state.user.isAdmin && state.user.code === mem.code);
+        var isMe = Boolean(appState.user && !appState.user.isAdmin && appState.user.code === mem.code);
         var tr = document.createElement("tr");
         if (isMe) tr.className = "row-me";
         else if (mem.isChamp) tr.className = "row-champ";
@@ -766,103 +763,118 @@
       }
     }
 
-    function showMatch(id) {
-      state.currentId = id;
-      var m = getMatchById(id);
-      byId("match-select").value = m.id;
-      setText("match-title", m.home + " vs " + m.away);
-      setText("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score final : " + m.fh + " - " + m.fa) : " • Pronostics ouverts"));
-      setText("lbl-home", m.home);
-      setText("lbl-away", m.away);
-      setText("pred-ok", "");
+    window.showMatch = function (id) {
+      appState.currentId = id;
+      var m = findMatch(id);
+      el("match-select").value = m.id;
+      setTxt("match-title", m.home + " vs " + m.away);
+      setTxt("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score final : " + m.fh + " - " + m.fa) : " • Pronostics ouverts"));
+      setTxt("lbl-home", m.home);
+      setTxt("lbl-away", m.away);
+      setTxt("pred-ok", "");
 
-      if (!m.finished && state.user && !state.user.isAdmin) {
-        byId("pred-box").classList.remove("hidden");
-        var pr = m.preds[state.user.code];
-        byId("pred-h").value = pr ? pr.h : "";
-        byId("pred-a").value = pr ? pr.a : "";
+      if (!m.finished && appState.user && !appState.user.isAdmin) {
+        el("pred-box").classList.remove("hidden");
+        var pr = m.preds[appState.user.code];
+        el("pred-h").value = pr ? pr.h : "";
+        el("pred-a").value = pr ? pr.a : "";
       } else {
-        byId("pred-box").classList.add("hidden");
+        el("pred-box").classList.add("hidden");
       }
 
       renderLeaderboard(m);
-    }
+    };
 
     function fillMatchSelect() {
-      var sel = byId("match-select");
+      var sel = el("match-select");
       sel.innerHTML = "";
-      for (var i = 0; i < MATCHES.length; i++) {
+      for (var i = 0; i < window.MATCHES.length; i++) {
         var opt = document.createElement("option");
-        opt.value = MATCHES[i].id;
-        opt.textContent = MATCHES[i].comp + " — " + MATCHES[i].home + " vs " + MATCHES[i].away;
+        opt.value = window.MATCHES[i].id;
+        opt.textContent = window.MATCHES[i].comp + " — " + window.MATCHES[i].home + " vs " + window.MATCHES[i].away;
         sel.appendChild(opt);
       }
     }
 
-    function setTab(name) {
-      if (!state.user) return;
+    window.setTab = function (name) {
+      if (!appState.user) return;
       var isPalm = name === "palm";
-      byId("view-pronos").classList.toggle("hidden", isPalm);
-      byId("view-palm").classList.toggle("hidden", !isPalm);
-      byId("tab-pronos").classList.toggle("active", !isPalm);
-      byId("tab-palm").classList.toggle("active", isPalm);
+      el("view-pronos").classList.toggle("hidden", isPalm);
+      el("view-palm").classList.toggle("hidden", !isPalm);
+      el("tab-pronos").classList.toggle("active", !isPalm);
+      el("tab-palm").classList.toggle("active", isPalm);
       if (isPalm) renderPalmares();
-    }
+    };
 
-    function startSession(u) {
-      state.user = u;
-      byId("sec-login").classList.add("hidden");
-      byId("member-logo").classList.remove("hidden");
-      byId("nav").classList.remove("hidden");
-      byId("aupa-banner").classList.remove("hidden");
+    function openSession(u) {
+      appState.user = u;
+      el("sec-login").classList.add("hidden");
+      el("member-logo").classList.remove("hidden");
+      el("nav").classList.remove("hidden");
+      el("aupa-banner").classList.remove("hidden");
 
-      var greeting = u.isAdmin ? "AUPA ADMIN" : ("AUPA " + getFirstName(u.name));
-      setText("aupa-heading", greeting + " !");
-      setText("aupa-sub", "Bienvenue dans l'espace des pronostics • " + u.name);
-      setText("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + " pts"));
+      var greet = u.isAdmin ? "AUPA ADMIN" : ("AUPA " + firstName(u.name));
+      setTxt("aupa-heading", greet + " !");
+      setTxt("aupa-sub", "Bienvenue dans l'espace des pronostics • " + u.name);
+      setTxt("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + " pts"));
 
       fillMatchSelect();
-      showMatch(state.currentId);
-      setTab("pronos");
+      window.showMatch(appState.currentId);
+      window.setTab("pronos");
     }
 
-    function doLogin() {
-      var raw = (byId("code-in").value || "").replace(/^\s+|\s+$/g, "").toUpperCase();
+    window.doLogin = function () {
+      var raw = (el("code-in").value || "").replace(/^\s+|\s+$/g, "").toUpperCase();
       if (!raw) {
-        setText("login-err", "Merci d'entrer un code d'accès.");
+        setTxt("login-err", "Merci d'entrer un code d'accès.");
         return;
       }
       if (raw === "ADMIN-PENA") {
-        setText("login-err", "");
-        startSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
+        setTxt("login-err", "");
+        openSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
         return;
       }
-      for (var i = 0; i < MEMBERS.length; i++) {
-        if (MEMBERS[i].code === raw) {
-          setText("login-err", "");
-          startSession({
-            code: MEMBERS[i].code,
-            name: MEMBERS[i].name,
-            points: MEMBERS[i].points,
+      for (var i = 0; i < window.MEMBERS.length; i++) {
+        if (window.MEMBERS[i].code === raw) {
+          setTxt("login-err", "");
+          openSession({
+            code: window.MEMBERS[i].code,
+            name: window.MEMBERS[i].name,
+            points: window.MEMBERS[i].points,
             isAdmin: false
           });
           return;
         }
       }
-      setText("login-err", "Code inconnu (" + raw + ").");
-    }
+      setTxt("login-err", "Code inconnu (" + raw + ").");
+    };
 
-    function doLogout() {
-      state.user = null;
-      byId("member-logo").classList.add("hidden");
-      byId("nav").classList.add("hidden");
-      byId("aupa-banner").classList.add("hidden");
-      byId("view-pronos").classList.add("hidden");
-      byId("view-palm").classList.add("hidden");
-      byId("sec-login").classList.remove("hidden");
-      byId("code-in").value = "";
-    }
+    window.doLogout = function () {
+      appState.user = null;
+      el("member-logo").classList.add("hidden");
+      el("nav").classList.add("hidden");
+      el("aupa-banner").classList.add("hidden");
+      el("view-pronos").classList.add("hidden");
+      el("view-palm").classList.add("hidden");
+      el("sec-login").classList.remove("hidden");
+      el("code-in").value = "";
+    };
 
-    function savePred() {
-      if (!state.user || state.user.isAdmin) return;
-      var m =
+    window.savePred = function () {
+      if (!appState.user || appState.user.isAdmin) return;
+      var m = findMatch(appState.currentId);
+      var h = parseInt(el("pred-h").value, 10);
+      var a = parseInt(el("pred-a").value, 10);
+      if (!m || m.finished || isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
+      m.preds[appState.user.code] = { h: h, a: a };
+      setTxt("pred-ok", "Prono enregistré : " + h + " - " + a);
+      fetch(window.DB_URL, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ matches: window.MATCHES, members: window.MEMBERS })
+      }).catch(function () {});
+      renderLeaderboard(m);
+    };
+  </script>
+</body>
+</html>
