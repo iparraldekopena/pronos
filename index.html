@@ -693,41 +693,43 @@
       font-weight: 400;
     }
 
-    /* Blog de la Peña — Design moderne Rouge, Noir et Blanc */
+    /* Blog de la Peña — Aéré, sobre sur le gras, touches rouge, noir, blanc, ambre et émeraude */
     .blog-hero {
-      background: linear-gradient(135deg, #dc2626 0%, #991b1b 55%, #090b0f 100%);
-      border: 1.5px solid #ef4444;
-      border-radius: 18px;
-      padding: 24px 26px;
-      margin-bottom: 18px;
-      box-shadow: 0 12px 30px rgba(220, 38, 38, 0.22);
+      background: linear-gradient(125deg, #161922 0%, #2a1016 52%, #111827 100%);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-left: 4px solid #ef4444;
+      border-radius: 16px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
     }
 
     .blog-hero-kicker {
       display: inline-block;
-      background: #ffffff;
-      color: #991b1b;
-      font-size: 0.75rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fecaca;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 3px 10px;
       border-radius: 999px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .blog-hero-title {
       margin: 0 0 6px;
-      font-size: clamp(1.45rem, 3vw, 2rem);
-      font-weight: 900;
+      font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+      font-weight: 700;
       color: #ffffff;
       letter-spacing: 0.01em;
     }
 
     .blog-hero-sub {
       margin: 0;
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 0.98rem;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      font-weight: 400;
       max-width: 720px;
     }
 
@@ -739,48 +741,57 @@
     }
 
     .blog-filter-btn {
-      background: #0b0d11;
-      color: #ffffff;
-      border: 1px solid #2d3442;
+      background: #12161f;
+      color: #d1d5db;
+      border: 1px solid #283040;
       border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      padding: 6px 13px;
+      font-size: 0.83rem;
+      font-weight: 500;
     }
 
     .blog-filter-btn:hover {
-      border-color: #ef4444;
-      background: #171b24;
+      border-color: #f59e0b;
+      color: #ffffff;
+      background: #191f2c;
     }
 
     .blog-filter-btn.is-selected {
-      background: #dc2626;
-      color: #ffffff;
+      background: #ffffff;
+      color: #0c0e12;
       border-color: #ffffff;
-      box-shadow: 0 0 0 1px #dc2626;
+      font-weight: 600;
     }
 
     .blog-list {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 18px;
+      gap: 16px;
     }
 
     .blog-post {
-      position: relative;
-      background: #0b0d11;
-      border: 1px solid #262c38;
-      border-left: 5px solid #ef4444;
-      border-radius: 16px;
-      padding: 22px 24px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-      transition: transform 0.16s ease, border-color 0.16s ease;
+      background: #11151d;
+      border: 1px solid #242b38;
+      border-left: 4px solid #e11d48;
+      border-radius: 15px;
+      padding: 20px 22px;
+      transition: border-color 0.15s ease;
+    }
+
+    .blog-post[data-tone="amber"] {
+      border-left-color: #f59e0b;
+    }
+
+    .blog-post[data-tone="emerald"] {
+      border-left-color: #10b981;
+    }
+
+    .blog-post[data-tone="crimson"] {
+      border-left-color: #ef4444;
     }
 
     .blog-post:hover {
-      transform: translateY(-2px);
-      border-color: #ef4444;
+      border-color: #3b4559;
     }
 
     .blog-meta-top {
@@ -788,69 +799,81 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
 
     .blog-tag {
       display: inline-block;
-      padding: 4px 12px;
-      border-radius: 6px;
-      background: #dc2626;
-      border: 1px solid #f87171;
-      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(225, 29, 72, 0.14);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      color: #fda4af;
       font-size: 0.76rem;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    .blog-post[data-tone="amber"] .blog-tag {
+      background: rgba(245, 158, 11, 0.14);
+      border-color: rgba(245, 158, 11, 0.38);
+      color: #fcd34d;
+    }
+
+    .blog-post[data-tone="emerald"] .blog-tag {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.38);
+      color: #6ee7b7;
     }
 
     .blog-date {
-      color: #e5e7eb;
-      background: #161a23;
-      border: 1px solid #2b3242;
-      padding: 4px 10px;
-      border-radius: 999px;
+      color: #94a3b8;
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 400;
     }
 
     .blog-title {
-      margin: 0 0 12px;
-      font-size: 1.35rem;
-      font-weight: 900;
+      margin: 0 0 10px;
+      font-size: 1.24rem;
+      font-weight: 700;
       color: #ffffff;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.005em;
     }
 
     .blog-body {
       margin: 0;
-      color: #e5e7eb;
-      font-size: 0.99rem;
+      color: #cbd5e1;
+      font-size: 0.96rem;
+      font-weight: 400;
       line-height: 1.62;
     }
 
     .blog-highlight {
-      margin-top: 16px;
-      padding: 12px 16px;
-      border-left: 4px solid #ffffff;
-      background: linear-gradient(90deg, rgba(220, 38, 38, 0.24) 0%, #131720 100%);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      border-left-width: 4px;
-      border-left-color: #ffffff;
-      border-radius: 10px;
-      font-size: 0.93rem;
-      color: #ffffff;
-      font-weight: 700;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #262e3d;
+      border-left: 3px solid #f59e0b;
+      border-radius: 9px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      font-weight: 400;
+    }
+
+    .blog-post[data-tone="emerald"] .blog-highlight {
+      border-left-color: #10b981;
+    }
+
+    .blog-post[data-tone="crimson"] .blog-highlight {
+      border-left-color: #ef4444;
     }
 
     .blog-highlight-label {
-      color: #fca5a5;
-      text-transform: uppercase;
-      font-size: 0.76rem;
-      letter-spacing: 0.06em;
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 600;
       margin-right: 6px;
-      font-weight: 900;
     }
   </style>
 </head>
@@ -1021,9 +1044,9 @@
 
     <section id="view-blog" class="hidden">
       <div class="blog-hero">
-        <span class="blog-hero-kicker">Édition Rouge • Noir • Blanc</span>
+        <span class="blog-hero-kicker">Chroniques de la Peña</span>
         <h2 class="blog-hero-title">Le Blog de la Peña</h2>
-        <p class="blog-hero-sub">Analyses piquantes, flops de la journée, regard du supporter parfait et chambrage officiel entre les 27 membres.</p>
+        <p class="blog-hero-sub">Analyses légères, flops de la journée, regard du supporter parfait et petites piques entre amis.</p>
       </div>
 
       <div id="blog-filters" class="blog-filters" aria-label="Filtrer les chroniques du blog"></div>
@@ -1491,50 +1514,56 @@
     window.BLOG_POSTS = [
       {
         id: "post-6",
+        tone: "emerald",
         tag: "L'Œil du supporter parfait",
         date: "Chronique du banc de touche • Saison 2026/27",
         title: "Celui qui a toujours la bonne excuse (et parfois le bon coup)",
         body: "Le supporter parfait de la Peña, c'est celui qui connaît la compo probable avant l'entraîneur, qui a déjà refait le match trois fois dans sa tête à la 20e minute et qui regarde le classement comme un tableau d'échecs. Il ne s'affole jamais sur un coup d'arrêt, garde le sourire quand les favoris trébuchent et sait mieux que personne qu'une saison se gagne sur la durée, jamais sur un seul soir.",
-        highlight: "La devise de l'Œil parfait : voir rouge et blanc même quand le tableau d'affichage fait des siennes."
+        highlight: "Voir rouge et blanc même quand le tableau d'affichage fait des siennes."
       },
       {
         id: "post-5",
+        tone: "crimson",
         tag: "Le Flop de la journée",
         date: "Pronostic n° 13 • San Mamés",
         title: "Quand le scénario parfait part en fumée dès le coup d'envoi",
-        body: "Difficile de faire plus cruel sur ce Pronostic n° 13 : presque tout le monde voyait l'Athletic prendre les commandes à San Mamés, avec des scores allant du 1-0 prudent jusqu'au 4-1 très offensif… et c'est finalement l'Espanyol qui a raflé la mise (0-1). Résultat : une pluie de petits +1 pt pour ceux qui avaient joué, et une belle leçon d'humilité collective pour les experts autoproclamés de la Liga !",
-        highlight: "Le gag de la soirée : avoir misé sur la grosse attaque et voir le compteur bloqué à zéro côté Athletic."
+        body: "Difficile de faire plus cruel sur ce Pronostic n° 13 : presque tout le monde voyait l'Athletic prendre les commandes à San Mamés, avec des scores allant du 1-0 prudent jusqu'au 4-1 très offensif… et c'est finalement l'Espanyol qui a raflé la mise (0-1). Résultat : une pluie de petits +1 pt pour ceux qui avaient joué, et une belle leçon d'humilité collective pour les experts autoproclamés de la Liga.",
+        highlight: "Avoir misé sur la grosse attaque et voir le compteur bloqué à zéro côté Athletic."
       },
       {
         id: "post-4",
+        tone: "amber",
         tag: "Cap sur Málaga",
         date: "Pronostic n° 14 • La Rosaleda",
         title: "Direction La Rosaleda : à qui le prochain coup d'éclat ?",
         body: "Après les rebondissements du 13e acte, la troupe se tourne déjà vers le déplacement à Málaga le samedi 28 novembre à 16h15. Entre ceux qui guettent le moindre signe de forme et ceux qui préfèrent garder leur score secret jusqu'au dernier moment, l'ambiance promet d'être animée avant le coup d'envoi.",
-        highlight: "Rappel pratique : les pronostics des autres restent masqués jusqu'au début du match — inutile de faire les yeux doux au voisin !"
+        highlight: "Les pronostics des autres restent masqués jusqu'au début du match."
       },
       {
         id: "post-3",
+        tone: "emerald",
         tag: "Embouteillage au classement",
         date: "Stats & Taquineries",
         title: "Quand l'égalité fait des nœuds au cerveau",
-        body: "Avec nos 27 membres en lice, les ex æquo s'invitent régulièrement au tableau. Grâce à la règle qui n'affiche le rang qu'en tête de paquet et range les suivants par ordre alphabétique, on a parfois droit à de sacrés duels de proximité sur la même marche. Un petit point glané sur un prono audacieux peut vite faire la différence !",
-        highlight: "Le saviez-vous ? Même un prono sans le bon 1-N-2 rapporte 1 petit point : mieux vaut tenter sa chance que laisser sa case vide."
+        body: "Avec nos 27 membres en lice, les ex æquo s'invitent régulièrement au tableau. Grâce à la règle qui n'affiche le rang qu'en tête de paquet et range les suivants par ordre alphabétique, on a parfois droit à de sacrés duels de proximité sur la même marche. Un petit point glané sur un prono audacieux peut vite faire la différence.",
+        highlight: "Même un prono sans le bon 1-N-2 rapporte 1 petit point : mieux vaut tenter sa chance que laisser sa case vide."
       },
       {
         id: "post-2",
+        tone: "amber",
         tag: "Analyse du vestiaire",
         date: "École des pronostiqueurs",
         title: "Prudents du 1-0 contre amateurs de feu d'artifice",
         body: "Dans la Peña, deux grandes écoles s'affrontent match après match : les stratèges du « petit but d'écart » qui misent sur un match serré et accroché, et les poètes de l'attaque qui rêvent de soirées à trois ou quatre buts. Parfois les prudents s'en sortent avec 3 points précieux, parfois les audacieux enflamment la chronique — et parfois le ballon décide d'aller complètement ailleurs.",
-        highlight: "Conseil d'ami : suivre son instinct… tout en surveillant les blessés et la forme du moment."
+        highlight: "Suivre son instinct tout en surveillant les blessés et la forme du moment."
       },
       {
         id: "post-1",
+        tone: "crimson",
         tag: "Le Prono le plus fou",
         date: "Pronostic n° 13 • San Mamés",
-        title: "Le festival du 4-1 et le coup de froid de l'Espanyol !",
-        body: "Sur ce Pronostic n° 13, certains n'ont pas fait dans la dentelle en voyant l'Athletic dérouler un 4-1 à la maison, tandis que la majorité misait sur un succès solide des Rouge et Blanc (2-0, 2-1 ou 3-1). Résultat sur le terrain : 0-1 pour le RCD Espanyol à San Mamés ! De quoi rappeler que le football espagnol adore faire mentir les plus belles certitudes.",
+        title: "Le festival du 4-1 et le coup de froid de l'Espanyol",
+        body: "Sur ce Pronostic n° 13, certains n'ont pas fait dans la dentelle en voyant l'Athletic dérouler un 4-1 à la maison, tandis que la majorité misait sur un succès solide des Rouge et Blanc (2-0, 2-1 ou 3-1). Résultat sur le terrain : 0-1 pour le RCD Espanyol à San Mamés. De quoi rappeler que le football espagnol adore faire mentir les plus belles certitudes.",
         highlight: "Mention spéciale audace : le prono 4 - 1 qui voulait voir pleuvoir les buts à San Mamés."
       }
     ];
@@ -2195,9 +2224,10 @@
       visiblePosts.forEach(post => {
         const article = document.createElement("article");
         article.className = "blog-post";
+        article.setAttribute("data-tone", post.tone || "crimson");
 
         const highlightHtml = post.highlight
-          ? `<div class="blog-highlight"><span class="blog-highlight-label">À retenir :</span>${post.highlight}</div>`
+          ? `<div class="blog-highlight"><span class="blog-highlight-label">En bref :</span>${post.highlight}</div>`
           : "";
 
         article.innerHTML = `
