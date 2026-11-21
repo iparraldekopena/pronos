@@ -1060,10 +1060,10 @@
 
       <section class="standings-card">
         <div class="standings-top">
-          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DU PRONOSTIC N° 14</h2>
+          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À CE JOUR</h2>
           <div id="participation-banner" class="participation-banner"></div>
           <div id="cumul-sub" class="cumul-sub"></div>
-          <div id="revealed-note" class="revealed-note">🔒 Pronostic terminé</div>
+          <div id="revealed-note" class="revealed-note"></div>
           <div class="rules-bar" aria-label="Règle de calcul des points">
             <span class="rule-item"><strong>Score exact :</strong> 6 pts</span>
             <span class="rule-item"><strong>Bon 1, N ou 2 :</strong> 3 pts</span>
@@ -1860,22 +1860,31 @@
       return { pronoStr, gain, hasPred };
     }
 
-    function computeStandingsUpTo(targetNum) {
-      const orderedMatches = window.MATCHES
-        .filter(m => m.num <= targetNum)
+    function getScoredUpToNum(matchObj) {
+      if (!matchObj) return 0;
+      if (matchObj.finished) return matchObj.num;
+      const finishedBefore = window.MATCHES
+        .filter(m => m.finished && m.num < matchObj.num)
+        .reduce((acc, m) => Math.max(acc, Number(m.num) || 0), 0);
+      return finishedBefore;
+    }
+
+    function computeStandingsForMatch(matchObj) {
+      const targetNum = matchObj ? matchObj.num : 14;
+      const scoredUpTo = getScoredUpToNum(matchObj);
+
+      const scoredMatches = window.MATCHES
+        .filter(m => m.finished && m.num <= scoredUpTo)
         .sort((a, b) => a.num - b.num);
 
       const rows = window.MEMBERS.map(m => {
         let totalPts = 0;
-        let currentEntry = { pronoStr: "-", gain: 0, hasPred: false };
-
-        orderedMatches.forEach(mObj => {
+        scoredMatches.forEach(mObj => {
           const entry = getMemberMatchEntry(m, mObj);
           totalPts += (entry.gain || 0);
-          if (mObj.num === targetNum) {
-            currentEntry = entry;
-          }
         });
+
+        const currentEntry = getMemberMatchEntry(m, matchObj);
 
         return {
           ...m,
@@ -1908,7 +1917,7 @@
         rankMap[r.code] = currentRank;
       });
 
-      return { rows, rankMap };
+      return { rows, rankMap, scoredUpTo, targetNum };
     }
 
     async function loadRemoteData() {
@@ -2012,10 +2021,10 @@
         ? "Mode administrateur actif"
         : `Code : ${currentUser.code}`;
 
-      const latestFinishedNum = window.MATCHES
+      const latestFinishedMatch = [...window.MATCHES]
         .filter(m => m.finished)
-        .reduce((acc, m) => Math.max(acc, Number(m.num) || 0), 0) || 13;
-      const latestStanding = computeStandingsUpTo(latestFinishedNum);
+        .sort((a, b) => b.num - a.num)[0] || window.MATCHES[0];
+      const latestStanding = computeStandingsForMatch(latestFinishedMatch);
       const userRow = latestStanding.rows.find(r => r.code === currentUser.code);
       const displayPts = userRow ? userRow.calcPoints : 0;
 
@@ -2061,21 +2070,30 @@
       const m = window.MATCHES.find(x => x.id === matchId) || window.MATCHES[0];
       document.getElementById("match-select").value = m.id;
       document.getElementById("th-prono").textContent = `PRONO N° ${m.num}`;
-      document.getElementById("standings-title").textContent = `CLASSEMENT À L'ISSUE DU PRONOSTIC N° ${m.num}`;
 
       const datePart = [m.dayName, m.date].filter(Boolean).join(" ");
-      document.getElementById("cumul-sub").textContent = datePart
-        ? `Classement cumulé à la fin du Pronostic n° ${m.num} (${datePart})`
-        : `Classement cumulé à la fin du Pronostic n° ${m.num}`;
-
       const started = isMatchStarted(m);
       const revealedNoteEl = document.getElementById("revealed-note");
+      const standingsTitleEl = document.getElementById("standings-title");
+      const cumulSubEl = document.getElementById("cumul-sub");
+
       if (m.finished) {
+        standingsTitleEl.textContent = `CLASSEMENT À L'ISSUE DU PRONOSTIC N° ${m.num}`;
+        cumulSubEl.textContent = datePart
+          ? `Classement cumulé à la fin du Pronostic n° ${m.num} (${datePart})`
+          : `Classement cumulé à la fin du Pronostic n° ${m.num}`;
         revealedNoteEl.textContent = "🔒 Pronostic terminé";
-      } else if (started) {
-        revealedNoteEl.textContent = "🔒 Pronostic bloqué (match commencé)";
       } else {
-        revealedNoteEl.textContent = "🙈 Pronostics des autres joueurs masqués avant le début du match";
+        const prevFinished = window.MATCHES
+          .filter(x => x.finished && x.num < m.num)
+          .sort((a, b) => b.num - a.num)[0];
+        standingsTitleEl.textContent = "CLASSEMENT À CE JOUR";
+        cumulSubEl.textContent = prevFinished
+          ? `Classement cumulé à l'issue du Pronostic n° ${prevFinished.num} (Pronostic n° ${m.num} en cours)`
+          : `Pronostic n° ${m.num} en cours`;
+        revealedNoteEl.textContent = started
+          ? "🔒 Pronostic bloqué (match commencé — points attribués après le match)"
+          : "🙈 Pronostics des autres joueurs masqués avant le début du match";
       }
 
       document.getElementById("pred-ok").textContent = "";
@@ -2187,8 +2205,12 @@
 
       const matchNum = matchObj ? matchObj.num : 14;
       const started = isMatchStarted(matchObj);
-      const { rows } = computeStandingsUpTo(matchNum);
-      const prevRankMap = matchNum > 1 ? computeStandingsUpTo(matchNum - 1).rankMap : {};
+      const { rows, scoredUpTo } = computeStandingsForMatch(matchObj);
+
+      const prevMatchObj = scoredUpTo > 1
+        ? window.MATCHES.find(x => x.num === scoredUpTo - 1)
+        : null;
+      const prevRankMap = prevMatchObj ? computeStandingsForMatch(prevMatchObj).rankMap : {};
 
       const totalMembers = rows.length;
       const submitted = rows.filter(r => r.hasPred).length;
@@ -2197,7 +2219,7 @@
 
       rows.forEach(m => {
         let arrowHtml = "";
-        if (m.showPos && matchNum > 1 && prevRankMap[m.code] !== undefined) {
+        if (m.showPos && prevMatchObj && prevRankMap[m.code] !== undefined) {
           const prevPos = prevRankMap[m.code];
           if (m.calcPos < prevPos) {
             arrowHtml = `<span class="arrow-up" title="En hausse">▲</span>`;
