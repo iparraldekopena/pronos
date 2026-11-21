@@ -503,7 +503,7 @@
       font-weight: 800;
     }
 
-    /* Palmarès : seul le 1er est mis en valeur, 2e et 3e en texte neutre */
+    /* Palmarès : surlignage doré/ambré pour tous les 1ers */
     .palm-section-title {
       margin: 0 0 14px;
       font-size: 1.2rem;
@@ -551,11 +551,20 @@
       border-bottom: none;
     }
 
+    .palm-row-first {
+      margin: 2px -6px 6px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.22);
+      border: 1px solid rgba(251, 191, 36, 0.6);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.6) !important;
+    }
+
     .palm-rank-1 {
       min-width: 38px;
       font-weight: 900;
-      color: #fbbf24;
-      font-size: 0.92rem;
+      color: #fde047;
+      font-size: 0.94rem;
     }
 
     .palm-rank-other {
@@ -573,6 +582,9 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #ffffff;
+      background: rgba(217, 119, 6, 0.35);
+      padding: 1px 6px;
+      border-radius: 5px;
     }
 
     .palm-icon-1 {
@@ -1657,6 +1669,7 @@
 
         const rowsHtml = saison.podium.map(step => {
           const isFirst = (step.rank === "1er");
+          const rowClass = isFirst ? "palm-row palm-row-first" : "palm-row";
           const rankClass = isFirst ? "palm-rank-1" : "palm-rank-other";
           const namesHtml = isFirst
             ? step.names
@@ -1667,7 +1680,7 @@
                 .join(" • ");
 
           return `
-            <div class="palm-row">
+            <div class="${rowClass}">
               <span class="${rankClass}">${step.rank}</span>
               <span class="palm-names">${namesHtml}</span>
             </div>
