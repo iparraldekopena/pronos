@@ -269,12 +269,24 @@
       min-width: 160px;
     }
 
-    .score-input {
-      width: 78px;
-      height: 50px;
+    /* Sélecteur de buts défilant pour chaque équipe */
+    .score-select {
+      width: 92px;
+      height: 54px;
       text-align: center;
-      font-size: 1.35rem;
+      text-align-last: center;
+      font-size: 1.45rem;
       font-weight: 800;
+      background: var(--surface-2);
+      color: #ffffff;
+      border: 1.5px solid #475569;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .score-select:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
     .score-sep {
@@ -665,9 +677,9 @@
         <div id="pred-box" class="pred-box hidden">
           <div class="pred-teams-row">
             <span id="lbl-home" class="team-big"></span>
-            <input id="pred-h" class="score-input" type="number" min="0" max="99" placeholder="-" />
+            <select id="pred-h" class="score-select" aria-label="Buts équipe domicile"></select>
             <span class="score-sep">-</span>
-            <input id="pred-a" class="score-input" type="number" min="0" max="99" placeholder="-" />
+            <select id="pred-a" class="score-select" aria-label="Buts équipe extérieure"></select>
             <span id="lbl-away" class="team-big"></span>
           </div>
           <button type="button" class="btn-red" onclick="window.savePred()">Valider Prono</button>
@@ -855,6 +867,28 @@
       logoEl.src = window.LOGO_SRC;
     }
 
+    function initScoreSelects() {
+      const ids = ["pred-h", "pred-a"];
+      ids.forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        sel.innerHTML = "";
+        const emptyOpt = document.createElement("option");
+        emptyOpt.value = "";
+        emptyOpt.textContent = "—";
+        sel.appendChild(emptyOpt);
+
+        for (let i = 0; i <= 15; i++) {
+          const opt = document.createElement("option");
+          opt.value = String(i);
+          opt.textContent = String(i);
+          sel.appendChild(opt);
+        }
+      });
+    }
+
+    initScoreSelects();
+
     function ptsWord(n) {
       return (n === 0 || n === 1) ? "pt" : "pts";
     }
@@ -1011,8 +1045,8 @@
         const existing = (remoteData.preds && remoteData.preds[m.id] && currentUser)
           ? remoteData.preds[m.id][currentUser.code]
           : null;
-        document.getElementById("pred-h").value = existing ? existing.h : "";
-        document.getElementById("pred-a").value = existing ? existing.a : "";
+        document.getElementById("pred-h").value = (existing && existing.h !== undefined && existing.h !== "") ? String(existing.h) : "";
+        document.getElementById("pred-a").value = (existing && existing.a !== undefined && existing.a !== "") ? String(existing.a) : "";
       }
 
       renderLeaderboard(m);
@@ -1029,7 +1063,7 @@
       const hVal = document.getElementById("pred-h").value;
       const aVal = document.getElementById("pred-a").value;
       if (hVal === "" || aVal === "") {
-        okEl.textContent = "Merci de saisir les deux scores.";
+        okEl.textContent = "Merci de sélectionner les deux scores.";
         return;
       }
 
