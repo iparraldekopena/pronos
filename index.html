@@ -352,13 +352,13 @@
 
     .arrow-up {
       color: var(--up);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       margin-left: 4px;
     }
 
     .arrow-down {
       color: var(--down);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       margin-left: 4px;
     }
 
@@ -605,9 +605,9 @@
       { code: "JORGE-13", name: "ARIAS RUIZ Jorge", pos: "13", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 20 },
       { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "3 - 0", gain13: 1, points: 20 },
       { code: "INAKI-15", name: "MENDIOLA Iñaki", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 20 },
-      { code: "PIERRICK-16", name: "ROCHE Pierrick", pos: "", arrow: "down", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, points: 19 },
-      { code: "FREDERIC-17", name: "CROUZAT Frédéric", pos: "", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1, points: 19 },
       { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", pos: "16", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 19 },
+      { code: "FREDERIC-17", name: "CROUZAT Frédéric", pos: "", arrow: "up", medal: "", cups: 0, isTenant: false, prono13: "4 - 1", gain13: 1, points: 19 },
+      { code: "PIERRICK-16", name: "ROCHE Pierrick", pos: "", arrow: "down", medal: "", cups: 1, isTenant: false, prono13: "-", gain13: 0, points: 19 },
       { code: "LUKEN-19", name: "CROUZAT Luken", pos: "19", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 15 },
       { code: "OLIVIER-20", name: "GOBBI Olivier", pos: "20", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "1 - 0", gain13: 1, points: 14 },
       { code: "PIERRE-21", name: "GOYENEIX Pierre", pos: "21", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "2 - 0", gain13: 1, points: 12 },
@@ -937,8 +937,8 @@
         }
 
         const arrowHtml = m.arrow === "up"
-          ? `<span class="arrow-up">▲</span>`
-          : (m.arrow === "down" ? `<span class="arrow-down">▼</span>` : "");
+          ? `<span class="arrow-up" title="En hausse">▲</span>`
+          : (m.arrow === "down" ? `<span class="arrow-down" title="En baisse">▼</span>` : "");
 
         const medalHtml = m.medal ? `<span class="medal">${m.medal}</span>` : "";
         const cupsHtml = m.cups > 0 ? `<span class="trophy-icon">${"🏆".repeat(m.cups)}</span>` : "";
