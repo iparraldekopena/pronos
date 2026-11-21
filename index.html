@@ -718,4 +718,177 @@
 
         var isMe = Boolean(appState.user && !appState.user.isAdmin && appState.user.code === mem.code);
         var tr = document.createElement("tr");
-        if (isMe) tr.className = "row
+        if (isMe) tr.className = "row-me";
+        else if (mem.isChamp) tr.className = "row-champ";
+
+        var td1 = document.createElement("td");
+        td1.textContent = String(i + 1);
+
+        var td2 = document.createElement("td");
+        td2.style.fontWeight = (isMe || mem.isChamp) ? "800" : "600";
+        td2.appendChild(document.createTextNode(mem.name));
+
+        if (mem.isChamp) {
+          var emC = document.createElement("span");
+          emC.className = "tag tag-champ";
+          emC.textContent = "Tenant du titre";
+          td2.appendChild(emC);
+        }
+
+        if (isMe) {
+          var emM = document.createElement("span");
+          emM.className = "tag tag-me";
+          emM.textContent = "Toi";
+          td2.appendChild(emM);
+        }
+
+        var td3 = document.createElement("td");
+        td3.className = "prono-col";
+        td3.textContent = txt;
+
+        var td4 = document.createElement("td");
+        td4.className = "pts-col";
+        td4.textContent = mem.points + " pts";
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        tb.appendChild(tr);
+      }
+    }
+
+    window.showMatch = function (id) {
+      appState.currentId = id;
+      var m = findMatch(id);
+      el("match-select").value = m.id;
+      setTxt("match-title", m.home + " vs " + m.away);
+      setTxt("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score final : " + m.fh + " - " + m.fa) : " • Pronostics ouverts"));
+      setTxt("lbl-home", m.home);
+      setTxt("lbl-away", m.away);
+      setTxt("pred-ok", "");
+
+      if (!m.finished && appState.user && !appState.user.isAdmin) {
+        el("pred-box").classList.remove("hidden");
+        var pr = m.preds[appState.user.code];
+        el("pred-h").value = pr ? pr.h : "";
+        el("pred-a").value = pr ? pr.a : "";
+      } else {
+        el("pred-box").classList.add("hidden");
+      }
+
+      renderLeaderboard(m);
+    };
+
+    function fillMatchSelect() {
+      var sel = el("match-select");
+      sel.innerHTML = "";
+      for (var i = 0; i < window.MATCHES.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = window.MATCHES[i].id;
+        opt.textContent = window.MATCHES[i].comp + " — " + window.MATCHES[i].home + " vs " + window.MATCHES[i].away;
+        sel.appendChild(opt);
+      }
+    }
+
+    window.setTab = function (name) {
+      if (!appState.user) return;
+      var isPalm = name === "palm";
+      el("view-pronos").classList.toggle("hidden", isPalm);
+      el("view-palm").classList.toggle("hidden", !isPalm);
+      el("tab-pronos").classList.toggle("active", !isPalm);
+      el("tab-palm").classList.toggle("active", isPalm);
+      if (isPalm) renderPalmares();
+    };
+
+    function openSession(u) {
+      appState.user = u;
+      el("sec-login").classList.add("hidden");
+      el("member-logo").classList.remove("hidden");
+      el("nav").classList.remove("hidden");
+      el("aupa-banner").classList.remove("hidden");
+
+      var greet = u.isAdmin ? "AUPA ADMIN" : ("AUPA " + firstName(u.name));
+      setTxt("aupa-heading", greet + " !");
+      setTxt("aupa-sub", "Bienvenue dans l'espace des pronostics • " + u.name);
+      setTxt("aupa-stats", u.isAdmin ? "Mode administrateur" : ("Total actuel : " + u.points + " pts"));
+
+      fillMatchSelect();
+      window.showMatch(appState.currentId);
+      window.setTab("pronos");
+    }
+
+    window.doLogin = function () {
+      var inp = el("code-in");
+      var raw = (inp && inp.value ? inp.value : "").replace(/^\s+|\s+$/g, "").toUpperCase();
+      if (!raw) {
+        setTxt("login-err", "Merci d'entrer un code d'accès.");
+        return;
+      }
+      if (raw === "ADMIN-PENA") {
+        setTxt("login-err", "");
+        openSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
+        return;
+      }
+      for (var i = 0; i < window.MEMBERS.length; i++) {
+        if (window.MEMBERS[i].code === raw) {
+          setTxt("login-err", "");
+          openSession({
+            code: window.MEMBERS[i].code,
+            name: window.MEMBERS[i].name,
+            points: window.MEMBERS[i].points,
+            isAdmin: false
+          });
+          return;
+        }
+      }
+      setTxt("login-err", "Code inconnu (" + raw + ").");
+    };
+
+    window.doLogout = function () {
+      appState.user = null;
+      el("member-logo").classList.add("hidden");
+      el("nav").classList.add("hidden");
+      el("aupa-banner").classList.add("hidden");
+      el("view-pronos").classList.add("hidden");
+      el("view-palm").classList.add("hidden");
+      el("sec-login").classList.remove("hidden");
+      if (el("code-in")) el("code-in").value = "";
+    };
+
+    window.savePred = function () {
+      if (!appState.user || appState.user.isAdmin) return;
+      var m = findMatch(appState.currentId);
+      var h = parseInt(el("pred-h").value, 10);
+      var a = parseInt(el("pred-a").value, 10);
+      if (!m || m.finished || isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
+      m.preds[appState.user.code] = { h: h, a: a };
+      setTxt("pred-ok", "Prono enregistré : " + h + " - " + a);
+      fetch(window.DB_URL, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ matches: window.MATCHES, members: window.MEMBERS })
+      }).catch(function () {});
+      renderLeaderboard(m);
+    };
+
+    function bindLoginFallback() {
+      var btn = el("btn-login");
+      var inp = el("code-in");
+      if (btn) btn.onclick = window.doLogin;
+      if (inp) {
+        inp.onkeydown = function (e) {
+          e = e || window.event;
+          if (e && (e.key === "Enter" || e.keyCode === 13)) {
+            if (e.preventDefault) e.preventDefault();
+            window.doLogin();
+          }
+        };
+      }
+    }
+
+    bindLoginFallback();
+    document.addEventListener("DOMContentLoaded", bindLoginFallback);
+  </script>
+</body>
+</html>
