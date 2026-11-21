@@ -529,6 +529,73 @@
       color: var(--text);
       font-weight: 400;
     }
+
+    /* Blog de la Peña */
+    .blog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .blog-post {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+
+    .blog-meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .blog-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(225, 29, 72, 0.18);
+      border: 1px solid rgba(244, 63, 94, 0.45);
+      color: #fda4af;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .blog-date {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .blog-title {
+      margin: 0 0 10px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .blog-body {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .blog-highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--gold);
+      background: var(--surface-2);
+      border-radius: 6px;
+      font-size: 0.92rem;
+      color: #fde68a;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -549,6 +616,7 @@
       <div id="nav" class="nav hidden">
         <button id="tab-pronos" type="button" class="active" onclick="window.setTab('pronos')">Pronostics & Classement</button>
         <button id="tab-palm" type="button" onclick="window.setTab('palm')">Palmarès</button>
+        <button id="tab-blog" type="button" onclick="window.setTab('blog')">Le Blog de la Peña</button>
         <button type="button" onclick="window.doLogout()">Déconnexion</button>
       </div>
     </div>
@@ -621,6 +689,11 @@
     <section id="view-palm" class="hidden">
       <h2 class="palm-section-title">Palmarès — Podiums par saison</h2>
       <div id="palm-grid" class="palm-grid"></div>
+    </section>
+
+    <section id="view-blog" class="hidden">
+      <h2 class="palm-section-title">Le Blog de la Peña — Analyses Fun</h2>
+      <div id="blog-list" class="blog-list"></div>
     </section>
   </div>
 
@@ -748,6 +821,18 @@
       }
     ];
 
+    // Articles du Blog de la Peña (chronique #1 : Le Prono le plus fou)
+    window.BLOG_POSTS = [
+      {
+        id: "post-1",
+        tag: "Le Prono le plus fou",
+        date: "Pronostic n° 13 • San Mamés",
+        title: "Le festival du 4-1 et le coup de froid de l'Espanyol !",
+        body: "Sur ce Pronostic n° 13, certains n'ont pas fait dans la dentelle en voyant l'Athletic dérouler un 4-1 à la maison, tandis que la majorité misait sur un succès solide des Rouge et Blanc (2-0, 2-1 ou 3-1). Résultat sur le terrain : 0-1 pour le RCD Espanyol à San Mamés ! De quoi rappeler que le football espagnol adore faire mentir les plus belles certitudes.",
+        highlight: "Mention spéciale audace : le prono 4 - 1 qui voulait voir pleuvoir les buts à San Mamés."
+      }
+    ];
+
     let currentUser = null;
     let currentMatchId = "m13";
     let remoteData = { preds: {} };
@@ -797,11 +882,19 @@
 
     window.setTab = function(tab) {
       const isPronos = (tab === "pronos");
+      const isPalm = (tab === "palm");
+      const isBlog = (tab === "blog");
+
       document.getElementById("view-pronos").classList.toggle("hidden", !isPronos);
-      document.getElementById("view-palm").classList.toggle("hidden", isPronos);
+      document.getElementById("view-palm").classList.toggle("hidden", !isPalm);
+      document.getElementById("view-blog").classList.toggle("hidden", !isBlog);
+
       document.getElementById("tab-pronos").classList.toggle("active", isPronos);
-      document.getElementById("tab-palm").classList.toggle("active", !isPronos);
-      if (!isPronos) renderPalm();
+      document.getElementById("tab-palm").classList.toggle("active", isPalm);
+      document.getElementById("tab-blog").classList.toggle("active", isBlog);
+
+      if (isPalm) renderPalm();
+      if (isBlog) renderBlog();
     };
 
     window.doLogin = async function() {
@@ -850,6 +943,7 @@
       populateMatchSelect();
       window.showMatch(currentMatchId);
       renderPalm();
+      renderBlog();
     };
 
     window.doLogout = function() {
@@ -862,6 +956,7 @@
       document.getElementById("nav").classList.add("hidden");
       document.getElementById("view-pronos").classList.add("hidden");
       document.getElementById("view-palm").classList.add("hidden");
+      document.getElementById("view-blog").classList.add("hidden");
     };
 
     function populateMatchSelect() {
@@ -1039,6 +1134,31 @@
           <div class="palm-rows">${rowsHtml}</div>
         `;
         grid.appendChild(card);
+      });
+    }
+
+    function renderBlog() {
+      const list = document.getElementById("blog-list");
+      list.innerHTML = "";
+
+      window.BLOG_POSTS.forEach(post => {
+        const article = document.createElement("article");
+        article.className = "blog-post";
+
+        const highlightHtml = post.highlight
+          ? `<div class="blog-highlight">${post.highlight}</div>`
+          : "";
+
+        article.innerHTML = `
+          <div class="blog-meta-top">
+            <span class="blog-tag">${post.tag}</span>
+            <span class="blog-date">${post.date}</span>
+          </div>
+          <h3 class="blog-title">${post.title}</h3>
+          <p class="blog-body">${post.body}</p>
+          ${highlightHtml}
+        `;
+        list.appendChild(article);
       });
     }
   </script>
