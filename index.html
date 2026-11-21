@@ -245,6 +245,12 @@
     .match-meta {
       color: var(--muted);
       font-size: 0.96rem;
+      margin-bottom: 8px;
+    }
+
+    .match-user-pred {
+      color: var(--muted);
+      font-size: 0.96rem;
       margin-bottom: 10px;
     }
 
@@ -673,6 +679,7 @@
         </div>
         <h2 id="match-title" class="match-title"></h2>
         <div id="match-meta" class="match-meta"></div>
+        <div id="match-user-pred" class="match-user-pred"></div>
 
         <div id="pred-box" class="pred-box hidden">
           <div class="pred-teams-row">
@@ -726,10 +733,10 @@
     window.DB_URL = window.DB_URL || "";
     window.LOGO_SRC = window.LOGO_SRC || "logo-pena.jpg";
 
-    // Historique des pronostics des matchs 1 à 12 (D = Bilbao, E = Extérieur)
+    // Historique des pronostics des matchs 1 à 12
     // Clé : "num-CODE" -> { prono: "x - y", gain: 0|1 }
     window.HISTORY_PREDS = {
-      // Match 1 (D) : ATHLETIC CLUB 1-3 SEVILLA FC
+      // Match 1 : ATHLETIC CLUB 1-3 SEVILLA FC
       "1-JORGE-13": { prono: "2 - 0", gain: 0 },
       "1-JONATHAN-05": { prono: "2 - 0", gain: 0 },
       "1-PIERRE-10": { prono: "0 - 1", gain: 0 },
@@ -745,7 +752,7 @@
       "1-GORKA-12": { prono: "2 - 0", gain: 0 },
       "1-ANDONI-02": { prono: "2 - 1", gain: 0 },
 
-      // Match 2 (E) : BARCELONA 2-0 ATHLETIC CLUB (vert sur CORDEIRO, LOREA)
+      // Match 2 : BARCELONA 2-0 ATHLETIC CLUB
       "2-JORGE-13": { prono: "1 - 0", gain: 0 },
       "2-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "2-JONATHAN-05": { prono: "2 - 0", gain: 1 },
@@ -763,7 +770,7 @@
       "2-GORKA-12": { prono: "2 - 1", gain: 0 },
       "2-ANDONI-02": { prono: "2 - 1", gain: 0 },
 
-      // Match 3 (E) : CELTA VIGO 0-2 ATHLETIC CLUB (vert sur DULONG)
+      // Match 3 : CELTA VIGO 0-2 ATHLETIC CLUB
       "3-JORGE-13": { prono: "1 - 0", gain: 0 },
       "3-JEANYVES-18": { prono: "3 - 1", gain: 0 },
       "3-JONATHAN-05": { prono: "1 - 1", gain: 0 },
@@ -781,7 +788,7 @@
       "3-GORKA-12": { prono: "0 - 1", gain: 0 },
       "3-ANDONI-02": { prono: "1 - 2", gain: 0 },
 
-      // Match 4 (D) : ATHLETIC CLUB 3-0 ATLETICO MADRID
+      // Match 4 : ATHLETIC CLUB 3-0 ATLETICO MADRID
       "4-JORGE-13": { prono: "2 - 1", gain: 0 },
       "4-JEANYVES-18": { prono: "2 - 0", gain: 0 },
       "4-JONATHAN-05": { prono: "1 - 1", gain: 0 },
@@ -800,7 +807,7 @@
       "4-GORKA-12": { prono: "2 - 2", gain: 0 },
       "4-ANDONI-02": { prono: "1 - 0", gain: 0 },
 
-      // Match 5 (D) : ATHLETIC CLUB 1-1 ELCHE
+      // Match 5 : ATHLETIC CLUB 1-1 ELCHE
       "5-JORGE-13": { prono: "2 - 0", gain: 0 },
       "5-JEANYVES-18": { prono: "4 - 1", gain: 0 },
       "5-JONATHAN-05": { prono: "3 - 0", gain: 0 },
@@ -825,7 +832,7 @@
       "5-GORKA-12": { prono: "3 - 1", gain: 0 },
       "5-ANDONI-02": { prono: "2 - 0", gain: 0 },
 
-      // Match 6 (D) : ATHLETIC CLUB 0-0 ALAVES
+      // Match 6 : ATHLETIC CLUB 0-0 ALAVES
       "6-JORGE-13": { prono: "2 - 0", gain: 0 },
       "6-JONATHAN-05": { prono: "1 - 0", gain: 0 },
       "6-FREDERIC-17": { prono: "1 - 1", gain: 0 },
@@ -847,7 +854,7 @@
       "6-GORKA-12": { prono: "1 - 0", gain: 0 },
       "6-ANDONI-02": { prono: "1 - 0", gain: 0 },
 
-      // Match 7 (E) : VALENCIA 0-0 ATHLETIC CLUB (vert sur MARITORENA)
+      // Match 7 : VALENCIA 0-0 ATHLETIC CLUB
       "7-JORGE-13": { prono: "0 - 1", gain: 0 },
       "7-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "7-JONATHAN-05": { prono: "0 - 1", gain: 0 },
@@ -868,7 +875,7 @@
       "7-GORKA-12": { prono: "1 - 2", gain: 0 },
       "7-ANDONI-02": { prono: "1 - 1", gain: 0 },
 
-      // Match 8 (E) : LEVANTE 3-1 ATHLETIC CLUB
+      // Match 8 : LEVANTE 3-1 ATHLETIC CLUB
       "8-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "8-JONATHAN-05": { prono: "0 - 2", gain: 0 },
       "8-FREDERIC-17": { prono: "3 - 3", gain: 0 },
@@ -888,7 +895,7 @@
       "8-GORKA-12": { prono: "1 - 1", gain: 0 },
       "8-ANDONI-02": { prono: "0 - 1", gain: 0 },
 
-      // Match 9 (D) : ATHLETIC CLUB 4-0 GETAFE
+      // Match 9 : ATHLETIC CLUB 4-0 GETAFE
       "9-JORGE-13": { prono: "0 - 0", gain: 0 },
       "9-JEANYVES-18": { prono: "2 - 0", gain: 0 },
       "9-JONATHAN-05": { prono: "1 - 0", gain: 0 },
@@ -910,7 +917,7 @@
       "9-GORKA-12": { prono: "3 - 1", gain: 0 },
       "9-ANDONI-02": { prono: "1 - 0", gain: 0 },
 
-      // Match 10 (E) : PRAT 1-6 ATHLETIC CLUB
+      // Match 10 : PRAT 1-6 ATHLETIC CLUB
       "10-JORGE-13": { prono: "0 - 1", gain: 0 },
       "10-JEANYVES-18": { prono: "0 - 4", gain: 0 },
       "10-JONATHAN-05": { prono: "0 - 3", gain: 0 },
@@ -931,7 +938,7 @@
       "10-GORKA-12": { prono: "0 - 3", gain: 0 },
       "10-ANDONI-02": { prono: "0 - 2", gain: 0 },
 
-      // Match 11 (D) : ATHLETIC CLUB 2-1 REAL SOCIEDAD (vert sur JONATHAN, JULEN, LOREA, INAKI, LANDER, JEANLOUIS, YANNICK, ANDONI)
+      // Match 11 : ATHLETIC CLUB 2-1 REAL SOCIEDAD
       "11-JORGE-13": { prono: "3 - 2", gain: 0 },
       "11-JONATHAN-05": { prono: "2 - 1", gain: 1 },
       "11-FREDERIC-17": { prono: "3 - 1", gain: 0 },
@@ -951,7 +958,7 @@
       "11-GORKA-12": { prono: "1 - 0", gain: 0 },
       "11-ANDONI-02": { prono: "2 - 1", gain: 1 },
 
-      // Match 12 (E) : OSASUNA 1-1 ATHLETIC CLUB (vert sur JULEN, LOREA, CHRISTOPHE, XABIER, YANNICK, PIERRICK, ANDONI)
+      // Match 12 : OSASUNA 1-1 ATHLETIC CLUB
       "12-JORGE-13": { prono: "1 - 3", gain: 0 },
       "12-JEANYVES-18": { prono: "1 - 2", gain: 0 },
       "12-JONATHAN-05": { prono: "0 - 2", gain: 0 },
@@ -976,7 +983,7 @@
       "12-ANDONI-02": { prono: "1 - 1", gain: 1 }
     };
 
-    // 27 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio et BARRUTIA Xabier 26e ex æquo)
+    // 27 joueurs
     window.MEMBERS = [
       { code: "LOREA-01", name: "LABORDE Lorea", pos: "1", arrow: "", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0", gain13: 1, points: 36 },
       { code: "ANDONI-02", name: "URREIZTIETA Andoni", pos: "2", arrow: "", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1", gain13: 1, points: 35 },
@@ -1007,22 +1014,22 @@
       { code: "PIERRE-27", name: "LEGRAS Peio", pos: "", arrow: "", medal: "", cups: 0, isTenant: false, prono13: "-", gain13: 0, points: 0 }
     ];
 
-    // Matchs 1 à 12 (D = Bilbao, E = Extérieur) + Match 13 + Match 14
+    // Matchs 1 à 12 + Match 13 + Match 14
     window.MATCHES = [
-      { id: "m1", num: 1, venue: "D", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, fh: 1, fa: 3 },
-      { id: "m2", num: 2, venue: "E", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur (E)", home: "BARCELONA", away: "ATHLETIC CLUB", finished: true, fh: 2, fa: 0 },
-      { id: "m3", num: 3, venue: "E", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur (E)", home: "CELTA VIGO", away: "ATHLETIC CLUB", finished: true, fh: 0, fa: 2 },
-      { id: "m4", num: 4, venue: "D", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", finished: true, fh: 3, fa: 0 },
-      { id: "m5", num: 5, venue: "D", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "ELCHE", finished: true, fh: 1, fa: 1 },
-      { id: "m6", num: 6, venue: "D", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "ALAVES", finished: true, fh: 0, fa: 0 },
-      { id: "m7", num: 7, venue: "E", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur (E)", home: "VALENCIA", away: "ATHLETIC CLUB", finished: true, fh: 0, fa: 0 },
-      { id: "m8", num: 8, venue: "E", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur (E)", home: "LEVANTE", away: "ATHLETIC CLUB", finished: true, fh: 3, fa: 1 },
-      { id: "m9", num: 9, venue: "D", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "GETAFE", finished: true, fh: 4, fa: 0 },
-      { id: "m10", num: 10, venue: "E", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur (E)", home: "PRAT", away: "ATHLETIC CLUB", finished: true, fh: 1, fa: 6 },
-      { id: "m11", num: 11, venue: "D", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, fh: 2, fa: 1 },
-      { id: "m12", num: 12, venue: "E", comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur (E)", home: "OSASUNA", away: "ATHLETIC CLUB", finished: true, fh: 1, fa: 1 },
-      { id: "m13", num: 13, venue: "D", comp: "Liga", dayName: "vendredi", date: "20 novembre 2026", time: "21:00", stadium: "San Mamés (D)", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
-      { id: "m14", num: 14, venue: "E", comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda (E)", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
+      { id: "m1", num: 1, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, fh: 1, fa: 3 },
+      { id: "m2", num: 2, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "BARCELONA", away: "ATHLETIC CLUB", finished: true, fh: 2, fa: 0 },
+      { id: "m3", num: 3, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "CELTA VIGO", away: "ATHLETIC CLUB", finished: true, fh: 0, fa: 2 },
+      { id: "m4", num: 4, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", finished: true, fh: 3, fa: 0 },
+      { id: "m5", num: 5, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ELCHE", finished: true, fh: 1, fa: 1 },
+      { id: "m6", num: 6, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ALAVES", finished: true, fh: 0, fa: 0 },
+      { id: "m7", num: 7, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "VALENCIA", away: "ATHLETIC CLUB", finished: true, fh: 0, fa: 0 },
+      { id: "m8", num: 8, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "LEVANTE", away: "ATHLETIC CLUB", finished: true, fh: 3, fa: 1 },
+      { id: "m9", num: 9, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "GETAFE", finished: true, fh: 4, fa: 0 },
+      { id: "m10", num: 10, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "PRAT", away: "ATHLETIC CLUB", finished: true, fh: 1, fa: 6 },
+      { id: "m11", num: 11, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, fh: 2, fa: 1 },
+      { id: "m12", num: 12, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "OSASUNA", away: "ATHLETIC CLUB", finished: true, fh: 1, fa: 1 },
+      { id: "m13", num: 13, comp: "Liga", dayName: "vendredi", date: "20 novembre 2026", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
+      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
     ];
 
     // Palmarès : les 3 premiers de chaque saison (de 2025/26 à 2016/17)
@@ -1169,6 +1176,15 @@
       return `Pronostic n° ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
     }
 
+    function formatUserPronoScore(pronoStr) {
+      if (!pronoStr || pronoStr === "-") return "(-)-(-)";
+      const parts = pronoStr.split("-").map(s => s.trim());
+      if (parts.length === 2 && parts[0] !== "" && parts[1] !== "") {
+        return `(${parts[0]})-(${parts[1]})`;
+      }
+      return "(-)-(-)";
+    }
+
     async function loadRemoteData() {
       if (!window.DB_URL) return;
       try {
@@ -1304,6 +1320,7 @@
 
       const titleEl = document.getElementById("match-title");
       const metaEl = document.getElementById("match-meta");
+      const userPredEl = document.getElementById("match-user-pred");
       const predBox = document.getElementById("pred-box");
 
       if (m.finished) {
@@ -1323,6 +1340,18 @@
           : null;
         document.getElementById("pred-h").value = (existing && existing.h !== undefined && existing.h !== "") ? String(existing.h) : "";
         document.getElementById("pred-a").value = (existing && existing.a !== undefined && existing.a !== "") ? String(existing.a) : "";
+      }
+
+      const matchPreds = (remoteData.preds && remoteData.preds[m.id]) || {};
+      if (!currentUser) {
+        userPredEl.textContent = "";
+      } else if (currentUser.isAdmin) {
+        userPredEl.textContent = `Ton Pronostic : ${m.home} (-)-(-) ${m.away}`;
+      } else {
+        const memberObj = window.MEMBERS.find(x => x.code === currentUser.code) || currentUser;
+        const entry = getMemberMatchEntry(memberObj, m, matchPreds);
+        const formattedScore = formatUserPronoScore(entry.pronoStr);
+        userPredEl.textContent = `Ton Pronostic : ${m.home} ${formattedScore} ${m.away}`;
       }
 
       renderLeaderboard(m);
@@ -1354,7 +1383,7 @@
       await saveRemoteData();
       okEl.textContent = "Prono enregistré !";
       const m = window.MATCHES.find(x => x.id === currentMatchId) || window.MATCHES[0];
-      renderLeaderboard(m);
+      window.showMatch(m.id);
     };
 
     function getMemberMatchEntry(member, matchObj, matchPreds) {
