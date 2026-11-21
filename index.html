@@ -478,6 +478,12 @@
       font-weight: 700;
     }
 
+    .prono-hidden {
+      color: var(--muted);
+      font-style: italic;
+      font-weight: 500;
+    }
+
     .gain-pos {
       color: var(--up);
       font-weight: 700;
@@ -717,7 +723,7 @@
           <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DU PRONOSTIC N° 13</h2>
           <div id="participation-banner" class="participation-banner"></div>
           <div id="cumul-sub" class="cumul-sub"></div>
-          <div id="revealed-note" class="revealed-note">🔒 Pronostics révélés (match commencé)</div>
+          <div id="revealed-note" class="revealed-note">🔒 Pronostic terminé</div>
           <div class="rules-bar" aria-label="Règle de calcul des points">
             <span class="rule-item"><strong>Score exact :</strong> 6 pts</span>
             <span class="rule-item"><strong>Bon 1, N ou 2 :</strong> 3 pts</span>
@@ -807,6 +813,17 @@
       const a = Number(parts[1]);
       if (Number.isNaN(h) || Number.isNaN(a)) return null;
       return { h, a };
+    }
+
+    function isMatchStarted(m) {
+      if (!m) return false;
+      if (m.finished) return true;
+      if (m.started === true) return true;
+      if (m.kickoffIso) {
+        const t = Date.parse(m.kickoffIso);
+        if (!Number.isNaN(t) && Date.now() >= t) return true;
+      }
+      return false;
     }
 
     // Historique des pronostics des matchs 1 à 12
@@ -1091,20 +1108,20 @@
 
     // Matchs 1 à 12 + Match 13 + Match 14
     window.MATCHES = [
-      { id: "m1", num: 1, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, fh: 1, fa: 3 },
-      { id: "m2", num: 2, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "BARCELONA", away: "ATHLETIC CLUB", finished: true, fh: 2, fa: 0 },
-      { id: "m3", num: 3, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "CELTA VIGO", away: "ATHLETIC CLUB", finished: true, fh: 0, fa: 2 },
-      { id: "m4", num: 4, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", finished: true, fh: 3, fa: 0 },
-      { id: "m5", num: 5, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ELCHE", finished: true, fh: 1, fa: 1 },
-      { id: "m6", num: 6, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ALAVES", finished: true, fh: 0, fa: 0 },
-      { id: "m7", num: 7, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "VALENCIA", away: "ATHLETIC CLUB", finished: true, fh: 0, fa: 0 },
-      { id: "m8", num: 8, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "LEVANTE", away: "ATHLETIC CLUB", finished: true, fh: 3, fa: 1 },
-      { id: "m9", num: 9, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "GETAFE", finished: true, fh: 4, fa: 0 },
-      { id: "m10", num: 10, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "PRAT", away: "ATHLETIC CLUB", finished: true, fh: 1, fa: 6 },
-      { id: "m11", num: 11, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, fh: 2, fa: 1 },
-      { id: "m12", num: 12, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "OSASUNA", away: "ATHLETIC CLUB", finished: true, fh: 1, fa: 1 },
-      { id: "m13", num: 13, comp: "Liga", dayName: "vendredi", date: "20 novembre 2026", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
-      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
+      { id: "m1", num: 1, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, started: true, fh: 1, fa: 3 },
+      { id: "m2", num: 2, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "BARCELONA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 2, fa: 0 },
+      { id: "m3", num: 3, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "CELTA VIGO", away: "ATHLETIC CLUB", finished: true, started: true, fh: 0, fa: 2 },
+      { id: "m4", num: 4, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ATLETICO MADRID", finished: true, started: true, fh: 3, fa: 0 },
+      { id: "m5", num: 5, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ELCHE", finished: true, started: true, fh: 1, fa: 1 },
+      { id: "m6", num: 6, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "ALAVES", finished: true, started: true, fh: 0, fa: 0 },
+      { id: "m7", num: 7, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "VALENCIA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 0, fa: 0 },
+      { id: "m8", num: 8, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "LEVANTE", away: "ATHLETIC CLUB", finished: true, started: true, fh: 3, fa: 1 },
+      { id: "m9", num: 9, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "GETAFE", finished: true, started: true, fh: 4, fa: 0 },
+      { id: "m10", num: 10, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "PRAT", away: "ATHLETIC CLUB", finished: true, started: true, fh: 1, fa: 6 },
+      { id: "m11", num: 11, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, started: true, fh: 2, fa: 1 },
+      { id: "m12", num: 12, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "OSASUNA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 1, fa: 1 },
+      { id: "m13", num: 13, comp: "Liga", dayName: "vendredi", date: "20 novembre 2026", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, started: true, fh: 0, fa: 1 },
+      { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre 2026", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, started: false, kickoffIso: "2026-11-28T16:15:00+01:00", fh: null, fa: null }
     ];
 
     // Palmarès : les 3 premiers de chaque saison (de 2025/26 à 2016/17)
@@ -1255,53 +1272,6 @@
       const parsed = parsePronoScore(pronoStr);
       if (!parsed) return "-";
       return `${parsed.h}-${parsed.a}`;
-    }
-
-    function computeMatchGain(predH, predA, realH, realA) {
-      if (
-        predH === null || predH === undefined || predH === "" ||
-        predA === null || predA === undefined || predA === "" ||
-        realH === null || realH === undefined || realH === "" ||
-        realA === null || realA === undefined || realA === ""
-      ) {
-        return 0;
-      }
-
-      const ph = Number(predH);
-      const pa = Number(predA);
-      const rh = Number(realH);
-      const ra = Number(realA);
-
-      if (Number.isNaN(ph) || Number.isNaN(pa) || Number.isNaN(rh) || Number.isNaN(ra)) {
-        return 0;
-      }
-
-      if (ph === rh && pa === ra) {
-        return 6;
-      }
-
-      const predDiff = ph - pa;
-      const realDiff = rh - ra;
-      const sameOutcome =
-        (predDiff > 0 && realDiff > 0) ||
-        (predDiff < 0 && realDiff < 0) ||
-        (predDiff === 0 && realDiff === 0);
-
-      if (sameOutcome) {
-        return 3;
-      }
-
-      return 1;
-    }
-
-    function parsePronoScore(pronoStr) {
-      if (!pronoStr || pronoStr === "-") return null;
-      const parts = String(pronoStr).split("-").map(s => s.trim());
-      if (parts.length !== 2 || parts[0] === "" || parts[1] === "") return null;
-      const h = Number(parts[0]);
-      const a = Number(parts[1]);
-      if (Number.isNaN(h) || Number.isNaN(a)) return null;
-      return { h, a };
     }
 
     function getMemberMatchEntry(member, matchObj) {
@@ -1524,6 +1494,16 @@
         ? `Classement cumulé à la fin du Pronostic n° ${m.num} (${datePart})`
         : `Classement cumulé à la fin du Pronostic n° ${m.num}`;
 
+      const started = isMatchStarted(m);
+      const revealedNoteEl = document.getElementById("revealed-note");
+      if (m.finished) {
+        revealedNoteEl.textContent = "🔒 Pronostic terminé";
+      } else if (started) {
+        revealedNoteEl.textContent = "🔒 Pronostic bloqué (match commencé)";
+      } else {
+        revealedNoteEl.textContent = "🙈 Pronostics des autres joueurs masqués avant le début du match";
+      }
+
       document.getElementById("pred-ok").textContent = "";
 
       const titleEl = document.getElementById("match-title");
@@ -1533,6 +1513,11 @@
 
       if (m.finished) {
         titleEl.textContent = `${m.home} ${m.fh}-${m.fa} ${m.away}`;
+        const infoParts = [`Pronostic n° ${m.num}`, m.comp, datePart, m.time, m.stadium].filter(Boolean);
+        metaEl.textContent = infoParts.join(" - ");
+        predBox.classList.add("hidden");
+      } else if (started) {
+        titleEl.textContent = `${m.home} vs ${m.away} — Match commencé`;
         const infoParts = [`Pronostic n° ${m.num}`, m.comp, datePart, m.time, m.stadium].filter(Boolean);
         metaEl.textContent = infoParts.join(" - ");
         predBox.classList.add("hidden");
@@ -1572,6 +1557,13 @@
         return;
       }
 
+      const m = window.MATCHES.find(x => x.id === currentMatchId) || window.MATCHES[0];
+      if (isMatchStarted(m)) {
+        okEl.textContent = "Le match a commencé : les pronostics sont fermés.";
+        window.showMatch(m.id);
+        return;
+      }
+
       const hVal = document.getElementById("pred-h").value;
       const aVal = document.getElementById("pred-a").value;
       if (hVal === "" || aVal === "") {
@@ -1589,7 +1581,6 @@
 
       await saveRemoteData();
       okEl.textContent = "Prono enregistré !";
-      const m = window.MATCHES.find(x => x.id === currentMatchId) || window.MATCHES[0];
       window.showMatch(m.id);
     };
 
@@ -1599,6 +1590,7 @@
       tbody.innerHTML = "";
 
       const matchNum = matchObj ? matchObj.num : 13;
+      const started = isMatchStarted(matchObj);
       const { rows } = computeStandingsUpTo(matchNum);
       const prevRankMap = matchNum > 1 ? computeStandingsUpTo(matchNum - 1).rankMap : {};
 
@@ -1621,25 +1613,34 @@
         const medalHtml = m.medal ? `<span class="medal">${m.medal}</span>` : "";
         const cupsHtml = m.cups > 0 ? `<span class="trophy-icon">${"🏆".repeat(m.cups)}</span>` : "";
         const tenantHtml = m.isTenant ? `<span class="tenant-badge">Tenant du Titre</span>` : "";
-        const meBadge = (currentUser && !currentUser.isAdmin && currentUser.code === m.code)
-          ? `<span class="me-badge">Moi</span>`
-          : "";
+        const isMe = Boolean(currentUser && !currentUser.isAdmin && currentUser.code === m.code);
+        const meBadge = isMe ? `<span class="me-badge">Moi</span>` : "";
 
-        const gain = m.gain || 0;
-        const gainHtml = gain > 0
-          ? `<span class="gain-pos">(+${gain} ${ptsWord(gain)})</span>`
-          : `<span class="gain-zero">(+0 pt)</span>`;
+        const canSeeOtherPreds = started || Boolean(currentUser && currentUser.isAdmin) || isMe;
+
+        let pronoCellHtml = "";
+        if (!canSeeOtherPreds) {
+          pronoCellHtml = `<span class="prono-hidden">${m.hasPred ? "Enregistré (masqué)" : "-"}</span>`;
+        } else if (matchObj && matchObj.finished) {
+          const gain = m.gain || 0;
+          const gainHtml = gain > 0
+            ? `<span class="gain-pos">(+${gain} ${ptsWord(gain)})</span>`
+            : `<span class="gain-zero">(+0 pt)</span>`;
+          pronoCellHtml = `${m.pronoStr} ${gainHtml}`;
+        } else {
+          pronoCellHtml = m.pronoStr;
+        }
 
         const tr = document.createElement("tr");
         if (m.isTenant) tr.classList.add("row-champ");
-        if (currentUser && !currentUser.isAdmin && currentUser.code === m.code) tr.classList.add("row-me");
+        if (isMe) tr.classList.add("row-me");
 
         const posDisplay = m.showPos ? `${m.showPos}${arrowHtml}` : "";
 
         tr.innerHTML = `
           <td class="pos-cell">${posDisplay}</td>
           <td><span class="member-name">${medalHtml}${m.name}</span>${cupsHtml}${tenantHtml}${meBadge}</td>
-          <td class="prono-cell">${m.pronoStr} ${gainHtml}</td>
+          <td class="prono-cell">${pronoCellHtml}</td>
           <td class="total-cell">${m.calcPoints} ${ptsWord(m.calcPoints)}</td>
         `;
         tbody.appendChild(tr);
