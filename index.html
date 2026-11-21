@@ -174,3 +174,334 @@
         <button id="tab-pronos" class="active" type="button">Pronos & Classement</button>
         <button id="tab-palm" type="button">Palmarès</button>
         <button id="btn-logout" type="button">Déconnexion</button>
+      </div>
+    </header>
+
+    <section id="sec-login" class="card">
+      <h2 style="margin-top:0;">Connexion</h2>
+      <p class="muted">Entre ton code membre (ex. ALAIN-08) ou ADMIN-PENA.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <input id="code-in" type="text" placeholder="Code d'accès" />
+        <button id="btn-login" class="primary" type="button">Se connecter</button>
+      </div>
+      <div id="login-err" class="err"></div>
+    </section>
+
+    <section id="sec-user" class="card hidden">
+      <div><strong>Connecté :</strong> <span id="user-label"></span></div>
+      <div id="user-pts" class="muted" style="margin-top:4px;"></div>
+    </section>
+
+    <main id="view-pronos" class="hidden">
+      <div class="card">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+          <label for="match-select" class="muted">Match :</label>
+          <select id="match-select"></select>
+        </div>
+        <h3 id="match-title" style="margin:0 0 4px;"></h3>
+        <div id="match-meta" class="muted"></div>
+
+        <div id="pred-box" class="hidden" style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <span id="lbl-home"></span>
+          <input id="pred-h" type="number" min="0" style="width:70px; text-align:center;" />
+          <span>-</span>
+          <input id="pred-a" type="number" min="0" style="width:70px; text-align:center;" />
+          <span id="lbl-away"></span>
+          <button id="btn-save-pred" class="primary" type="button">Valider prono</button>
+        </div>
+        <div id="pred-ok" class="ok"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0;">Classement général</h2>
+        <div id="part-info" class="muted"></div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Joueur</th>
+              <th id="th-prono" class="prono-col">PRONO N° 13</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <section id="view-palm" class="hidden">
+      <div class="card">
+        <h2 style="margin-top:0;">Palmarès de la Peña</h2>
+        <div id="palm-grid" class="palm-grid"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+      var MEMBERS = [
+        { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false },
+        { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false },
+        { code: "JULEN-03", name: "LABORDE Julen", points: 29, isChamp: true },
+        { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 28, isChamp: false },
+        { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 27, isChamp: false },
+        { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 26, isChamp: false },
+        { code: "XINA-07", name: "DULONG Xina", points: 25, isChamp: false },
+        { code: "ALAIN-08", name: "LABORDE Alain", points: 23, isChamp: false },
+        { code: "LANDER-09", name: "MENDIOLA Lander", points: 23, isChamp: false },
+        { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 22, isChamp: false },
+        { code: "YANNICK-11", name: "QUEYROU Yannick", points: 22, isChamp: false },
+        { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false },
+        { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false },
+        { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 20, isChamp: false },
+        { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 20, isChamp: false },
+        { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false },
+        { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 19, isChamp: false },
+        { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false },
+        { code: "LUKEN-19", name: "CROUZAT Luken", points: 15, isChamp: false },
+        { code: "OLIVIER-20", name: "GOBBI Olivier", points: 14, isChamp: false },
+        { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 12, isChamp: false },
+        { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false },
+        { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false },
+        { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false },
+        { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false },
+        { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
+        { code: "PIERRE-27", name: "LEGRAS Pierre", points: 0, isChamp: false }
+      ];
+      var MATCHES = [
+        {
+          id: "m13", pronoNum: 13, comp: "Journée 13 • Domicile (D)", home: "ATHLETIC CLUB", away: "RCD ESPANYOL",
+          kickoff: "2026-11-20 21:00", finished: true, fh: 0, fa: 1,
+          preds: {
+            "LOREA-01": { h: 2, a: 0 }, "ANDONI-02": { h: 2, a: 1 }, "JULEN-03": { h: 1, a: 0 },
+            "XABIER-04": { h: 3, a: 1 }, "JONATHAN-05": { h: 2, a: 0 }, "JEANLOUIS-06": { h: 2, a: 1 },
+            "XINA-07": { h: 3, a: 1 }, "ALAIN-08": { h: 3, a: 1 }, "LANDER-09": { h: 2, a: 1 },
+            "GORKA-12": { h: 2, a: 0 }, "PIERRE-10": { h: 1, a: 1 }, "YANNICK-11": { h: 1, a: 0 },
+            "JORGE-13": { h: 2, a: 0 }, "CHRISTOPHE-14": { h: 3, a: 0 }, "INAKI-15": { h: 2, a: 1 },
+            "JEANYVES-18": { h: 2, a: 1 }, "FREDERIC-17": { h: 4, a: 1 }, "LUKEN-19": { h: 2, a: 0 },
+            "OLIVIER-20": { h: 1, a: 0 }, "PIERRE-21": { h: 2, a: 0 }
+          }
+        },
+        {
+          id: "m14", pronoNum: 14, comp: "Journée 14 • Extérieur (E)", home: "MALAGA CF", away: "ATHLETIC CLUB",
+          kickoff: "2026-11-28 16:15", finished: false, fh: null, fa: null, preds: {}
+        }
+      ];
+      var PALM = [
+        { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
+        { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
+        { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
+        { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
+        { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
+        { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
+        { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
+        { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
+        { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
+        { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
+      ];
+
+      var state = { user: null, currentId: "m13" };
+
+      function byId(id) { return document.getElementById(id); }
+      function setText(id, txt) { var n = byId(id); if (n) n.textContent = txt; }
+      function getSign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
+      function getMatchById(id) {
+        for (var i = 0; i < MATCHES.length; i++) {
+          if (MATCHES[i].id === id) return MATCHES[i];
+        }
+        return MATCHES[0];
+      }
+
+      function renderPalmares() {
+        var grid = byId("palm-grid");
+        grid.innerHTML = "";
+        for (var i = 0; i < PALM.length; i++) {
+          var s = PALM[i];
+          var card = document.createElement("div");
+          card.className = "palm-card";
+
+          var head = document.createElement("div");
+          head.className = "palm-head";
+          head.textContent = "Saison " + s.y;
+          if (i === 0) {
+            var em = document.createElement("em");
+            em.className = "champ-tag";
+            em.textContent = "(tenant du titre)";
+            head.appendChild(em);
+          }
+
+          var rows = document.createElement("div");
+          rows.className = "palm-rows";
+          var lines = [
+            { cls: "palm-row p1", rank: "1er", name: s.p1 },
+            { cls: "palm-row", rank: "2e", name: s.p2 },
+            { cls: "palm-row", rank: "3e", name: s.p3 }
+          ];
+          for (var j = 0; j < lines.length; j++) {
+            var row = document.createElement("div");
+            row.className = lines[j].cls;
+            var rk = document.createElement("span");
+            rk.className = "palm-rank";
+            rk.textContent = lines[j].rank;
+            var nm = document.createElement("span");
+            nm.textContent = lines[j].name;
+            row.appendChild(rk);
+            row.appendChild(nm);
+            rows.appendChild(row);
+          }
+          card.appendChild(head);
+          card.appendChild(rows);
+          grid.appendChild(card);
+        }
+      }
+
+      function renderLeaderboard(m) {
+        var n = parseInt(m.pronoNum, 10) || 1;
+        setText("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
+        var cnt = 0;
+        for (var k in m.preds) { if (m.preds.hasOwnProperty(k)) cnt++; }
+        setText("part-info", "Participation : " + cnt + "/" + MEMBERS.length);
+
+        var sorted = MEMBERS.slice().sort(function (a, b) {
+          return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
+        });
+        var tb = byId("lb-body");
+        tb.innerHTML = "";
+        for (var i = 0; i < sorted.length; i++) {
+          var mem = sorted[i];
+          var pr = m.preds[mem.code];
+          var txt = pr ? (pr.h + " - " + pr.a) : "-";
+          if (m.finished) {
+            if (!pr) txt += " (+0 pt)";
+            else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
+            else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) txt += " (+3 pts)";
+            else txt += " (+1 pt)";
+          }
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td"); td1.textContent = String(i + 1);
+          var td2 = document.createElement("td");
+          td2.appendChild(document.createTextNode(mem.name));
+          if (mem.isChamp) {
+            var em = document.createElement("em");
+            em.className = "champ-tag";
+            em.textContent = "(tenant du titre)";
+            td2.appendChild(em);
+          }
+          var td3 = document.createElement("td"); td3.className = "prono-col"; td3.textContent = txt;
+          var td4 = document.createElement("td"); td4.className = "pts-col"; td4.textContent = mem.points + " pts";
+          tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
+          tb.appendChild(tr);
+        }
+      }
+
+      function showMatch(id) {
+        state.currentId = id;
+        var m = getMatchById(id);
+        byId("match-select").value = m.id;
+        setText("match-title", m.home + " vs " + m.away);
+        setText("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score : " + m.fh + " - " + m.fa) : " • Ouvert"));
+        setText("lbl-home", m.home);
+        setText("lbl-away", m.away);
+        setText("pred-ok", "");
+
+        if (!m.finished && state.user && !state.user.isAdmin) {
+          byId("pred-box").classList.remove("hidden");
+          var pr = m.preds[state.user.code];
+          byId("pred-h").value = pr ? pr.h : "";
+          byId("pred-a").value = pr ? pr.a : "";
+        } else {
+          byId("pred-box").classList.add("hidden");
+        }
+        renderLeaderboard(m);
+      }
+
+      function fillMatchSelect() {
+        var sel = byId("match-select");
+        sel.innerHTML = "";
+        for (var i = 0; i < MATCHES.length; i++) {
+          var opt = document.createElement("option");
+          opt.value = MATCHES[i].id;
+          opt.textContent = MATCHES[i].comp + " — " + MATCHES[i].home + " vs " + MATCHES[i].away;
+          sel.appendChild(opt);
+        }
+      }
+
+      function setTab(name) {
+        if (!state.user) return;
+        var isPalm = name === "palm";
+        byId("view-pronos").classList.toggle("hidden", isPalm);
+        byId("view-palm").classList.toggle("hidden", !isPalm);
+        byId("tab-pronos").classList.toggle("active", !isPalm);
+        byId("tab-palm").classList.toggle("active", isPalm);
+        if (isPalm) renderPalmares();
+      }
+
+      function startSession(u) {
+        state.user = u;
+        byId("sec-login").classList.add("hidden");
+        byId("nav").classList.remove("hidden");
+        byId("sec-user").classList.remove("hidden");
+        setText("user-label", u.name);
+        setText("user-pts", u.isAdmin ? "Mode administrateur" : ("Total : " + u.points + " pts"));
+        fillMatchSelect();
+        showMatch(state.currentId);
+        setTab("pronos");
+      }
+
+      function doLogin() {
+        var raw = (byId("code-in").value || "").replace(/^\s+|\s+$/g, "").toUpperCase();
+        if (!raw) {
+          setText("login-err", "Entre un code.");
+          return;
+        }
+        if (raw === "ADMIN-PENA") {
+          setText("login-err", "");
+          startSession({ code: "ADMIN-PENA", name: "Administrateur", points: 0, isAdmin: true });
+          return;
+        }
+        for (var i = 0; i < MEMBERS.length; i++) {
+          if (MEMBERS[i].code === raw) {
+            setText("login-err", "");
+            startSession({ code: MEMBERS[i].code, name: MEMBERS[i].name, points: MEMBERS[i].points, isAdmin: false });
+            return;
+          }
+        }
+        setText("login-err", "Code inconnu (" + raw + ").");
+      }
+
+      byId("btn-login").addEventListener("click", doLogin);
+      byId("code-in").addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.keyCode === 13) doLogin();
+      });
+      byId("btn-logout").addEventListener("click", function () {
+        state.user = null;
+        byId("nav").classList.add("hidden");
+        byId("sec-user").classList.add("hidden");
+        byId("view-pronos").classList.add("hidden");
+        byId("view-palm").classList.add("hidden");
+        byId("sec-login").classList.remove("hidden");
+        byId("code-in").value = "";
+      });
+      byId("tab-pronos").addEventListener("click", function () { setTab("pronos"); });
+      byId("tab-palm").addEventListener("click", function () { setTab("palm"); });
+      byId("match-select").addEventListener("change", function () { showMatch(this.value); });
+      byId("btn-save-pred").addEventListener("click", function () {
+        if (!state.user || state.user.isAdmin) return;
+        var m = getMatchById(state.currentId);
+        var h = parseInt(byId("pred-h").value, 10);
+        var a = parseInt(byId("pred-a").value, 10);
+        if (!m || m.finished || isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
+        m.preds[state.user.code] = { h: h, a: a };
+        setText("pred-ok", "Prono enregistré : " + h + " - " + a);
+        fetch(DB_URL, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ matches: MATCHES, members: MEMBERS })
+        }).catch(function () {});
+        renderLeaderboard(m);
+      });
+    })();
+  </script>
+</body>
+</html>
