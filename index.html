@@ -213,33 +213,17 @@
 
     .tag-champ { background: #fbd2d7; color: #8f131b; }
     .tag-me { background: #c7ebd4; color: var(--green-text); }
+
     .cup-plain {
       display: inline-block;
       margin-left: 6px;
-      background: none !important;
-      border: none !important;
-      padding: 0 !important;
+      background: transparent;
+      border: none;
+      padding: 0;
       letter-spacing: 1px;
       font-size: 0.95rem;
       line-height: 1;
       vertical-align: middle;
-    }
-
-    .palm-cups-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .palm-cup-badge {
-      background: #fff8eb;
-      border: 1px solid #f5d08a;
-      color: #7c2d12;
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 0.86rem;
-      font-weight: 800;
     }
 
     .palm-grid {
@@ -383,7 +367,6 @@
     <section id="view-palm" class="hidden">
       <div class="card">
         <h2 style="margin-top:0;">Palmarès de la Peña</h2>
-        <div id="palm-cups-bar" class="palm-cups-bar"></div>
         <div id="palm-grid" class="palm-grid"></div>
       </div>
     </section>
@@ -420,7 +403,8 @@
       { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false },
       { code: "JEAN-28", name: "SEDEILLAN Jean", points: 0, isChamp: false },
       { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false }
-    ];window.MATCHES = [
+    ];
+    window.MATCHES = [
       {
         id: "m01", pronoNum: 1, comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC",
         kickoff: "2026-08-15 19:00", finished: true, fh: 1, fa: 3,
@@ -672,19 +656,8 @@
     }
 
     function renderPalmares() {
-      var cupsBar = el("palm-cups-bar");
       var grid = el("palm-grid");
-      cupsBar.innerHTML = "";
       grid.innerHTML = "";
-
-      var tallies = getCupTallies();
-      for (var c = 0; c < tallies.list.length; c++) {
-        var item = tallies.list[c];
-        var badge = document.createElement("div");
-        badge.className = "palm-cup-badge";
-        badge.textContent = item.label + " " + cupIcons(item.count);
-        cupsBar.appendChild(badge);
-      }
 
       for (var i = 0; i < window.PALM.length; i++) {
         var s = window.PALM[i];
