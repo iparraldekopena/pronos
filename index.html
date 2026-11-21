@@ -349,6 +349,24 @@
       color: var(--muted);
       font-size: 0.88rem;
       font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .rules-bar {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      color: var(--text);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+    }
+
+    .rule-item strong {
+      color: var(--gold);
     }
 
     .table-wrap {
@@ -700,6 +718,12 @@
           <div id="participation-banner" class="participation-banner"></div>
           <div id="cumul-sub" class="cumul-sub"></div>
           <div id="revealed-note" class="revealed-note">🔒 Pronostics révélés (match commencé)</div>
+          <div class="rules-bar" aria-label="Règle de calcul des points">
+            <span class="rule-item"><strong>Score exact :</strong> 6 pts</span>
+            <span class="rule-item"><strong>Bon 1, N ou 2 :</strong> 3 pts</span>
+            <span class="rule-item"><strong>Rien de bon :</strong> 1 pt</span>
+            <span class="rule-item"><strong>Absent :</strong> 0 pt</span>
+          </div>
         </div>
 
         <div class="table-wrap">
@@ -757,12 +781,10 @@
         return 0;
       }
 
-      // Score exact : 6 pts
       if (ph === rh && pa === ra) {
         return 6;
       }
 
-      // Bon résultat (1, N ou 2) : 3 pts
       const predDiff = ph - pa;
       const realDiff = rh - ra;
       const sameOutcome =
@@ -774,7 +796,6 @@
         return 3;
       }
 
-      // Rien de bon (prono enregistré mais mauvais 1/N/2) : 1 pt
       return 1;
     }
 
@@ -1037,7 +1058,7 @@
       "12-ANDONI-02": { prono: "1 - 1" }
     };
 
-    // 27 joueurs (sans SEDEILLAN Jean, avec LEGRAS Peio et BARRUTIA Xabier 26e ex æquo)
+    // 27 joueurs
     window.MEMBERS = [
       { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0" },
       { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1" },
@@ -1236,6 +1257,53 @@
       return `${parsed.h}-${parsed.a}`;
     }
 
+    function computeMatchGain(predH, predA, realH, realA) {
+      if (
+        predH === null || predH === undefined || predH === "" ||
+        predA === null || predA === undefined || predA === "" ||
+        realH === null || realH === undefined || realH === "" ||
+        realA === null || realA === undefined || realA === ""
+      ) {
+        return 0;
+      }
+
+      const ph = Number(predH);
+      const pa = Number(predA);
+      const rh = Number(realH);
+      const ra = Number(realA);
+
+      if (Number.isNaN(ph) || Number.isNaN(pa) || Number.isNaN(rh) || Number.isNaN(ra)) {
+        return 0;
+      }
+
+      if (ph === rh && pa === ra) {
+        return 6;
+      }
+
+      const predDiff = ph - pa;
+      const realDiff = rh - ra;
+      const sameOutcome =
+        (predDiff > 0 && realDiff > 0) ||
+        (predDiff < 0 && realDiff < 0) ||
+        (predDiff === 0 && realDiff === 0);
+
+      if (sameOutcome) {
+        return 3;
+      }
+
+      return 1;
+    }
+
+    function parsePronoScore(pronoStr) {
+      if (!pronoStr || pronoStr === "-") return null;
+      const parts = String(pronoStr).split("-").map(s => s.trim());
+      if (parts.length !== 2 || parts[0] === "" || parts[1] === "") return null;
+      const h = Number(parts[0]);
+      const a = Number(parts[1]);
+      if (Number.isNaN(h) || Number.isNaN(a)) return null;
+      return { h, a };
+    }
+
     function getMemberMatchEntry(member, matchObj) {
       const num = matchObj ? matchObj.num : 13;
       const matchPreds = (remoteData.preds && remoteData.preds[matchObj.id]) || {};
@@ -1308,7 +1376,10 @@
       rows.forEach((r, idx) => {
         if (r.calcPoints !== lastPts) {
           currentRank = idx + 1;
+          r.showPos = `${currentRank}e`;
           lastPts = r.calcPoints;
+        } else {
+          r.showPos = "";
         }
         r.calcPos = currentRank;
         rankMap[r.code] = currentRank;
@@ -1538,7 +1609,7 @@
 
       rows.forEach(m => {
         let arrowHtml = "";
-        if (matchNum > 1 && prevRankMap[m.code] !== undefined) {
+        if (m.showPos && matchNum > 1 && prevRankMap[m.code] !== undefined) {
           const prevPos = prevRankMap[m.code];
           if (m.calcPos < prevPos) {
             arrowHtml = `<span class="arrow-up" title="En hausse">▲</span>`;
@@ -1563,8 +1634,10 @@
         if (m.isTenant) tr.classList.add("row-champ");
         if (currentUser && !currentUser.isAdmin && currentUser.code === m.code) tr.classList.add("row-me");
 
+        const posDisplay = m.showPos ? `${m.showPos}${arrowHtml}` : "";
+
         tr.innerHTML = `
-          <td class="pos-cell">${m.calcPos}${arrowHtml}</td>
+          <td class="pos-cell">${posDisplay}</td>
           <td><span class="member-name">${medalHtml}${m.name}</span>${cupsHtml}${tenantHtml}${meBadge}</td>
           <td class="prono-cell">${m.pronoStr} ${gainHtml}</td>
           <td class="total-cell">${m.calcPoints} ${ptsWord(m.calcPoints)}</td>
