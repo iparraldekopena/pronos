@@ -376,9 +376,9 @@
     <div class="top-bar">
       <div class="brand">IPARRALDEKO PEÑA</div>
       <div id="nav" class="nav hidden">
-        <button id="tab-pronos" class="active" onclick="window.setTab('pronos')">Pronostics & Classement</button>
-        <button id="tab-palm" onclick="window.setTab('palm')">Palmarès</button>
-        <button onclick="window.doLogout()">Déconnexion</button>
+        <button id="tab-pronos" type="button" class="active" onclick="window.setTab('pronos')">Pronostics & Classement</button>
+        <button id="tab-palm" type="button" onclick="window.setTab('palm')">Palmarès</button>
+        <button type="button" onclick="window.doLogout()">Déconnexion</button>
       </div>
     </div>
 
@@ -388,8 +388,8 @@
       <h1 style="margin: 0 0 8px; font-size: 1.35rem;">Connexion joueur</h1>
       <p class="muted" style="margin: 0;">Saisis ton code membre pour accéder aux pronostics et au classement.</p>
       <div class="login-row">
-        <input id="code-in" type="text" placeholder="Ex. ALAIN-01" autocomplete="off" />
-        <button class="btn-red" onclick="window.doLogin()">Entrer</button>
+        <input id="code-in" type="text" placeholder="Ex. ALAIN-01" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();window.doLogin();}" />
+        <button type="button" class="btn-red" onclick="window.doLogin()">Entrer</button>
       </div>
       <div id="login-err" class="err"></div>
     </section>
@@ -418,7 +418,7 @@
             <input id="pred-a" class="score-input" type="number" min="0" max="99" placeholder="-" />
             <span id="lbl-away" class="team-big"></span>
           </div>
-          <button class="btn-red" onclick="window.savePred()">Valider Prono</button>
+          <button type="button" class="btn-red" onclick="window.savePred()">Valider Prono</button>
           <div id="pred-ok" class="pred-ok"></div>
         </div>
       </section>
@@ -451,10 +451,33 @@
     window.DB_URL = window.DB_URL || "";
 
     window.MEMBERS = [
-      { code: "ALAIN-01", name: "LABORDE Alain", points: 12, isChamp: false },
-      { code: "JULEN-03", name: "LABORDE Julen", points: 15, isChamp: true },
-      { code: "LOREA-01", name: "LABORDE Lorea", points: 12, isChamp: false },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 6, isChamp: false }
+      { code: "ARIAS-01", name: "ARIAS RUIZ Jorge", points: 0, isChamp: false },
+      { code: "BARRUTIA-01", name: "BARRUTIA Xabier", points: 0, isChamp: false },
+      { code: "CAZAURAN-01", name: "CAZAURAN Jean-Yves", points: 0, isChamp: false },
+      { code: "CORDEIRO-01", name: "CORDEIRO Jonathan", points: 0, isChamp: false },
+      { code: "CROUZAT-F", name: "CROUZAT Frédéric", points: 0, isChamp: false },
+      { code: "CROUZAT-I", name: "CROUZAT Inko", points: 0, isChamp: false },
+      { code: "CROUZAT-L", name: "CROUZAT Luken", points: 0, isChamp: false },
+      { code: "CURUTCHARRY-01", name: "CURUTCHARRY Pierre", points: 0, isChamp: false },
+      { code: "DIAZ-DEBAT-01", name: "DIAZ-DEBAT Bertrand", points: 0, isChamp: false },
+      { code: "DULONG-01", name: "DULONG Xina", points: 0, isChamp: false },
+      { code: "ESCALANTE-01", name: "ESCALANTE Ange", points: 0, isChamp: false },
+      { code: "FERNANDEZ-01", name: "FERNANDEZ Adrian", points: 0, isChamp: false },
+      { code: "GOBBI-01", name: "GOBBI Olivier", points: 0, isChamp: false },
+      { code: "GOYENEIX-01", name: "GOYENEIX Pierre", points: 0, isChamp: false },
+      { code: "ALAIN-01", name: "LABORDE Alain", points: 0, isChamp: false },
+      { code: "JULEN-03", name: "LABORDE Julen", points: 0, isChamp: true },
+      { code: "LOREA-01", name: "LABORDE Lorea", points: 0, isChamp: false },
+      { code: "LEGRAS-01", name: "LEGRAS Peio", points: 0, isChamp: false },
+      { code: "MARITORENA-01", name: "MARITORENA Christophe", points: 0, isChamp: false },
+      { code: "MENDIOLA-I", name: "MENDIOLA Iñaki", points: 0, isChamp: false },
+      { code: "MENDIOLA-L", name: "MENDIOLA Lander", points: 0, isChamp: false },
+      { code: "PARRILLA-01", name: "PARRILLA ETCHART Xabier", points: 0, isChamp: false },
+      { code: "PONTACQ-01", name: "PONTACQ Jean-Louis", points: 0, isChamp: false },
+      { code: "QUEYROU-01", name: "QUEYROU Yannick", points: 0, isChamp: false },
+      { code: "ROCHE-01", name: "ROCHE Pierrick", points: 0, isChamp: false },
+      { code: "SANCHEZ-01", name: "SANCHEZ Gorka", points: 0, isChamp: false },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 0, isChamp: false }
     ];
 
     window.MATCHES = [
@@ -538,22 +561,32 @@
     };
 
     window.doLogin = async function() {
-      const raw = (document.getElementById("code-in").value || "").trim().toUpperCase();
+      const inputEl = document.getElementById("code-in");
       const errEl = document.getElementById("login-err");
-      errEl.textContent = "";
+      const raw = (inputEl ? inputEl.value : "").trim().toUpperCase();
+      if (errEl) errEl.textContent = "";
+
+      if (!raw) {
+        if (errEl) errEl.textContent = "Merci de saisir un code.";
+        return;
+      }
 
       if (raw === "ADMIN-PENA") {
         currentUser = { code: "ADMIN-PENA", name: "Administrateur Peña", points: 0, isChamp: false, isAdmin: true };
       } else {
-        const found = window.MEMBERS.find(m => m.code.toUpperCase() === raw);
+        const found = window.MEMBERS.find(m => String(m.code || "").trim().toUpperCase() === raw);
         if (!found) {
-          errEl.textContent = "Code joueur inconnu.";
+          if (errEl) errEl.textContent = `Code "${raw}" non trouvé.`;
           return;
         }
         currentUser = { ...found, isAdmin: false };
       }
 
-      await loadRemoteData();
+      try {
+        await loadRemoteData();
+      } catch (e) {
+        console.warn("Connexion poursuivie sans base distante :", e);
+      }
 
       document.getElementById("sec-login").classList.add("hidden");
       document.getElementById("member-logo").classList.remove("hidden");
