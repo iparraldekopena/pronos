@@ -3,467 +3,461 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iparraldeko Peña — Pronostics</title>
+  <title>Iparraldeko Peña — Pronostics & Classement</title>
   <style>
     :root {
-      --bg-page: #f6f7f9;
-      --bg-card: #ffffff;
-      --bg-white: #ffffff;
-      --text-main: #14181f;
-      --text-muted: #5b6575;
-      --border: #e3e7ee;
-      --accent: #c81d25;
-      --accent-soft: #fde8ea;
-      --accent-border: #f3b4ba;
-      --green-soft: #e6f6ec;
-      --green-text: #166534;
+      --bg: #0c0e12;
+      --surface: #141820;
+      --surface-2: #1b202b;
+      --focus-bg: #000000;
+      --border: #2a3140;
+      --text: #f3f5f8;
+      --muted: #9aa3b2;
+      --accent: #e11d48;
+      --accent-hover: #be123c;
+      --gold: #f59e0b;
+      --me-bg: rgba(59, 130, 246, 0.14);
+      --me-border: rgba(59, 130, 246, 0.45);
+      --champ-bg: rgba(245, 158, 11, 0.12);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
+      padding: 24px 16px 60px;
+      background: var(--bg);
+      color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg-page);
-      color: var(--text-main);
       line-height: 1.5;
     }
 
     .wrap {
-      max-width: 1120px;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 20px 16px 64px;
     }
 
-    .top-header {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 18px rgba(20, 24, 31, 0.04);
+    .hidden {
+      display: none !important;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* En-tête et navigation */
+    .top-bar {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 14px;
-      text-align: center;
-    }
-
-    .top-meta {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .badge-club {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 1px solid var(--accent-border);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-    }
-
-    .logo-wrap {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 18px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #d91e2a 0%, #9b1118 100%);
-      border: 3px solid #7d0b11;
-      box-shadow: 0 8px 22px rgba(200, 29, 37, 0.28);
-    }
-
-    .logo-img {
-      max-width: 100%;
-      width: 680px;
-      height: auto;
-      border-radius: 10px;
-      border: 3px solid #ffffff;
-      display: block;
-      background: #ffffff;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    }
-
-    .aupa-banner {
-      width: 100%;
-      background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-      border: 1px solid var(--accent-border);
-      border-radius: 12px;
-      padding: 12px 18px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      text-align: left;
-    }
-
-    .aupa-title {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: var(--accent);
-      letter-spacing: 0.5px;
-    }
-
-    .nav-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 18px rgba(20, 24, 31, 0.04);
-    }
-
-    .match-focus-dark {
-      background: #111317;
-      color: #ffffff;
-      border-radius: 14px;
-      padding: 22px 18px;
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    .match-focus-title {
-      margin: 0 0 8px;
-      font-size: 1.95rem;
-      font-weight: 900;
-      color: #ffffff;
-      letter-spacing: 0.5px;
-      text-align: center;
-    }
-
-    .match-focus-meta {
-      color: #e5e7eb;
-      font-size: 0.98rem;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    .pred-box-dark {
-      margin-top: 18px;
-      padding-top: 16px;
-      border-top: 1px solid #2a2f3a;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .pred-inputs-row {
-      display: flex;
       gap: 12px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      color: #ffffff;
-      font-size: 1.55rem;
-      font-weight: 900;
     }
 
-    .btn-valider-rouge {
-      background: var(--accent);
-      border: 1px solid var(--accent);
-      color: #ffffff;
-      padding: 11px 24px;
-      font-size: 1rem;
+    .brand {
+      font-size: 1.35rem;
       font-weight: 800;
-      border-radius: 10px;
+      letter-spacing: 0.04em;
     }
 
-    .hidden { display: none !important; }
+    .nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-    input, select, button {
-      font-family: inherit;
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 9px 14px;
       font-size: 0.95rem;
-      border-radius: 10px;
-      border: 1px solid #cfd6e0;
-      padding: 10px 14px;
-      background: #ffffff;
-      color: var(--text-main);
+      font-weight: 600;
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
-    button { cursor: pointer; font-weight: 700; }
-    button.primary, button.active {
+    button:hover {
+      background: #252c3b;
+    }
+
+    button.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    button.btn-red {
       background: var(--accent);
       border-color: var(--accent);
       color: #ffffff;
     }
 
-    .err { color: var(--accent); font-weight: 700; margin-top: 8px; }
-    .ok { color: var(--green-text); font-weight: 700; margin-top: 8px; }
-    .muted { color: var(--text-muted); font-size: 0.9rem; }
+    button.btn-red:hover {
+      background: var(--accent-hover);
+    }
 
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      background: var(--bg-white);
+    /* Connexion */
+    .card {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .login-row {
+      display: flex;
+      gap: 10px;
       margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 1rem;
+    }
+
+    .err {
+      color: #fb7185;
+      margin-top: 8px;
+      min-height: 1.2em;
+      font-size: 0.92rem;
+    }
+
+    /* Bandeau membre */
+    .aupa-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .aupa-heading {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .aupa-stats {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    /* Match Focus */
+    .match-focus {
+      background: var(--focus-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px 20px;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .match-selector-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .match-title {
+      font-size: clamp(1.45rem, 3.6vw, 2.35rem);
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.2;
+      margin: 0 0 10px;
+      letter-spacing: 0.01em;
+    }
+
+    .match-meta {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+
+    .pred-box {
+      margin-top: 16px;
+      padding-top: 18px;
+      border-top: 1px solid #1f2430;
+    }
+
+    .pred-teams-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .team-big {
+      font-size: clamp(1.15rem, 2.5vw, 1.65rem);
+      font-weight: 800;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    .score-input {
+      width: 72px;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .score-sep {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .pred-ok {
+      margin-top: 10px;
+      color: #4ade80;
+      font-weight: 600;
+      min-height: 1.3em;
+    }
+
+    /* Classement */
+    .lb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .lb-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: var(--bg-white);
     }
 
-    th, td {
+    th,
+    td {
       padding: 11px 10px;
-      border-bottom: 1px solid #edf0f5;
+      border-bottom: 1px solid var(--border);
       text-align: left;
-      background: var(--bg-white);
-      color: var(--text-main);
     }
 
     th {
-      font-size: 0.78rem;
+      color: var(--muted);
+      font-size: 0.82rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      border-bottom: 2px solid var(--border);
+      letter-spacing: 0.04em;
     }
 
-    th.prono-col, td.prono-col {
-      background: var(--bg-white);
-      color: var(--text-main);
+    .prono-col,
+    .pts-col {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pts-col {
       font-weight: 700;
-      text-align: center;
-      border-left: 1px solid #edf0f5;
-      border-right: 1px solid #edf0f5;
     }
 
-    td.pts-col { font-weight: 800; text-align: right; }
+    tr.row-champ {
+      background: var(--champ-bg);
+    }
 
-    tr.row-champ td, tr.row-champ td.prono-col { background: var(--accent-soft); }
-    tr.row-me td, tr.row-me td.prono-col { background: var(--green-soft); }
+    tr.row-me {
+      background: var(--me-bg);
+      outline: 1px solid var(--me-border);
+    }
 
     .tag {
       display: inline-block;
       margin-left: 8px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.74rem;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 0.72rem;
       font-weight: 700;
-    }
-
-    .tag-champ { background: #fbd2d7; color: #8f131b; }
-    .tag-me { background: #c7ebd4; color: var(--green-text); }
-
-    .cup-plain {
-      display: inline-block;
-      margin-left: 6px;
-      background: transparent;
-      border: none;
-      padding: 0;
-      letter-spacing: 1px;
-      font-size: 0.95rem;
-      line-height: 1;
       vertical-align: middle;
     }
 
+    .tag-champ {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+    }
+
+    .tag-me {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+    }
+
+    .cup-plain {
+      margin-left: 6px;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+
+    /* Palmarès */
     .palm-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
     }
 
     .palm-card {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      background: var(--bg-white);
     }
 
     .palm-card.is-holder {
-      background: var(--accent-soft);
-      border-color: var(--accent-border);
+      border-color: var(--gold);
     }
 
     .palm-head {
-      padding: 11px 14px;
+      background: var(--surface-2);
+      padding: 12px 16px;
+      font-weight: 700;
       border-bottom: 1px solid var(--border);
-      font-weight: 800;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #ffffff;
     }
 
-    .palm-card.is-holder .palm-head {
-      background: var(--accent-soft);
-      border-bottom-color: var(--accent-border);
+    .palm-rows {
+      padding: 10px 16px;
     }
-
-    .palm-rows { padding: 12px 14px; display: grid; gap: 7px; }
 
     .palm-row {
       display: flex;
-      gap: 8px;
       align-items: center;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #eef1f5;
-      background: #ffffff;
-      font-size: 0.9rem;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .palm-row:last-child {
+      border-bottom: none;
     }
 
     .palm-row.p1 {
-      background: var(--accent-soft);
-      border-color: var(--accent-border);
-      font-weight: 800;
+      font-weight: 700;
     }
 
-    .palm-rank { font-weight: 800; min-width: 34px; }
+    .palm-rank {
+      min-width: 28px;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="top-header">
-      <div class="top-meta">
-        <span>SAISON 2026/27 • PRONOSTICS DE LA PEÑA</span>
-        <span class="badge-club">Iparraldeko Peña • Athletic Club</span>
+    <div class="top-bar">
+      <div class="brand">IPARRALDEKO PEÑA</div>
+      <div id="nav" class="nav hidden">
+        <button id="tab-pronos" class="active" onclick="window.setTab('pronos')">Pronostics & Classement</button>
+        <button id="tab-palm" onclick="window.setTab('palm')">Palmarès</button>
+        <button onclick="window.doLogout()">Déconnexion</button>
       </div>
+    </div>
 
-      <div id="member-logo" class="logo-wrap hidden">
-        <img
-          src="./logo-pena.jpg"
-          alt="Logo Iparraldeko Peña — Athletic Club"
-          class="logo-img"
-        />
-      </div>
-
-      <div id="aupa-banner" class="aupa-banner hidden">
-        <div>
-          <div id="aupa-heading" class="aupa-title">AUPA</div>
-          <div id="aupa-sub" class="muted"></div>
-        </div>
-        <div id="aupa-stats" class="muted" style="font-weight:700;"></div>
-      </div>
-
-      <nav id="nav" class="nav-bar hidden">
-        <button id="tab-pronos" class="active" type="button" onclick="window.setTab('pronos')">Pronos & Classement</button>
-        <button id="tab-palm" type="button" onclick="window.setTab('palm')">Palmarès</button>
-        <button id="btn-logout" type="button" onclick="window.doLogout()">Déconnexion</button>
-      </nav>
-    </header>
+    <div id="member-logo" class="muted hidden" style="margin-bottom: 12px;">Espace Membres — Saison en cours</div>
 
     <section id="sec-login" class="card">
-      <h2 style="margin-top:0;">Connexion à l'espace membre</h2>
-      <p class="muted">Saisis ton code joueur (ex. <strong>ALAIN-08</strong>) ou <strong>ADMIN-PENA</strong>.</p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-        <input id="code-in" type="text" placeholder="Ex. ALAIN-08" autocomplete="off" onkeydown="if(event.key==='Enter'||event.keyCode===13) window.doLogin();" />
-        <button id="btn-login" class="primary" type="button" onclick="window.doLogin()">Se connecter</button>
+      <h1 style="margin: 0 0 8px; font-size: 1.35rem;">Connexion joueur</h1>
+      <p class="muted" style="margin: 0;">Saisis ton code membre pour accéder aux pronostics et au classement.</p>
+      <div class="login-row">
+        <input id="code-in" type="text" placeholder="Ex. ALAIN-01" autocomplete="off" />
+        <button class="btn-red" onclick="window.doLogin()">Entrer</button>
       </div>
       <div id="login-err" class="err"></div>
     </section>
 
+    <section id="aupa-banner" class="aupa-banner hidden">
+      <div>
+        <h2 id="aupa-heading" class="aupa-heading">AUPA !</h2>
+        <div id="aupa-sub" class="muted"></div>
+      </div>
+      <div id="aupa-stats" class="aupa-stats"></div>
+    </section>
+
     <main id="view-pronos" class="hidden">
-      <div class="card">
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
-          <label for="match-select" class="muted" style="font-weight:700;">Choisir une journée :</label>
+      <section class="match-focus">
+        <div class="match-selector-bar">
           <select id="match-select" onchange="window.showMatch(this.value)"></select>
         </div>
-        <div class="match-focus-dark">
-          <h3 id="match-title" class="match-focus-title"></h3>
-          <div id="match-meta" class="match-focus-meta"></div>
+        <h2 id="match-title" class="match-title"></h2>
+        <div id="match-meta" class="match-meta"></div>
 
-          <div id="pred-box" class="pred-box-dark hidden">
-            <div class="pred-inputs-row">
-              <span id="lbl-home"></span>
-              <input id="pred-h" type="number" min="0" style="width:78px; text-align:center;" />
-              <span>-</span>
-              <input id="pred-a" type="number" min="0" style="width:78px; text-align:center;" />
-              <span id="lbl-away"></span>
-            </div>
-            <button id="btn-save-pred" class="btn-valider-rouge" type="button" onclick="window.savePred()">Valider Prono</button>
+        <div id="pred-box" class="pred-box hidden">
+          <div class="pred-teams-row">
+            <span id="lbl-home" class="team-big"></span>
+            <input id="pred-h" class="score-input" type="number" min="0" max="99" placeholder="-" />
+            <span class="score-sep">-</span>
+            <input id="pred-a" class="score-input" type="number" min="0" max="99" placeholder="-" />
+            <span id="lbl-away" class="team-big"></span>
           </div>
+          <button class="btn-red" onclick="window.savePred()">Valider Prono</button>
+          <div id="pred-ok" class="pred-ok"></div>
         </div>
-        <div id="pred-ok" class="ok"></div>
-      </div>
+      </section>
 
-      <div class="card">
-        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px;">
-          <h2 style="margin:0;">Classement général</h2>
+      <section class="card">
+        <div class="lb-header">
+          <h2>Classement général</h2>
           <div id="part-info" class="muted"></div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Joueur</th>
-                <th id="th-prono" class="prono-col">PRONO N° 13</th>
-                <th style="text-align:right;">Total</th>
-              </tr>
-            </thead>
-            <tbody id="lb-body"></tbody>
-          </table>
-        </div>
-      </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 56px;">#</th>
+              <th>Joueur</th>
+              <th id="th-prono" class="prono-col">PRONO</th>
+              <th class="pts-col">POINTS</th>
+            </tr>
+          </thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </section>
     </main>
 
     <section id="view-palm" class="hidden">
-      <div class="card">
-        <h2 style="margin-top:0;">Palmarès de la Peña</h2>
-        <div id="palm-grid" class="palm-grid"></div>
-      </div>
+      <div id="palm-grid" class="palm-grid"></div>
     </section>
   </div>
 
   <script>
-    window.DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+    window.DB_URL = window.DB_URL || "";
 
     window.MEMBERS = [
-      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false },
-      { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
-      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", points: 18, isChamp: false },
-      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", points: 27, isChamp: false },
-      { code: "FREDERIC-17", name: "CROUZAT Frédéric", points: 19, isChamp: false },
-      { code: "INKO-24", name: "CROUZAT Inko", points: 2, isChamp: false },
-      { code: "LUKEN-19", name: "CROUZAT Luken", points: 15, isChamp: false },
-      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", points: 22, isChamp: false },
-      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", points: 1, isChamp: false },
-      { code: "XINA-07", name: "DULONG Xina", points: 25, isChamp: false },
-      { code: "ANGE-23", name: "ESCALANTE Ange", points: 3, isChamp: false },
-      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", points: 8, isChamp: false },
-      { code: "OLIVIER-20", name: "GOBBI Olivier", points: 14, isChamp: false },
-      { code: "PIERRE-21", name: "GOYENEIX Pierre", points: 12, isChamp: false },
-      { code: "ALAIN-08", name: "LABORDE Alain", points: 23, isChamp: false },
-      { code: "JULEN-03", name: "LABORDE Julen", points: 29, isChamp: true },
-      { code: "LOREA-01", name: "LABORDE Lorea", points: 36, isChamp: false },
-      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", points: 20, isChamp: false },
-      { code: "INAKI-15", name: "MENDIOLA Iñaki", points: 20, isChamp: false },
-      { code: "LANDER-09", name: "MENDIOLA Lander", points: 23, isChamp: false },
-      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", points: 28, isChamp: false },
-      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", points: 26, isChamp: false },
-      { code: "YANNICK-11", name: "QUEYROU Yannick", points: 22, isChamp: false },
-      { code: "PIERRICK-16", name: "ROCHE Pierrick", points: 19, isChamp: false },
-      { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false },
-      { code: "JEAN-28", name: "SEDEILLAN Jean", points: 0, isChamp: false },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false }
+      { code: "ALAIN-01", name: "LABORDE Alain", points: 12, isChamp: false },
+      { code: "JULEN-03", name: "LABORDE Julen", points: 15, isChamp: true },
+      { code: "LOREA-01", name: "LABORDE Lorea", points: 12, isChamp: false },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 6, isChamp: false }
     ];
-window.MATCHES = [
+
+    window.MATCHES = [
       { id: "m13", num: 13, comp: "Liga", dayName: "Vendredi", date: "20 Novembre", time: "21:00", stadium: "San Mamés", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, fh: 0, fa: 1 },
       { id: "m14", num: 14, comp: "Liga", dayName: "samedi", date: "28 novembre", time: "16:15", stadium: "La Rosaleda", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, fh: null, fa: null }
     ];
@@ -500,7 +494,14 @@ window.MATCHES = [
       return `<span class="cup-plain">${"🏆".repeat(count)}</span>`;
     }
 
+    function getFirstName(fullName) {
+      if (!fullName) return "";
+      const parts = fullName.trim().split(/\s+/);
+      return parts[parts.length - 1];
+    }
+
     async function loadRemoteData() {
+      if (!window.DB_URL) return;
       try {
         const res = await fetch(window.DB_URL + "?t=" + Date.now());
         if (res.ok) {
@@ -515,6 +516,7 @@ window.MATCHES = [
     }
 
     async function saveRemoteData() {
+      if (!window.DB_URL) return;
       try {
         await fetch(window.DB_URL, {
           method: "PUT",
@@ -559,7 +561,8 @@ window.MATCHES = [
       document.getElementById("nav").classList.remove("hidden");
       document.getElementById("view-pronos").classList.remove("hidden");
 
-      document.getElementById("aupa-heading").textContent = `AUPA ${currentUser.name}`;
+      const firstName = currentUser.isAdmin ? "ADMIN" : getFirstName(currentUser.name).toUpperCase();
+      document.getElementById("aupa-heading").textContent = `AUPA ${firstName} !`;
       document.getElementById("aupa-sub").textContent = currentUser.isAdmin
         ? "Mode administrateur actif"
         : `Code : ${currentUser.code}`;
