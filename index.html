@@ -503,7 +503,7 @@
       font-weight: 800;
     }
 
-    /* Palmarès : surlignage doré/ambré pour tous les 1ers */
+    /* Palmarès : fond avec liseré doré pour les 1ers, sans couleur derrière le nom */
     .palm-section-title {
       margin: 0 0 14px;
       font-size: 1.2rem;
@@ -541,7 +541,7 @@
 
     .palm-row {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 10px;
       padding: 9px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -553,7 +553,7 @@
 
     .palm-row-first {
       margin: 2px -6px 6px;
-      padding: 9px 10px;
+      padding: 8px 10px;
       border-radius: 10px;
       background: rgba(245, 158, 11, 0.22);
       border: 1px solid rgba(251, 191, 36, 0.6);
@@ -564,7 +564,7 @@
       min-width: 38px;
       font-weight: 900;
       color: #fde047;
-      font-size: 0.94rem;
+      font-size: 0.9rem;
     }
 
     .palm-rank-other {
@@ -574,22 +574,21 @@
     }
 
     .palm-names {
-      line-height: 1.4;
+      line-height: 1.3;
     }
 
     .palm-name-1 {
-      font-weight: 900;
-      letter-spacing: 0.04em;
+      font-weight: 800;
+      font-size: 0.86rem;
+      line-height: 1.25;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
       color: #ffffff;
-      background: rgba(217, 119, 6, 0.35);
-      padding: 1px 6px;
-      border-radius: 5px;
     }
 
     .palm-icon-1 {
-      margin-left: 5px;
-      font-size: 0.95rem;
+      margin-left: 4px;
+      font-size: 0.9rem;
     }
 
     .palm-name-other {
