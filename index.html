@@ -189,18 +189,27 @@
     }
 
     th.prono-col, td.prono-col {
-      background: var(--bg-white);
-      color: var(--text-main);
-      font-weight: 700;
+      background: #111317;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 1.08rem;
+      letter-spacing: 0.4px;
       text-align: center;
-      border-left: 1px solid #edf0f5;
-      border-right: 1px solid #edf0f5;
+      border-left: 1px solid #2a2f3a;
+      border-right: 1px solid #2a2f3a;
+      border-bottom-color: #252a34;
+    }
+
+    th.prono-col {
+      font-size: 0.88rem;
+      letter-spacing: 0.7px;
+      border-bottom: 2px solid #383f4d;
     }
 
     td.pts-col { font-weight: 800; text-align: right; }
 
-    tr.row-champ td, tr.row-champ td.prono-col { background: var(--accent-soft); }
-    tr.row-me td, tr.row-me td.prono-col { background: var(--green-soft); }
+    tr.row-champ td:not(.prono-col) { background: var(--accent-soft); }
+    tr.row-me td:not(.prono-col) { background: var(--green-soft); }
 
     .tag {
       display: inline-block;
@@ -294,7 +303,6 @@
           src="./logo-pena.jpg"
           alt="Logo Iparraldeko Peña — Athletic Club"
           class="logo-img"
-          onerror="this.style.display='none';"
         />
       </div>
 
@@ -612,37 +620,26 @@
 
     function getCupTallies() {
       var byKey = {};
-      var order = [];
       for (var i = 0; i < window.PALM.length; i++) {
         var winners = window.PALM[i].p1.split(/\s+ET\s+/i);
         for (var j = 0; j < winners.length; j++) {
           var w = winners[j].trim();
           if (!w) continue;
           var k = normKey(w);
-          if (!byKey[k]) {
-            byKey[k] = { label: w, count: 0 };
-            order.push(k);
-          }
-          byKey[k].count += 1;
+          if (!byKey[k]) byKey[k] = 0;
+          byKey[k] += 1;
         }
       }
-      var list = [];
-      for (var m = 0; m < order.length; m++) {
-        list.push(byKey[order[m]]);
-      }
-      list.sort(function (a, b) {
-        return b.count - a.count || a.label.localeCompare(b.label, "fr");
-      });
-      return { byKey: byKey, list: list };
+      return byKey;
     }
 
     function getMemberCups(memberName, tallies) {
       var mKey = normKey(memberName);
       if (!mKey) return 0;
-      for (var k in tallies.byKey) {
-        if (!Object.prototype.hasOwnProperty.call(tallies.byKey, k)) continue;
+      for (var k in tallies) {
+        if (!Object.prototype.hasOwnProperty.call(tallies, k)) continue;
         if (k === mKey || k.indexOf(mKey) !== -1 || mKey.indexOf(k) !== -1) {
-          return tallies.byKey[k].count;
+          return tallies[k];
         }
       }
       return 0;
