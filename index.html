@@ -213,7 +213,17 @@
 
     .tag-champ { background: #fbd2d7; color: #8f131b; }
     .tag-me { background: #c7ebd4; color: var(--green-text); }
-    .tag-cup { background: #fff8eb; color: #7c2d12; border: 1px solid #f5d08a; letter-spacing: 1px; }
+    .cup-plain {
+      display: inline-block;
+      margin-left: 6px;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      letter-spacing: 1px;
+      font-size: 0.95rem;
+      line-height: 1;
+      vertical-align: middle;
+    }
 
     .palm-cups-bar {
       display: flex;
@@ -410,8 +420,7 @@
       { code: "GORKA-12", name: "SANCHEZ Gorka", points: 21, isChamp: false },
       { code: "JEAN-28", name: "SEDEILLAN Jean", points: 0, isChamp: false },
       { code: "ANDONI-02", name: "URREIZTIETA Andoni", points: 35, isChamp: false }
-    ];
-    window.MATCHES = [
+    ];window.MATCHES = [
       {
         id: "m01", pronoNum: 1, comp: "Journée 1 • Domicile (D)", home: "ATHLETIC CLUB", away: "SEVILLA FC",
         kickoff: "2026-08-15 19:00", finished: true, fh: 1, fa: 3,
@@ -768,7 +777,7 @@
         var cups = getMemberCups(mem.name, tallies);
         if (cups > 0) {
           var emCup = document.createElement("span");
-          emCup.className = "tag tag-cup";
+          emCup.className = "cup-plain";
           emCup.textContent = cupIcons(cups);
           td2.appendChild(emCup);
         }
