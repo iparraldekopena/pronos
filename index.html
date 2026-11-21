@@ -837,6 +837,13 @@
       return false;
     }
 
+    function getRankMedal(rank) {
+      if (rank === 1) return "🥇";
+      if (rank === 2) return "🥈";
+      if (rank === 3) return "🥉";
+      return "";
+    }
+
     // Historique des pronostics des matchs 1 à 12
     window.HISTORY_PREDS = {
       // Match 1 : ATHLETIC CLUB 1-3 SEVILLA FC
@@ -1088,33 +1095,33 @@
 
     // 27 joueurs
     window.MEMBERS = [
-      { code: "LOREA-01", name: "LABORDE Lorea", medal: "🥇", cups: 2, isTenant: false, prono13: "2 - 0" },
-      { code: "ANDONI-02", name: "URREIZTIETA Andoni", medal: "🥈", cups: 0, isTenant: false, prono13: "2 - 1" },
-      { code: "JULEN-03", name: "LABORDE Julen", medal: "🥉", cups: 1, isTenant: true, prono13: "1 - 0" },
-      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", medal: "", cups: 0, isTenant: false, prono13: "3 - 1" },
-      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", medal: "", cups: 1, isTenant: false, prono13: "2 - 0" },
-      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
-      { code: "XINA-07", name: "DULONG Xina", medal: "", cups: 0, isTenant: false, prono13: "3 - 1" },
-      { code: "ALAIN-08", name: "LABORDE Alain", medal: "", cups: 0, isTenant: false, prono13: "3 - 1" },
-      { code: "LANDER-09", name: "MENDIOLA Lander", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
-      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", medal: "", cups: 0, isTenant: false, prono13: "1 - 1" },
-      { code: "YANNICK-11", name: "QUEYROU Yannick", medal: "", cups: 0, isTenant: false, prono13: "1 - 0" },
-      { code: "GORKA-12", name: "SANCHEZ Gorka", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
-      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
-      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", medal: "", cups: 0, isTenant: false, prono13: "3 - 0" },
-      { code: "INAKI-15", name: "MENDIOLA Iñaki", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
-      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", medal: "", cups: 0, isTenant: false, prono13: "2 - 1" },
-      { code: "FREDERIC-17", name: "CROUZAT Frédéric", medal: "", cups: 0, isTenant: false, prono13: "4 - 1" },
-      { code: "PIERRICK-16", name: "ROCHE Pierrick", medal: "", cups: 1, isTenant: false, prono13: "-" },
-      { code: "LUKEN-19", name: "CROUZAT Luken", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
-      { code: "OLIVIER-20", name: "GOBBI Olivier", medal: "", cups: 0, isTenant: false, prono13: "1 - 0" },
-      { code: "PIERRE-21", name: "GOYENEIX Pierre", medal: "", cups: 0, isTenant: false, prono13: "2 - 0" },
-      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", medal: "", cups: 1, isTenant: false, prono13: "-" },
-      { code: "ANGE-23", name: "ESCALANTE Ange", medal: "", cups: 0, isTenant: false, prono13: "-" },
-      { code: "INKO-24", name: "CROUZAT Inko", medal: "", cups: 0, isTenant: false, prono13: "-" },
-      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", medal: "", cups: 0, isTenant: false, prono13: "-" },
-      { code: "XABIER-26", name: "BARRUTIA Xabier", medal: "", cups: 0, isTenant: false, prono13: "-" },
-      { code: "PIERRE-27", name: "LEGRAS Peio", medal: "", cups: 0, isTenant: false, prono13: "-" }
+      { code: "LOREA-01", name: "LABORDE Lorea", cups: 2, isTenant: false, prono13: "2 - 0" },
+      { code: "ANDONI-02", name: "URREIZTIETA Andoni", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "JULEN-03", name: "LABORDE Julen", cups: 1, isTenant: true, prono13: "1 - 0" },
+      { code: "XABIER-04", name: "PARRILLA ETCHART Xabier", cups: 0, isTenant: false, prono13: "3 - 1" },
+      { code: "JONATHAN-05", name: "CORDEIRO Jonathan", cups: 1, isTenant: false, prono13: "2 - 0" },
+      { code: "JEANLOUIS-06", name: "PONTACQ Jean-Louis", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "XINA-07", name: "DULONG Xina", cups: 0, isTenant: false, prono13: "3 - 1" },
+      { code: "ALAIN-08", name: "LABORDE Alain", cups: 0, isTenant: false, prono13: "3 - 1" },
+      { code: "LANDER-09", name: "MENDIOLA Lander", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "PIERRE-10", name: "CURUTCHARRY Pierre", cups: 0, isTenant: false, prono13: "1 - 1" },
+      { code: "YANNICK-11", name: "QUEYROU Yannick", cups: 0, isTenant: false, prono13: "1 - 0" },
+      { code: "GORKA-12", name: "SANCHEZ Gorka", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "JORGE-13", name: "ARIAS RUIZ Jorge", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "CHRISTOPHE-14", name: "MARITORENA Christophe", cups: 0, isTenant: false, prono13: "3 - 0" },
+      { code: "INAKI-15", name: "MENDIOLA Iñaki", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "JEANYVES-18", name: "CAZAURAN Jean-Yves", cups: 0, isTenant: false, prono13: "2 - 1" },
+      { code: "FREDERIC-17", name: "CROUZAT Frédéric", cups: 0, isTenant: false, prono13: "4 - 1" },
+      { code: "PIERRICK-16", name: "ROCHE Pierrick", cups: 1, isTenant: false, prono13: "-" },
+      { code: "LUKEN-19", name: "CROUZAT Luken", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "OLIVIER-20", name: "GOBBI Olivier", cups: 0, isTenant: false, prono13: "1 - 0" },
+      { code: "PIERRE-21", name: "GOYENEIX Pierre", cups: 0, isTenant: false, prono13: "2 - 0" },
+      { code: "ADRIAN-22", name: "FERNANDEZ Adrian", cups: 1, isTenant: false, prono13: "-" },
+      { code: "ANGE-23", name: "ESCALANTE Ange", cups: 0, isTenant: false, prono13: "-" },
+      { code: "INKO-24", name: "CROUZAT Inko", cups: 0, isTenant: false, prono13: "-" },
+      { code: "BERTRAND-25", name: "DIAZ-DEBAT Bertrand", cups: 0, isTenant: false, prono13: "-" },
+      { code: "XABIER-26", name: "BARRUTIA Xabier", cups: 0, isTenant: false, prono13: "-" },
+      { code: "PIERRE-27", name: "LEGRAS Peio", cups: 0, isTenant: false, prono13: "-" }
     ];
 
     // Matchs 1 à 12 + Match 13 + Match 14
@@ -1363,6 +1370,7 @@
           r.showPos = "";
         }
         r.calcPos = currentRank;
+        r.medal = getRankMedal(currentRank);
         rankMap[r.code] = currentRank;
       });
 
