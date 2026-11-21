@@ -16,6 +16,8 @@
       --gold: #9a6700;
       --gold-bg: #fff8c5;
       --champ-bg: #e8f7ee;
+      --palm-red-bg: #fde8ea;
+      --palm-red-border: #f3b4ba;
     }
     * { box-sizing: border-box; }
     body {
@@ -143,6 +145,61 @@
     tr.me-row td { background: #fff5f5; }
     tr.me-row td.prono-col { background: #111111; color: #ffffff; }
     .champ-tag { font-style: italic; color: var(--accent-2); margin-left: 6px; }
+
+    .palmares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .palm-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .palm-season {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .palm-season span {
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+    .palm-rows {
+      padding: 10px 14px;
+      display: grid;
+      gap: 6px;
+    }
+    .palm-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 0.88rem;
+      padding: 7px 10px;
+      border-radius: 7px;
+      border: 1px solid #eef1f4;
+      background: #ffffff;
+    }
+    .palm-row.p1 {
+      background: var(--palm-red-bg);
+      border-color: var(--palm-red-border);
+      font-weight: 700;
+      color: var(--text);
+    }
+    .palm-rank {
+      flex: 0 0 auto;
+      font-weight: 800;
+      min-width: 34px;
+    }
+    .palm-name { flex: 1 1 auto; }
   </style>
 </head>
 <body>
@@ -157,6 +214,7 @@
         <span id="sync" class="sync-pill">Prêt</span>
         <div id="nav" class="nav hidden">
           <button id="t-pronos" class="active" type="button">Pronos & Classement</button>
+          <button id="t-palm" type="button">Palmarès</button>
           <button id="logout-btn" type="button">Déconnexion</button>
         </div>
       </div>
@@ -236,6 +294,16 @@
         </div>
       </div>
     </main>
+
+    <section id="v-palm" class="hidden">
+      <div class="card">
+        <div class="match-head">
+          <h2 style="margin:0;">Palmarès de la Peña</h2>
+          <span class="muted">1er, 2e et 3e par saison</span>
+        </div>
+        <div id="palm-list" class="palmares-grid"></div>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -289,42 +357,10 @@
           kickoff: "2026-11-28 16:15", finished: false, ptsApplied: false, fh: null, fa: null, preds: {}
         }
       ];
-
-      var state = { user: null, members: MEMBERS.slice(), matches: MATCHES.slice(), currentId: "m13" };
-
-      function el(id) { return document.getElementById(id); }
-      function setTxt(id, t) { var n = el(id); if (n) n.textContent = t; }
-      function sign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
-      function pronoTitle(num) {
-        var n = parseInt(num, 10) || 1;
-        return "PRONO N° " + (n < 10 ? "0" + n : String(n));
-      }
-
-      function syncRemote() {
-        setTxt("sync", "Sync...");
-        fetch(DB, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ matches: state.matches, members: state.members })
-        }).then(function () { setTxt("sync", "Synchronisé"); }).catch(function () { setTxt("sync", "Local"); });
-      }
-
-      function renderLeaderboard() {
-        var m = state.matches[0];
-        for (var i = 0; i < state.matches.length; i++) {
-          if (state.matches[i].id === state.currentId) { m = state.matches[i]; break; }
-        }
-        setTxt("th-prono", pronoTitle(m.pronoNum));
-        var count = 0;
-        for (var k in m.preds) { if (m.preds.hasOwnProperty(k)) count++; }
-        setTxt("participation-display", "Participation : " + count + "/" + state.members.length);
-
-        var sorted = state.members.slice().sort(function (a, b) {
-          return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
-        });
-        var tb = el("lb");
-        tb.innerHTML = "";
-        for (var idx = 0; idx < sorted.length; idx++) {
-          var mem = sorted[idx];
-          var pr = m.preds[mem.code];
-          var txt = pr ? (pr.h + " - " + pr.
+      var PALM = [
+        { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
+        { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
+        { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
+        { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
+        { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
+        { y: "2020/21", p1: "CAZENAVE OIHAN", p
