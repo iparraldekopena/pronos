@@ -231,7 +231,7 @@
 
     .admin-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -831,6 +831,11 @@
         <div class="field-group">
           <label for="adm-date">Date du match</label>
           <input id="adm-date" type="text" placeholder="samedi 5 décembre 2026" />
+        </div>
+
+        <div class="field-group">
+          <label for="adm-time">Heure du match</label>
+          <input id="adm-time" type="text" placeholder="21:00" />
         </div>
 
         <div class="field-group">
@@ -1483,7 +1488,8 @@
       if (m.finished && m.fh !== null && m.fa !== null) {
         return `Pronostic n° ${m.num} — ${compPrefix}${m.home} ${m.fh}-${m.fa} ${m.away}`;
       }
-      return `Pronostic n° ${m.num} — ${compPrefix}${m.home} vs ${m.away} (${m.date})`;
+      const whenLabel = [m.date, m.time].filter(Boolean).join(" à ");
+      return `Pronostic n° ${m.num} — ${compPrefix}${m.home} vs ${m.away}${whenLabel ? ` (${whenLabel})` : ""}`;
     }
 
     function formatUserPronoScore(pronoStr) {
@@ -1502,6 +1508,7 @@
       const homeEl = document.getElementById("adm-home");
       const awayEl = document.getElementById("adm-away");
       const dateEl = document.getElementById("adm-date");
+      const timeEl = document.getElementById("adm-time");
       const stadiumEl = document.getElementById("adm-stadium");
       const compEl = document.getElementById("adm-comp");
 
@@ -1509,6 +1516,7 @@
       if (homeEl && !homeEl.value) homeEl.value = "ATHLETIC CLUB";
       if (awayEl) awayEl.value = "";
       if (dateEl) dateEl.value = "";
+      if (timeEl) timeEl.value = "";
       if (stadiumEl && !stadiumEl.value) stadiumEl.value = "San Mamés";
       if (compEl && !compEl.value) compEl.value = "Liga";
     }
@@ -1557,6 +1565,7 @@
       const homeRaw = document.getElementById("adm-home").value.trim().toUpperCase();
       const awayRaw = document.getElementById("adm-away").value.trim().toUpperCase();
       const dateRaw = document.getElementById("adm-date").value.trim();
+      const timeRaw = document.getElementById("adm-time").value.trim();
       const stadiumRaw = document.getElementById("adm-stadium").value.trim();
       const compRaw = document.getElementById("adm-comp").value.trim() || "Liga";
 
@@ -1573,6 +1582,10 @@
         if (msgEl) msgEl.textContent = "Merci d'indiquer la date du match.";
         return;
       }
+      if (!timeRaw) {
+        if (msgEl) msgEl.textContent = "Merci d'indiquer l'heure du match.";
+        return;
+      }
       if (!stadiumRaw) {
         if (msgEl) msgEl.textContent = "Merci d'indiquer le lieu du match.";
         return;
@@ -1585,7 +1598,7 @@
         comp: compRaw,
         dayName: "",
         date: dateRaw,
-        time: "",
+        time: timeRaw,
         stadium: stadiumRaw,
         home: homeRaw,
         away: awayRaw,
@@ -1606,9 +1619,10 @@
       document.getElementById("adm-num").value = String(getNextMatchNumber());
       document.getElementById("adm-away").value = "";
       document.getElementById("adm-date").value = "";
+      document.getElementById("adm-time").value = "";
 
       if (msgEl) {
-        msgEl.textContent = `Pronostic n° ${num} ajouté (${compRaw} — ${homeRaw} vs ${awayRaw}, ${dateRaw}, ${stadiumRaw}).`;
+        msgEl.textContent = `Pronostic n° ${num} ajouté (${compRaw} — ${homeRaw} vs ${awayRaw}, ${dateRaw} à ${timeRaw}, ${stadiumRaw}).`;
       }
     };
 
