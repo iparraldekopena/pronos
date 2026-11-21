@@ -5,161 +5,339 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iparraldeko Peña — Pronostics</title>
   <style>
+    :root {
+      --bg-page: #f6f7f9;
+      --bg-card: #ffffff;
+      --bg-white: #ffffff;
+      --text-main: #14181f;
+      --text-muted: #5b6575;
+      --border: #e3e7ee;
+      --accent: #c81d25;
+      --accent-soft: #fde8ea;
+      --accent-border: #f3b4ba;
+      --green-soft: #e6f6ec;
+      --green-border: #9fd8b5;
+      --green-text: #166534;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #ffffff;
-      color: #161b22;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
       line-height: 1.5;
     }
+
     .wrap {
-      max-width: 1080px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 20px 16px 60px;
+      padding: 20px 16px 64px;
     }
-    header {
+
+    .top-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 18px rgba(20, 24, 31, 0.04);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      border: 1px solid #e2e6ec;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 18px;
-      background: #ffffff;
+      gap: 14px;
       text-align: center;
     }
-    .logo-box {
+
+    .top-meta {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .badge-club {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .logo-wrap {
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
     }
+
     .logo-img {
       max-width: 100%;
       width: 680px;
       height: auto;
-      border-radius: 8px;
+      border-radius: 10px;
       display: block;
     }
+
     .logo-fallback {
-      background: #cf222e;
+      background: var(--accent);
       color: #ffffff;
-      padding: 12px 26px;
-      border-radius: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
       font-weight: 900;
       font-size: 1.35rem;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
     }
-    .card {
-      border: 1px solid #e2e6ec;
+
+    .aupa-banner {
+      width: 100%;
+      background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+      border: 1px solid var(--accent-border);
       border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 16px;
-      background: #ffffff;
+      padding: 12px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
     }
+
+    .aupa-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 18px rgba(20, 24, 31, 0.04);
+    }
+
     .hidden {
       display: none !important;
     }
+
     input, select, button {
       font-family: inherit;
       font-size: 0.95rem;
-      padding: 9px 12px;
-      border-radius: 8px;
-      border: 1px solid #cfd7de;
+      border-radius: 10px;
+      border: 1px solid #cfd6e0;
+      padding: 10px 14px;
       background: #ffffff;
-      color: #161b22;
+      color: var(--text-main);
     }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
     button {
       cursor: pointer;
       font-weight: 700;
+      transition: background 0.15s ease, transform 0.08s ease;
     }
+
+    button:active {
+      transform: scale(0.99);
+    }
+
     button.primary, button.active {
-      background: #cf222e;
-      border-color: #cf222e;
+      background: var(--accent);
+      border-color: var(--accent);
       color: #ffffff;
     }
+
     .err {
-      color: #cf222e;
+      color: var(--accent);
       font-weight: 700;
       margin-top: 8px;
     }
+
     .ok {
-      color: #1a7f37;
+      color: var(--green-text);
       font-weight: 700;
       margin-top: 8px;
     }
+
     .muted {
-      color: #57606a;
+      color: var(--text-muted);
       font-size: 0.9rem;
     }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
+      background: var(--bg-white);
     }
+
     th, td {
-      padding: 10px 8px;
-      border-bottom: 1px solid #e2e6ec;
+      padding: 11px 10px;
+      border-bottom: 1px solid #edf0f5;
       text-align: left;
+      background: var(--bg-white);
+      color: var(--text-main);
     }
+
     th {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
-      color: #57606a;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      background: var(--bg-white);
+      border-bottom: 2px solid var(--border);
     }
+
     th.prono-col, td.prono-col {
-      background: #111111;
-      color: #ffffff;
+      background: var(--bg-white);
+      color: var(--text-main);
       font-weight: 700;
       text-align: center;
+      border-left: 1px solid #edf0f5;
+      border-right: 1px solid #edf0f5;
     }
+
     td.pts-col {
+      font-weight: 800;
+      text-align: right;
+    }
+
+    tr.row-champ td, tr.row-champ td.prono-col {
+      background: var(--accent-soft);
+    }
+
+    tr.row-me td, tr.row-me td.prono-col {
+      background: var(--green-soft);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.74rem;
       font-weight: 700;
+      font-style: normal;
     }
-    .champ-tag {
-      font-style: italic;
-      color: #1a7f37;
-      margin-left: 6px;
+
+    .tag-champ {
+      background: #fbd2d7;
+      color: #8f131b;
     }
+
+    .tag-me {
+      background: #c7ebd4;
+      color: var(--green-text);
+    }
+
+    .palm-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .cup-pill {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
     .palm-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 14px;
     }
+
     .palm-card {
-      border: 1px solid #e2e6ec;
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       overflow: hidden;
-      background: #ffffff;
+      background: var(--bg-white);
     }
+
+    .palm-card.is-holder {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+    }
+
     .palm-head {
-      padding: 10px 14px;
-      border-bottom: 1px solid #e2e6ec;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
       font-weight: 800;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: #ffffff;
     }
+
+    .palm-card.is-holder .palm-head {
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-border);
+    }
+
     .palm-rows {
-      padding: 10px 14px;
+      padding: 12px 14px;
       display: grid;
-      gap: 6px;
+      gap: 7px;
     }
+
     .palm-row {
       display: flex;
       gap: 8px;
-      align-items: baseline;
-      padding: 7px 10px;
-      border-radius: 7px;
-      border: 1px solid #eef1f4;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #eef1f5;
+      background: #ffffff;
       font-size: 0.9rem;
     }
+
     .palm-row.p1 {
-      background: #fde8ea;
-      border-color: #f3b4ba;
-      font-weight: 700;
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      font-weight: 800;
     }
+
     .palm-rank {
       font-weight: 800;
       min-width: 34px;
@@ -168,8 +346,13 @@
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div class="logo-box">
+    <header class="top-header">
+      <div class="top-meta">
+        <span>SAISON 2026/27 • PRONOSTICS DE LA PEÑA</span>
+        <span class="badge-club">Iparraldeko Peña • Athletic Club</span>
+      </div>
+
+      <div class="logo-wrap">
         <img
           id="logo-img"
           class="logo-img"
@@ -178,68 +361,81 @@
         />
         <div id="logo-fallback" class="logo-fallback hidden">IPARRALDEKO PEÑA</div>
       </div>
-      <div id="nav" class="hidden" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+
+      <div id="aupa-banner" class="aupa-banner hidden">
+        <div>
+          <div id="aupa-heading" class="aupa-title">AUPA</div>
+          <div id="aupa-sub" class="muted"></div>
+        </div>
+        <div id="aupa-stats" class="muted" style="font-weight:700;"></div>
+      </div>
+
+      <nav id="nav" class="nav-bar hidden" aria-label="Navigation principale">
         <button id="tab-pronos" class="active" type="button">Pronos & Classement</button>
         <button id="tab-palm" type="button">Palmarès</button>
         <button id="btn-logout" type="button">Déconnexion</button>
-      </div>
+      </nav>
     </header>
 
     <section id="sec-login" class="card">
-      <h2 style="margin-top:0;">Connexion</h2>
-      <p class="muted">Entre ton code membre (ex. ALAIN-08) ou ADMIN-PENA.</p>
+      <h2 style="margin-top:0;">Connexion à l'espace membre</h2>
+      <p class="muted">Saisis ton code joueur (par exemple <strong>ALAIN-08</strong>) ou <strong>ADMIN-PENA</strong>.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-        <input id="code-in" type="text" placeholder="Code d'accès" />
+        <input id="code-in" type="text" placeholder="Ex. ALAIN-08" autocomplete="off" />
         <button id="btn-login" class="primary" type="button">Se connecter</button>
       </div>
       <div id="login-err" class="err"></div>
     </section>
 
-    <section id="sec-user" class="card hidden">
-      <div><strong>Connecté :</strong> <span id="user-label"></span></div>
-      <div id="user-pts" class="muted" style="margin-top:4px;"></div>
-    </section>
-
     <main id="view-pronos" class="hidden">
       <div class="card">
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
-          <label for="match-select" class="muted">Match :</label>
+          <label for="match-select" class="muted" style="font-weight:700;">Choisir une journée :</label>
           <select id="match-select"></select>
         </div>
         <h3 id="match-title" style="margin:0 0 4px;"></h3>
         <div id="match-meta" class="muted"></div>
 
-        <div id="pred-box" class="hidden" style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-          <span id="lbl-home"></span>
-          <input id="pred-h" type="number" min="0" style="width:70px; text-align:center;" />
+        <div id="pred-box" class="hidden" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <span id="lbl-home" style="font-weight:700;"></span>
+          <input id="pred-h" type="number" min="0" style="width:72px; text-align:center;" />
           <span>-</span>
-          <input id="pred-a" type="number" min="0" style="width:70px; text-align:center;" />
-          <span id="lbl-away"></span>
+          <input id="pred-a" type="number" min="0" style="width:72px; text-align:center;" />
+          <span id="lbl-away" style="font-weight:700;"></span>
           <button id="btn-save-pred" class="primary" type="button">Valider prono</button>
         </div>
         <div id="pred-ok" class="ok"></div>
       </div>
 
       <div class="card">
-        <h2 style="margin-top:0;">Classement général</h2>
-        <div id="part-info" class="muted"></div>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Joueur</th>
-              <th id="th-prono" class="prono-col">PRONO N° 13</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody id="lb-body"></tbody>
-        </table>
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px;">
+          <h2 style="margin:0;">Classement général</h2>
+          <div id="part-info" class="muted"></div>
+        </div>
+        <div class="muted" style="margin-top:4px;">
+          Légende : <span style="background:var(--green-soft); padding:2px 7px; border-radius:6px; font-weight:700;">Vert pâle</span> = toi •
+          <span style="background:var(--accent-soft); padding:2px 7px; border-radius:6px; font-weight:700;">Rouge pâle</span> = tenant du titre
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Joueur</th>
+                <th id="th-prono" class="prono-col">PRONO N° 13</th>
+                <th style="text-align:right;">Total</th>
+              </tr>
+            </thead>
+            <tbody id="lb-body"></tbody>
+          </table>
+        </div>
       </div>
     </main>
 
     <section id="view-palm" class="hidden">
       <div class="card">
         <h2 style="margin-top:0;">Palmarès de la Peña</h2>
+        <div id="palm-summary" class="palm-summary"></div>
         <div id="palm-grid" class="palm-grid"></div>
       </div>
     </section>
@@ -248,6 +444,7 @@
   <script>
     (function () {
       var DB_URL = "https://iparraldeko-pena-default-rtdb.europe-west1.firebasedatabase.app/data.json";
+
       var MEMBERS = [
         { code: "JORGE-13", name: "ARIAS RUIZ Jorge", points: 20, isChamp: false },
         { code: "XABIER-26", name: "BARRUTIA Xabier", points: 0, isChamp: false },
@@ -450,16 +647,16 @@
       ];
 
       var PALM = [
-        { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken" },
-        { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea" },
-        { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban" },
-        { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel" },
-        { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz" },
-        { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea" },
-        { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka" },
-        { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick" },
-        { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz" },
-        { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi" }
+        { y: "2025/26", p1: "LABORDE JULEN", p2: "CURUTCHARRY Pierre", p3: "CROUZAT Luken", isHolder: true },
+        { y: "2024/25", p1: "MORA VIVIAN", p2: "GASTON Richard et MENDIOLA Iñaki", p3: "LABORDE Lorea", isHolder: false },
+        { y: "2023/24", p1: "FERNANDEZ ADRIAN", p2: "LAMBERT Sébastien", p3: "FERNANDEZ Lucas et LARROCHE Iban", isHolder: false },
+        { y: "2022/23", p1: "CORDEIRO JONATHAN", p2: "LABORDE Alain", p3: "ROMERO Miguel", isHolder: false },
+        { y: "2021/22", p1: "LABORDE LOREA", p2: "LABORDE Julen", p3: "CAZENAVE Aritz", isHolder: false },
+        { y: "2020/21", p1: "CAZENAVE OIHAN", p2: "LAMBERT Sébastien et LEGRAS Pierre", p3: "CORDEIRO Jonathan, GOBBI Olivier et LABORDE Lorea", isHolder: false },
+        { y: "2019/20", p1: "ROCHE PIERRICK", p2: "LEGRAS Théa et URREIZTIETA Andoni", p3: "BRINGAS Gorka", isHolder: false },
+        { y: "2018/19", p1: "LABORDE LOREA", p2: "GRENIER Thierry", p3: "LEGRAS Pierre et ROCHE Pierrick", isHolder: false },
+        { y: "2017/18", p1: "BELINGOU MARC", p2: "MORA Vivian", p3: "CAZENAVE Aritz", isHolder: false },
+        { y: "2016/17", p1: "CELLAN FRANCK ET MORA VIVIAN", p2: "LARROCHE Sébastien", p3: "BELLY Patxi", isHolder: false }
       ];
 
       var state = { user: null, currentId: "m13" };
@@ -467,6 +664,49 @@
       function byId(id) { return document.getElementById(id); }
       function setText(id, txt) { var n = byId(id); if (n) n.textContent = txt; }
       function getSign(h, a) { return h > a ? "1" : (h < a ? "2" : "N"); }
+
+      function getFirstName(fullName) {
+        if (!fullName) return "MEMBRE";
+        var parts = fullName.trim().split(/\s+/);
+        return (parts[parts.length - 1] || fullName).toUpperCase();
+      }
+
+      function normalizeKey(label) {
+        return (label || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+      }
+
+      function computeCupCounts() {
+        var counts = {};
+        var order = [];
+        for (var i = 0; i < PALM.length; i++) {
+          var rawWinners = PALM[i].p1.split(/\s+ET\s+/i);
+          for (var j = 0; j < rawWinners.length; j++) {
+            var clean = rawWinners[j].trim();
+            if (!clean) continue;
+            var key = normalizeKey(clean);
+            if (!counts[key]) {
+              counts[key] = { label: clean, count: 0 };
+              order.push(key);
+            }
+            counts[key].count += 1;
+          }
+        }
+        return { counts: counts, order: order };
+      }
+
+      function getCupTextForWinner(winnerText, cupMap) {
+        var parts = winnerText.split(/\s+ET\s+/i);
+        var info = [];
+        for (var i = 0; i < parts.length; i++) {
+          var key = normalizeKey(parts[i].trim());
+          if (cupMap[key]) {
+            var c = cupMap[key].count;
+            info.push(parts[i].trim() + " (" + c + " " + (c > 1 ? "coupes" : "coupe") + ")");
+          }
+        }
+        return info.join(" • ");
+      }
+
       function getMatchById(id) {
         for (var i = 0; i < MATCHES.length; i++) {
           if (MATCHES[i].id === id) return MATCHES[i];
@@ -484,122 +724,28 @@
 
       function renderPalmares() {
         var grid = byId("palm-grid");
+        var summary = byId("palm-summary");
         grid.innerHTML = "";
+        summary.innerHTML = "";
+
+        var cupData = computeCupCounts();
+        for (var k = 0; k < cupData.order.length; k++) {
+          var item = cupData.counts[cupData.order[k]];
+          var pill = document.createElement("div");
+          pill.className = "cup-pill";
+          pill.textContent = "🏆 " + item.label + " : " + item.count + (item.count > 1 ? " coupes" : " coupe");
+          summary.appendChild(pill);
+        }
+
         for (var i = 0; i < PALM.length; i++) {
           var s = PALM[i];
           var card = document.createElement("div");
-          card.className = "palm-card";
+          card.className = "palm-card" + (s.isHolder ? " is-holder" : "");
 
           var head = document.createElement("div");
           head.className = "palm-head";
           head.textContent = "Saison " + s.y;
-          if (i === 0) {
-            var em = document.createElement("em");
-            em.className = "champ-tag";
-            em.textContent = "(tenant du titre)";
-            head.appendChild(em);
-          }
-
-          var rows = document.createElement("div");
-          rows.className = "palm-rows";
-          var lines = [
-            { cls: "palm-row p1", rank: "1er", name: s.p1 },
-            { cls: "palm-row", rank: "2e", name: s.p2 },
-            { cls: "palm-row", rank: "3e", name: s.p3 }
-          ];
-          for (var j = 0; j < lines.length; j++) {
-            var row = document.createElement("div");
-            row.className = lines[j].cls;
-            var rk = document.createElement("span");
-            rk.className = "palm-rank";
-            rk.textContent = lines[j].rank;
-            var nm = document.createElement("span");
-            nm.textContent = lines[j].name;
-            row.appendChild(rk);
-            row.appendChild(nm);
-            rows.appendChild(row);
-          }
-          card.appendChild(head);
-          card.appendChild(rows);
-          grid.appendChild(card);
-        }
-      }
-
-      function renderLeaderboard(m) {
-        var n = parseInt(m.pronoNum, 10) || 1;
-        setText("th-prono", "PRONO N° " + (n < 10 ? "0" + n : String(n)));
-        var cnt = 0;
-        for (var k in m.preds) { if (m.preds.hasOwnProperty(k)) cnt++; }
-        setText("part-info", "Participation : " + cnt + "/" + MEMBERS.length);
-
-        var sorted = MEMBERS.slice().sort(function (a, b) {
-          return (b.points || 0) - (a.points || 0) || a.name.localeCompare(b.name);
-        });
-        var tb = byId("lb-body");
-        tb.innerHTML = "";
-        for (var i = 0; i < sorted.length; i++) {
-          var mem = sorted[i];
-          var pr = m.preds[mem.code];
-          var txt = pr ? (pr.h + " - " + pr.a) : "-";
-          if (m.finished) {
-            if (!pr) txt += " (+0 pt)";
-            else if (pr.h === m.fh && pr.a === m.fa) txt += " (+6 pts)";
-            else if (getSign(pr.h, pr.a) === getSign(m.fh, m.fa)) txt += " (+3 pts)";
-            else txt += " (+1 pt)";
-          }
-          var tr = document.createElement("tr");
-          var td1 = document.createElement("td"); td1.textContent = String(i + 1);
-          var td2 = document.createElement("td");
-          td2.appendChild(document.createTextNode(mem.name));
-          if (mem.isChamp) {
-            var em = document.createElement("em");
-            em.className = "champ-tag";
-            em.textContent = "(tenant du titre)";
-            td2.appendChild(em);
-          }
-          var td3 = document.createElement("td"); td3.className = "prono-col"; td3.textContent = txt;
-          var td4 = document.createElement("td"); td4.className = "pts-col"; td4.textContent = mem.points + " pts";
-          tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
-          tb.appendChild(tr);
-        }
-      }
-
-      function showMatch(id) {
-        state.currentId = id;
-        var m = getMatchById(id);
-        byId("match-select").value = m.id;
-        setText("match-title", m.home + " vs " + m.away);
-        setText("match-meta", m.comp + " • " + m.kickoff + (m.finished ? (" • Score : " + m.fh + " - " + m.fa) : " • Ouvert"));
-        setText("lbl-home", m.home);
-        setText("lbl-away", m.away);
-        setText("pred-ok", "");
-
-        if (!m.finished && state.user && !state.user.isAdmin) {
-          byId("pred-box").classList.remove("hidden");
-          var pr = m.preds[state.user.code];
-          byId("pred-h").value = pr ? pr.h : "";
-          byId("pred-a").value = pr ? pr.a : "";
-        } else {
-          byId("pred-box").classList.add("hidden");
-        }
-        renderLeaderboard(m);
-      }
-
-      function fillMatchSelect() {
-        var sel = byId("match-select");
-        sel.innerHTML = "";
-        for (var i = 0; i < MATCHES.length; i++) {
-          var opt = document.createElement("option");
-          opt.value = MATCHES[i].id;
-          opt.textContent = MATCHES[i].comp + " — " + MATCHES[i].home + " vs " + MATCHES[i].away;
-          sel.appendChild(opt);
-        }
-      }
-
-      function setTab(name) {
-        if (!state.user) return;
-        var isPalm = name === "palm";
-        byId("view-pronos").classList.toggle("hidden", isPalm);
-        byId("view-palm").classList.toggle("hidden", !isPalm);
-        byId("tab-pronos").classList.toggle("active", !isPalm);
-        by
+          if (s.isHolder) {
+            var spanH = document.createElement("span");
+            spanH.className = "tag tag-champ";
+            spanH.textContent = "Tenant
