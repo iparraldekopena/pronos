@@ -79,7 +79,11 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      padding: 4px 0;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #c81d25 0%, #9e1219 100%);
+      border: 2px solid #860e14;
+      box-shadow: 0 6px 18px rgba(200, 29, 37, 0.22);
     }
 
     .logo-img {
@@ -88,7 +92,8 @@
       height: auto;
       border-radius: 10px;
       display: block;
-      box-shadow: 0 4px 14px rgba(20, 24, 31, 0.08);
+      background: #ffffff;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     }
 
     .aupa-banner {
@@ -208,15 +213,6 @@
     .tag-champ { background: #fbd2d7; color: #8f131b; }
     .tag-me { background: #c7ebd4; color: var(--green-text); }
 
-    #view-palm .card {
-      background: #0d1016;
-      border-color: #262d3d;
-      color: #f3f5f8;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-    }
-
-    #view-palm h2 { color: #ffffff; }
-
     .palm-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -224,32 +220,30 @@
     }
 
     .palm-card {
-      border: 1px solid #272e3f;
+      border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      background: #161b24;
-      color: #f3f5f8;
+      background: var(--bg-white);
     }
 
     .palm-card.is-holder {
-      background: #281317;
-      border-color: #9e222b;
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
     }
 
     .palm-head {
       padding: 11px 14px;
-      border-bottom: 1px solid #272e3f;
+      border-bottom: 1px solid var(--border);
       font-weight: 800;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #1d2330;
-      color: #ffffff;
+      background: #ffffff;
     }
 
     .palm-card.is-holder .palm-head {
-      background: #36161c;
-      border-bottom-color: #9e222b;
+      background: var(--accent-soft);
+      border-bottom-color: var(--accent-border);
     }
 
     .palm-rows { padding: 12px 14px; display: grid; gap: 7px; }
@@ -260,21 +254,18 @@
       align-items: center;
       padding: 8px 10px;
       border-radius: 8px;
-      border: 1px solid #262e3e;
-      background: #11151d;
-      color: #e5e9f0;
+      border: 1px solid #eef1f5;
+      background: #ffffff;
       font-size: 0.9rem;
     }
 
     .palm-row.p1 {
-      background: #421820;
-      border-color: #b52731;
-      color: #ffffff;
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
       font-weight: 800;
     }
 
-    .palm-rank { font-weight: 800; min-width: 34px; color: #f87171; }
-    .palm-row:not(.p1) .palm-rank { color: #9aa5b8; }
+    .palm-rank { font-weight: 800; min-width: 34px; }
   </style>
 </head>
 <body>
@@ -618,7 +609,7 @@
         if (s.isHolder) {
           var sp = document.createElement("span");
           sp.className = "tag tag-champ";
-          sp.textContent = "Tenant du titre";
+          sp.textContent = "Tenant du Tire";
           head.appendChild(sp);
         }
 
@@ -693,7 +684,7 @@
         if (mem.isChamp) {
           var emC = document.createElement("span");
           emC.className = "tag tag-champ";
-          emC.textContent = "Tenant du titre";
+          emC.textContent = "Tenant du Tire";
           td2.appendChild(emC);
         }
 
