@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iparraldeko Peña — Classement Journée 13</title>
+  <title>Iparraldeko Peña — Classement Pronostic n° 13</title>
   <style>
     :root {
       --bg: #0c0e12;
@@ -191,64 +191,86 @@
       color: var(--gold);
     }
 
-    /* Bloc Match Focus */
+    /* Bloc Pronostic agrandi */
     .match-focus {
       background: var(--focus-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px 20px;
-      margin-bottom: 20px;
+      border: 1.5px solid #374151;
+      border-radius: 18px;
+      padding: 34px 28px;
+      margin-bottom: 24px;
       text-align: center;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .match-selector-bar {
       display: flex;
       justify-content: center;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
+    .match-selector-bar select {
+      min-width: min(100%, 420px);
+      font-size: 1.05rem;
+      padding: 12px 16px;
+    }
+
+    /* Ligne résultat agrandie */
     .match-title {
-      font-size: clamp(1.3rem, 3vw, 2rem);
-      font-weight: 800;
-      margin: 0 0 8px;
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      margin: 6px 0 14px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .match-meta {
       color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 14px;
+      font-size: 1rem;
+      margin-bottom: 16px;
     }
 
     .pred-box {
-      margin-top: 14px;
-      padding-top: 16px;
-      border-top: 1px solid #1f2430;
+      margin-top: 18px;
+      padding-top: 22px;
+      border-top: 1px solid #262d3d;
     }
 
     .pred-teams-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .team-big {
-      font-size: 1.25rem;
+      font-size: 1.45rem;
       font-weight: 800;
-      min-width: 140px;
+      min-width: 170px;
     }
 
     .score-input {
-      width: 68px;
+      width: 82px;
+      height: 54px;
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 1.45rem;
+      font-weight: 800;
+    }
+
+    .score-sep {
+      font-size: 1.5rem;
       font-weight: 800;
     }
 
     .pred-ok {
-      margin-top: 8px;
+      margin-top: 10px;
       color: #4ade80;
       font-weight: 600;
       min-height: 1.2em;
@@ -556,7 +578,7 @@
 
       <section class="standings-card">
         <div class="standings-top">
-          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DE LA JOURNÉE 13</h2>
+          <h2 id="standings-title" class="standings-main-title">CLASSEMENT À L'ISSUE DU PRONOSTIC N° 13</h2>
           <div id="participation-banner" class="participation-banner"></div>
           <div id="cumul-sub" class="cumul-sub"></div>
           <div id="revealed-note" class="revealed-note">🔒 Pronostics révélés (match commencé)</div>
@@ -568,7 +590,7 @@
               <tr>
                 <th>POS</th>
                 <th>MEMBRE</th>
-                <th id="th-prono" class="right">PRONO N°13</th>
+                <th id="th-prono" class="right">PRONO N° 13</th>
                 <th class="right">TOTAL</th>
               </tr>
             </thead>
@@ -830,7 +852,7 @@
       window.MATCHES.forEach(m => {
         const opt = document.createElement("option");
         opt.value = m.id;
-        opt.textContent = `Journée ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
+        opt.textContent = `Pronostic n° ${m.num} — ${m.home} vs ${m.away} (${m.date})`;
         sel.appendChild(opt);
       });
       sel.value = currentMatchId;
@@ -840,9 +862,9 @@
       currentMatchId = matchId;
       const m = window.MATCHES.find(x => x.id === matchId) || window.MATCHES[0];
       document.getElementById("match-select").value = m.id;
-      document.getElementById("th-prono").textContent = `PRONO N°${m.num}`;
-      document.getElementById("standings-title").textContent = `CLASSEMENT À L'ISSUE DE LA JOURNÉE ${m.num}`;
-      document.getElementById("cumul-sub").textContent = `Classement cumulé à la fin de la Journée ${m.num} (${m.dayName} ${m.date})`;
+      document.getElementById("th-prono").textContent = `PRONO N° ${m.num}`;
+      document.getElementById("standings-title").textContent = `CLASSEMENT À L'ISSUE DU PRONOSTIC N° ${m.num}`;
+      document.getElementById("cumul-sub").textContent = `Classement cumulé à la fin du Pronostic n° ${m.num} (${m.dayName} ${m.date})`;
       document.getElementById("pred-ok").textContent = "";
 
       const titleEl = document.getElementById("match-title");
@@ -851,10 +873,10 @@
 
       if (m.finished) {
         titleEl.textContent = `${m.home} ${m.fh}-${m.fa} ${m.away}`;
-        metaEl.textContent = `Journée ${m.num} - ${m.comp} - ${m.dayName} ${m.date} - ${m.time} - ${m.stadium}`;
+        metaEl.textContent = `Pronostic n° ${m.num} - ${m.comp} - ${m.dayName} ${m.date} - ${m.time} - ${m.stadium}`;
         predBox.classList.add("hidden");
       } else {
-        titleEl.textContent = `Journée ${m.num} - ${m.dayName} ${m.date} ${m.time} - ${m.stadium}`;
+        titleEl.textContent = `Pronostic n° ${m.num} - ${m.dayName} ${m.date} ${m.time} - ${m.stadium}`;
         metaEl.textContent = `${m.comp} — Pronostic ouvert`;
         predBox.classList.remove("hidden");
         document.getElementById("lbl-home").textContent = m.home;
@@ -916,7 +938,7 @@
       });
 
       const pct = totalMembers > 0 ? Math.round((submitted / totalMembers) * 100) : 0;
-      banner.textContent = `Taux de Participation pour la journée ${matchObj ? matchObj.num : 13} : ${pct}% (${submitted}/${totalMembers} participants)`;
+      banner.textContent = `Taux de Participation pour le pronostic n° ${matchObj ? matchObj.num : 13} : ${pct}% (${submitted}/${totalMembers} participants)`;
 
       window.MEMBERS.forEach(m => {
         const p = matchPreds[m.code];
