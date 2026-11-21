@@ -519,7 +519,7 @@
       <h1 style="margin: 0 0 8px; font-size: 1.35rem;">Connexion joueur</h1>
       <p class="muted" style="margin: 0;">Saisis ton code membre pour accéder aux pronostics et au classement.</p>
       <div class="login-row">
-        <input id="code-in" type="text" placeholder="Ex. ALAIN-01" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();window.doLogin();}" />
+        <input id="code-in" type="text" placeholder="Code membre" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();window.doLogin();}" />
         <button type="button" class="btn-red" onclick="window.doLogin()">Entrer</button>
       </div>
       <div id="login-err" class="err"></div>
