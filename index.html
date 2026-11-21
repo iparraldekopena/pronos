@@ -470,11 +470,6 @@
       overflow: hidden;
     }
 
-    .palm-card.has-me {
-      background: var(--me-bg);
-      border-color: var(--me-border);
-    }
-
     .palm-head {
       background: var(--surface-2);
       padding: 12px 16px;
@@ -501,6 +496,15 @@
       border-bottom: none;
     }
 
+    .palm-row-first {
+      background: rgba(245, 158, 11, 0.11);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
     .palm-rank {
       min-width: 34px;
       font-weight: 800;
@@ -510,6 +514,18 @@
     .palm-names {
       font-weight: 600;
       line-height: 1.35;
+    }
+
+    .palm-winner-name {
+      color: #fde68a;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .palm-winner-cup {
+      margin-left: 6px;
+      font-size: 1rem;
     }
   </style>
 </head>
@@ -991,25 +1007,23 @@
       const grid = document.getElementById("palm-grid");
       grid.innerHTML = "";
 
-      const userLastName = (currentUser && !currentUser.isAdmin)
-        ? getFirstName(currentUser.name).toUpperCase()
-        : "";
-
       window.PALM.forEach(saison => {
-        const allNames = saison.podium.flatMap(step => step.names);
-        const isUserOnPodium = Boolean(
-          userLastName && allNames.some(n => n.toUpperCase().includes(userLastName))
-        );
-
         const card = document.createElement("div");
-        card.className = "palm-card" + (isUserOnPodium ? " has-me" : "");
+        card.className = "palm-card";
 
-        const rowsHtml = saison.podium.map(step => `
-          <div class="palm-row">
-            <span class="palm-rank">${step.rank}</span>
-            <span class="palm-names">${step.names.join(" • ")}</span>
-          </div>
-        `).join("");
+        const rowsHtml = saison.podium.map(step => {
+          const isFirst = (step.rank === "1er");
+          const namesHtml = isFirst
+            ? step.names.map(n => `<span class="palm-winner-name">${n.toUpperCase()}</span><span class="palm-winner-cup" title="Vainqueur">🏆</span>`).join(" • ")
+            : step.names.join(" • ");
+
+          return `
+            <div class="palm-row${isFirst ? " palm-row-first" : ""}">
+              <span class="palm-rank">${step.rank}</span>
+              <span class="palm-names">${namesHtml}</span>
+            </div>
+          `;
+        }).join("");
 
         card.innerHTML = `
           <div class="palm-head">
