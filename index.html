@@ -16,9 +16,10 @@
       --accent: #e11d48;
       --accent-hover: #be123c;
       --gold: #f59e0b;
-      --me-bg: rgba(59, 130, 246, 0.14);
-      --me-border: rgba(59, 130, 246, 0.45);
-      --champ-bg: rgba(245, 158, 11, 0.12);
+      --me-bg: rgba(225, 29, 72, 0.16);
+      --me-border: rgba(244, 63, 94, 0.55);
+      --champ-bg: rgba(22, 163, 74, 0.16);
+      --champ-border: rgba(34, 197, 94, 0.45);
       --up: #16a34a;
       --down: #dc2626;
     }
@@ -335,6 +336,7 @@
 
     tbody tr.row-champ {
       background: var(--champ-bg);
+      box-shadow: inset 0 1px 0 var(--champ-border), inset 0 -1px 0 var(--champ-border);
     }
 
     tbody tr.row-me {
@@ -379,8 +381,8 @@
       margin-left: 8px;
       padding: 2px 8px;
       border-radius: 999px;
-      background: #f59e0b;
-      color: #111827;
+      background: #16a34a;
+      color: #ffffff;
       font-size: 0.74rem;
       font-weight: 800;
       vertical-align: middle;
@@ -391,8 +393,8 @@
       margin-left: 6px;
       padding: 2px 7px;
       border-radius: 6px;
-      background: rgba(59, 130, 246, 0.25);
-      color: #93c5fd;
+      background: rgba(225, 29, 72, 0.28);
+      color: #fda4af;
       font-size: 0.72rem;
       font-weight: 700;
       vertical-align: middle;
@@ -447,6 +449,7 @@
     }
 
     .palm-card.has-me {
+      background: var(--me-bg);
       border-color: var(--me-border);
     }
 
