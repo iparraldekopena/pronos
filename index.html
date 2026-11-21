@@ -448,7 +448,7 @@
       font-weight: 800;
     }
 
-    /* Palmarès */
+    /* Palmarès : seul le 1er est mis en valeur, 2e et 3e en texte neutre */
     .palm-section-title {
       margin: 0 0 14px;
       font-size: 1.2rem;
@@ -486,46 +486,48 @@
 
     .palm-row {
       display: flex;
-      align-items: flex-start;
+      align-items: baseline;
       gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .palm-row:last-child {
       border-bottom: none;
     }
 
-    .palm-row-first {
-      background: rgba(245, 158, 11, 0.11);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      border-radius: 8px;
-      padding: 8px 10px;
-      margin-bottom: 4px;
-      border-bottom: 1px solid rgba(245, 158, 11, 0.35);
+    .palm-rank-1 {
+      min-width: 38px;
+      font-weight: 900;
+      color: #fbbf24;
+      font-size: 0.92rem;
     }
 
-    .palm-rank {
-      min-width: 34px;
-      font-weight: 800;
-      color: var(--gold);
+    .palm-rank-other {
+      min-width: 38px;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
 
     .palm-names {
-      font-weight: 600;
-      line-height: 1.35;
+      line-height: 1.4;
     }
 
-    .palm-winner-name {
-      color: #fde68a;
+    .palm-name-1 {
       font-weight: 900;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      color: #ffffff;
     }
 
-    .palm-winner-cup {
-      margin-left: 6px;
-      font-size: 1rem;
+    .palm-icon-1 {
+      margin-left: 5px;
+      font-size: 0.95rem;
+    }
+
+    .palm-name-other {
+      color: var(--text);
+      font-weight: 400;
     }
   </style>
 </head>
@@ -1013,13 +1015,18 @@
 
         const rowsHtml = saison.podium.map(step => {
           const isFirst = (step.rank === "1er");
+          const rankClass = isFirst ? "palm-rank-1" : "palm-rank-other";
           const namesHtml = isFirst
-            ? step.names.map(n => `<span class="palm-winner-name">${n.toUpperCase()}</span><span class="palm-winner-cup" title="Vainqueur">🏆</span>`).join(" • ")
-            : step.names.join(" • ");
+            ? step.names
+                .map(n => `<span class="palm-name-1">${n.toUpperCase()}</span><span class="palm-icon-1" title="1er">🏆</span>`)
+                .join(" • ")
+            : step.names
+                .map(n => `<span class="palm-name-other">${n}</span>`)
+                .join(" • ");
 
           return `
-            <div class="palm-row${isFirst ? " palm-row-first" : ""}">
-              <span class="palm-rank">${step.rank}</span>
+            <div class="palm-row">
+              <span class="${rankClass}">${step.rank}</span>
               <span class="palm-names">${namesHtml}</span>
             </div>
           `;
