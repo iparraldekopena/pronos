@@ -978,7 +978,7 @@
       <div class="admin-grid">
         <div class="field-group">
           <label for="adm-num">N° du pronostic</label>
-          <input id="adm-num" type="number" min="1" step="1" placeholder="15" />
+          <input id="adm-num" type="number" min="1" step="1" placeholder="16" />
         </div>
 
         <div class="field-group">
@@ -988,17 +988,17 @@
 
         <div class="field-group">
           <label for="adm-away">Équipe extérieure</label>
-          <input id="adm-away" type="text" placeholder="MALAGA CF" />
+          <input id="adm-away" type="text" placeholder="REAL MADRID" />
         </div>
 
         <div class="field-group">
           <label for="adm-date">Date du match</label>
-          <input id="adm-date" type="text" placeholder="5 Décembre 2026" />
+          <input id="adm-date" type="text" placeholder="6 Décembre 2026" />
         </div>
 
         <div class="field-group">
           <label for="adm-time">Heure du match</label>
-          <input id="adm-time" type="text" placeholder="21:00" />
+          <input id="adm-time" type="text" placeholder="16:15" />
         </div>
 
         <div class="field-group">
@@ -1468,7 +1468,7 @@
       { code: "PIERRE-27", name: "LEGRAS Peio", cups: 0, isTenant: false, prono13: "-" }
     ];
 
-    // Matchs 1 à 12 + Match 13 + Match 14
+    // Matchs 1 à 12 + Match 13 + Match 14 + Match 15 (Kopa)
     window.MATCHES = [
       { id: "m1", num: 1, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "SEVILLA FC", finished: true, started: true, fh: 1, fa: 3 },
       { id: "m2", num: 2, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "BARCELONA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 2, fa: 0 },
@@ -1483,7 +1483,8 @@
       { id: "m11", num: 11, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "REAL SOCIEDAD", finished: true, started: true, fh: 2, fa: 1 },
       { id: "m12", num: 12, comp: "Liga", dayName: "", date: "Saison 2026/27", time: "", stadium: "Extérieur", home: "OSASUNA", away: "ATHLETIC CLUB", finished: true, started: true, fh: 1, fa: 1 },
       { id: "m13", num: 13, comp: "Liga", dayName: "Vendredi", date: "20 Novembre 2026", time: "21:00", stadium: "San Mamés - Bilbao", home: "ATHLETIC CLUB", away: "RCD ESPANYOL", finished: true, started: true, fh: 0, fa: 1 },
-      { id: "m14", num: 14, comp: "Liga", dayName: "Samedi", date: "28 Novembre 2026", time: "16:15", stadium: "La Rosaleda - Malaga", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, started: false, kickoffIso: "2026-11-28T16:15:00+01:00", fh: null, fa: null }
+      { id: "m14", num: 14, comp: "Liga", dayName: "Samedi", date: "28 Novembre 2026", time: "16:15", stadium: "La Rosaleda - Malaga", home: "MALAGA CF", away: "ATHLETIC CLUB", finished: false, started: false, kickoffIso: "2026-11-28T16:15:00+01:00", fh: null, fa: null },
+      { id: "m15", num: 15, comp: "Kopa", dayName: "Mardi", date: "01 Décembre 2026", time: "21:00", stadium: "Los Pajaritos - Soria", home: "CD NUMANCIA", away: "ATHLETIC CLUB", finished: false, started: false, kickoffIso: "2026-12-01T21:00:00+01:00", fh: null, fa: null }
     ];
 
     // Palmarès : les 3 premiers de chaque saison (de 2025/26 à 2016/17)
