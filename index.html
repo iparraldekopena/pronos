@@ -361,6 +361,19 @@
       margin-bottom: 8px;
     }
 
+    .cup-rule-note {
+      margin: 8px auto 12px;
+      padding: 9px 14px;
+      max-width: 680px;
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fde68a;
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
     .match-user-pred {
       color: var(--muted);
       font-size: 0.96rem;
@@ -1008,12 +1021,12 @@
 
         <div class="field-group">
           <label for="adm-comp">Compétition</label>
-          <input id="adm-comp" type="text" list="comp-suggestions" placeholder="Liga, Kopa, Amical..." />
+          <input id="adm-comp" type="text" list="comp-suggestions" placeholder="Liga, Kopa, Coupe d'Espagne..." />
           <datalist id="comp-suggestions">
             <option value="Liga"></option>
             <option value="Kopa"></option>
+            <option value="Coupe d'Espagne"></option>
             <option value="Amical"></option>
-            <option value="Copa del Rey"></option>
           </datalist>
         </div>
       </div>
@@ -1043,6 +1056,9 @@
         <div id="match-when" class="match-when hidden"></div>
         <div id="match-venue" class="match-venue hidden"></div>
         <div id="match-meta" class="match-meta"></div>
+        <div id="cup-rule-note" class="cup-rule-note hidden">
+          ⚠️ Règle Kopa / Coupe d'Espagne : le pronostic donné doit être celui à la fin du temps réglementaire. Le score des prolongations ne sera pas pris en compte.
+        </div>
         <div id="match-user-pred" class="match-user-pred"></div>
 
         <div id="pred-box" class="pred-box hidden">
@@ -1168,6 +1184,21 @@
       const a = Number(parts[1]);
       if (Number.isNaN(h) || Number.isNaN(a)) return null;
       return { h, a };
+    }
+
+    function isCupCompetition(comp) {
+      if (!comp) return false;
+      const normalized = String(comp)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+      return (
+        normalized.includes("kopa") ||
+        normalized.includes("coupe d'espagne") ||
+        normalized.includes("coupe despagne") ||
+        normalized.includes("copa del rey")
+      );
     }
 
     function isMatchStarted(m) {
@@ -2078,6 +2109,11 @@
       const revealedNoteEl = document.getElementById("revealed-note");
       const standingsTitleEl = document.getElementById("standings-title");
       const cumulSubEl = document.getElementById("cumul-sub");
+      const cupNoteEl = document.getElementById("cup-rule-note");
+
+      if (cupNoteEl) {
+        cupNoteEl.classList.toggle("hidden", !isCupCompetition(m.comp));
+      }
 
       if (m.finished) {
         standingsTitleEl.textContent = `CLASSEMENT À L'ISSUE DU PRONOSTIC N° ${m.num}`;
